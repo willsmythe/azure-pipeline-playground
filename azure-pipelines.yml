@@ -11,8 +11,5 @@ jobs:
   steps:
     - bash: |
         echo Commit SHA: $(Build.SourceVersion)
-        FILES=$(git diff-tree --no-commit-id --name-only -r $(Build.SourceVersion))
-        for f in $FILES
-          echo item $f;
-        done
+        git diff-tree --no-commit-id --name-only -r $(Build.SourceVersion)
       displayName: 'Show commit files'
