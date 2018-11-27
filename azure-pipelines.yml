@@ -1,0 +1,18 @@
+jobs:
+- job: CI
+  strategy:
+    maxParallel: 2
+    matrix:
+      Linux:
+        vmImage: ubuntu-16.04
+      Windows:
+        vmImage: vs2017-win2016
+
+  steps:
+    - bash: |
+        echo Commit SHA: $(Build.SourceVersion)
+        FILES=$(git diff-tree --no-commit-id --name-only -r $(Build.SourceVersion))
+        for f in $FILES
+          echo item $f;
+        done
+      displayName: 'Show commit files'
