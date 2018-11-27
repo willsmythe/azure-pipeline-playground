@@ -12,4 +12,5 @@ jobs:
     - bash: |
         echo Commit SHA: $(Build.SourceVersion)
         git diff-tree --no-commit-id --name-only -r $(Build.SourceVersion) -m
+        echo test 1
       displayName: 'Show commit files'
