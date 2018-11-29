@@ -1,1 +1,15 @@
-5
+5 Volume in drive C is OSDisk
+ Volume Serial Number is F4FB-A388
+
+ Directory of C:\work\willsmythe\azure-pipeline-playground
+
+11/29/2018  01:24 PM    <DIR>          .
+11/29/2018  01:24 PM    <DIR>          ..
+11/29/2018  01:24 PM               647 azure-pipelines.yml
+11/29/2018  01:24 PM               632 check.sh
+11/29/2018  01:24 PM             1,288 test4.txt
+11/29/2018  01:24 PM                 1 test5.txt
+11/29/2018  01:24 PM                 1 test6.txt
+11/29/2018  01:24 PM                 3 test7.txt
+               6 File(s)          2,572 bytes
+               2 Dir(s)   8,912,154,624 bytes free
