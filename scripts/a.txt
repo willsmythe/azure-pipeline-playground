@@ -1,1 +1,18 @@
 asdf
+ Volume in drive C is OSDisk
+ Volume Serial Number is F4FB-A388
+
+ Directory of C:\work\willsmythe\azure-pipeline-playground\scripts
+
+11/29/2018  01:47 PM    <DIR>          .
+11/29/2018  01:47 PM    <DIR>          ..
+11/29/2018  01:47 PM                 6 a.txt
+11/29/2018  01:45 PM                 6 test13.txt
+11/29/2018  01:45 PM                 6 test14.txt
+11/29/2018  01:45 PM                 6 test15.txt
+11/29/2018  01:45 PM                 6 test16.txt
+11/29/2018  01:45 PM                 6 test17.txt
+11/29/2018  01:45 PM                 6 test18.txt
+11/29/2018  01:45 PM                 6 test19.txt
+               8 File(s)             48 bytes
+               2 Dir(s)   8,903,929,856 bytes free
