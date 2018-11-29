@@ -10,18 +10,18 @@ jobs:
 
   steps:
     - bash: |
-        echo Commit SHA
+        echo "Commit SHA"
         echo $(Build.SourceVersion)
         
-        echo git diff-tree
+        echo "git diff-tree"
         git diff-tree --no-commit-id --name-only -r $(Build.SourceVersion) -m
         
-        echo git rev-list (minimal)
+        echo "git rev-list (minimal)"
         git rev-list $(Build.SourceVersion) --parents --max-count=1
         
-        echo git rev-list (HEAD)
+        echo "git rev-list (HEAD)"
         git rev-list HEAD
 
-        echo git log
+        echo "git log"
         git log -n 5
       displayName: 'Show commit files'
