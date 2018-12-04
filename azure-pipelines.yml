@@ -1,3 +1,7 @@
+# Add comments
+# Second line
+# Third line
+
 jobs:
 - job: CI
   strategy:
