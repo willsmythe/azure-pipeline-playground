@@ -9,19 +9,24 @@ jobs:
         vmImage: vs2017-win2016
 
   steps:
-    - bash: |
-        echo "Commit SHA"
-        echo $(Build.SourceVersion)
-        
-        echo "git diff-tree"
-        git diff-tree --no-commit-id --name-only -r $(Build.SourceVersion) -m
-        
-        echo "git rev-list (minimal)"
-        git rev-list $(Build.SourceVersion) --parents --max-count=1
-        
-        echo "git rev-list (HEAD)"
-        git rev-list HEAD
+  - script: |
+      npm adsf
+      echo foo
+    displayName: 'Script 1'
 
-        echo "git log"
-        git log -n 5
-      displayName: 'Show commit files'
+  - script: |
+      - npm adsf
+      - echo foo
+    displayName: 'Script 2'
+
+  - script: |
+      npm adsf && echo foo
+    displayName: 'Script 3'
+
+  - script: |
+      npm adsf
+      echo foo
+    displayName: 'Script 4'
+  
+  - script: |
+    displayName: 'Script 1'
