@@ -1,32 +1,22 @@
-jobs:
-- job: CI
-  strategy:
-    maxParallel: 2
-    matrix:
-      Linux:
-        vmImage: ubuntu-16.04
-      Windows:
-        vmImage: vs2017-win2016
+steps:
+- script: |
+    npm adsf
+    echo foo
+  displayName: 'Script 1'
 
-  steps:
-  - script: |
-      npm adsf
-      echo foo
-    displayName: 'Script 1'
+- script: |
+    - npm adsf
+    - echo foo
+  displayName: 'Script 2'
 
-  - script: |
-      - npm adsf
-      - echo foo
-    displayName: 'Script 2'
+- script: |
+    npm adsf && echo foo
+  displayName: 'Script 3'
 
-  - script: |
-      npm adsf && echo foo
-    displayName: 'Script 3'
+- script: |
+    npm adsf
+    echo foo
+  displayName: 'Script 4'
 
-  - script: |
-      npm adsf
-      echo foo
-    displayName: 'Script 4'
-  
-  - script: |
-    displayName: 'Script 1'
+- script: |
+  displayName: 'Script 1'
