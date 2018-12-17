@@ -6,20 +6,28 @@ steps:
     npm adsf
     echo foo
   displayName: 'Script 1'
+  condition: always()
+
+- script: |
+    set -e
+    npm adsf
+    echo foo
+  displayName: 'Script 1'
+  condition: always()
 
 - script: |
     - npm adsf
     - echo foo
   displayName: 'Script 2'
+  condition: always()
 
 - script: |
     npm adsf && echo foo
   displayName: 'Script 3'
+  condition: always()
 
 - script: |
     npm adsf
     echo foo
   displayName: 'Script 4'
-
-- script: |
-  displayName: 'Script 1'
+  condition: always()
