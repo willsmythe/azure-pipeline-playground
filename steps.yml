@@ -1,3 +1,4 @@
 steps:
-- script: npm --version
-- script: node --version
+- script: |
+    npm --version
+    node --version
