@@ -24,3 +24,30 @@ jobs:
       inputs:
         versionSpec: 10.x
     - template: steps.yml
+
+- job: linux
+  pool:
+    vmImage: ubuntu-16.04
+  steps:
+    - template: steps.yml
+
+    - task: NodeTool@0
+      inputs:
+        versionSpec: 8.x
+    - template: steps.yml
+
+    - task: NodeTool@0
+      inputs:
+        versionSpec: 8.12
+    - template: steps.yml
+    
+    - task: NodeTool@0
+      inputs:
+        versionSpec: 8.14
+    - template: steps.yml
+  
+    - task: NodeTool@0
+      inputs:
+        versionSpec: 10.x
+    - template: steps.yml
+
