@@ -1,14 +1,21 @@
 jobs:
-- job:
-  strategy:
-    matrix:
-      windows:
-        vmImage: 'vs2017-win2016'
-      linux:
-        vmImage: 'ubuntu-16.04'
-      macos:
-        vmImage: 'macos-10.13'
+- job: windows
   pool:
-    vmImage: $(vmImage)
+    vmImage: vs2017-win2016
   steps:
-  - script: echo Hello, world! $(vmImage)
+    - template: steps.yml
+
+    - task: NodeTool@0
+      inputs:
+        versionSpec: 8.12
+    - template: steps.yml
+    
+    - task: NodeTool@0
+      inputs:
+        versionSpec: 8.14
+    - template: steps.yml
+  
+    - task: NodeTool@0
+      inputs:
+        versionSpec: 10.x
+    - template: steps.yml
