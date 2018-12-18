@@ -1,4 +1,4 @@
 steps:
-- script: |
-    npm --version
-    node --version
+- bash: |
+    echo Node: $(node --version)
+    echo NPM: $(npm --version)
