@@ -1,0 +1,30 @@
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: 10.x
+
+- bash: |
+    echo "Term: $TERM"
+
+    npm ci
+
+    echo ==============
+    node index.js
+    echo ==============
+
+    echo ==============
+    export FORCE_COLOR=1 && echo $FORCE_COLOR
+    node index.js
+    echo ==============
+
+    echo ==============
+    export FORCE_COLOR=2 && echo $FORCE_COLOR
+    node index.js
+    echo ==============
+
+    echo ==============
+    export FORCE_COLOR=3 && echo $FORCE_COLOR
+    node index.js
+    echo ==============
+
+  displayName: 'Run chalk sample'
