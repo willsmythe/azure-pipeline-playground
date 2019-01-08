@@ -3,16 +3,12 @@ jobs:
   pool:
     vmImage: vs2017-win2016
   steps:
-    - template: azure-pipelines-steps.yml
+    - script: |
+        choco install hg
+        #echo '##vso[task.setvariable variable=PATH]%PATH%'
+      displayName: 'Install Mercurial'
 
-- job: linux
-  pool:
-    vmImage: ubuntu-16.04
-  steps:
-    - template: azure-pipelines-steps.yml
-
-- job: macOS
-  pool:
-    vmImage: macos-10.13
-  steps:
-    - template: azure-pipelines-steps.yml
+    - bash: |
+        echo "${PATH}"
+        hg --version
+      displayName: 'Try gh'
