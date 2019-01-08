@@ -4,11 +4,11 @@ jobs:
     vmImage: vs2017-win2016
   steps:
     - script: |
-        choco install hg
+        #choco install hg
         #echo '##vso[task.setvariable variable=PATH]%PATH%'
       displayName: 'Install Mercurial'
 
-    - bash: |
-        echo "${PATH}"
+    - script: |
+        where hg
         hg --version
       displayName: 'Try gh'
