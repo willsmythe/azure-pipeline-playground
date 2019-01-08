@@ -20,4 +20,4 @@ steps:
 - bash: |
     npm ci
     node index.js
-  display: "Use realpath-native"
+  displayName: "Use realpath-native"
