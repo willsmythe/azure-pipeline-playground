@@ -1,3 +1,11 @@
 steps:
 - bash: |
-    printenv
+    npm ci
+    node index.js
+  continueOnError: true
+
+- bash: |
+    node index.js
+  condition: always()
+  env:
+    MKDIR: true
