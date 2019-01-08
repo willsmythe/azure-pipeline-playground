@@ -6,8 +6,6 @@ jobs:
     - script: |
         dir c:\ /a
         dir d:\ /a
-        dir c:\tmp
-        dir d:\tmp
     - template: azure-pipelines-steps.yml
 
 - job: linux

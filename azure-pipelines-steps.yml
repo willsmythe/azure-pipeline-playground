@@ -6,6 +6,7 @@ steps:
   displayName: 'Use Node.js 10'
 
 - bash: |
+    echo "$(printenv)"
     echo "JEST: ${JEST_DIR}"
     echo "TMP: ${TMP}"
     echo "TEMP: ${TEMP}"
@@ -14,4 +15,9 @@ steps:
     echo "1c: $(node -p "process.env.TEMP")"    
     echo "3: $(node -p "const os=require('os');const path=require('path');const workingDir = process.cwd(); path.resolve(workingDir, '..');")"
     echo "hello"
-    displayName: "Temp, current directory tests"
+  displayName: "Temp, current directory tests"
+
+- bash: |
+    npm ci
+    node index.js
+  display: "Use realpath-native"
