@@ -1,3 +1,17 @@
 steps:
+# Ensure Node.js 10 is active
+- task: NodeTool@0
+  inputs:
+    versionSpec: '10.x'
+  displayName: 'Use Node.js 10'
+
 - bash: |
-    printenv
+    echo "JEST: ${JEST_DIR}"
+    echo "TMP: ${TMP}"
+    echo "TEMP: ${TEMP}"
+    echo "1a: $(node -p "const os=require('os');os.tmpdir();")"
+    echo "1b: $(node -p "const os=require('os');const path=require('path');path.resolve(os.tmpdir(), 'a-test');")"
+    echo "1c: $(node -p "process.env.TEMP")"    
+    echo "3: $(node -p "const os=require('os');const path=require('path');const workingDir = process.cwd(); path.resolve(workingDir, '..');")"
+    echo "hello"
+    displayName: "Temp, current directory tests"
