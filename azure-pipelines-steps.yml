@@ -7,16 +7,11 @@ steps:
 
 - bash: |
     echo "$(printenv)"
-    echo "JEST: ${JEST_DIR}"
-    echo "TMP: ${TMP}"
-    echo "TEMP: ${TEMP}"
-    echo "os.tmpdir: $(node -p "const os=require('os');os.tmpdir();")"
-    echo "path.resolve os.tmpdir a-test: $(node -p "const os=require('os');const path=require('path');path.resolve(os.tmpdir(), 'a-test');")"
-    echo "process.env.TEMP: $(node -p "process.env.TEMP")"
-    echo "process.env: $(node -p "JSON.stringify(process.env, null, 2);")"
-    echo "cwd: $(node -p "const os=require('os');const path=require('path');const workingDir = process.cwd(); path.resolve(workingDir, '..');")"
-    echo "hello"
-  displayName: "Temp, current directory tests"
+    echo "os.tmpdir                    : $(node -p "const os=require('os'); os.tmpdir();")"
+    echo "path.resolve os.tmpdir a-test: $(node -p "const os=require('os'); const path=require('path'); path.resolve(os.tmpdir(), 'a-test');")"
+    echo "process.env.TEMP             : $(node -p "process.env.TEMP")"
+    echo "process.env                  : $(node -p "JSON.stringify(process.env, null, 2);")"
+  displayName: "Temp debug info"
 
 - bash: |
     npm ci
