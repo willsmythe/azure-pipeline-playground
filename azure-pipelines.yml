@@ -1,27 +1,18 @@
 jobs:
-- job: CI
-  strategy:
-    maxParallel: 2
-    matrix:
-      Linux:
-        vmImage: ubuntu-16.04
-      Windows:
-        vmImage: vs2017-win2016
-
+- job: windows
+  pool:
+    vmImage: vs2017-win2016
   steps:
-    - bash: |
-        echo "Commit SHA"
-        echo $(Build.SourceVersion)
-        
-        echo "git diff-tree"
-        git diff-tree --no-commit-id --name-only -r $(Build.SourceVersion) -m
-        
-        echo "git rev-list (minimal)"
-        git rev-list $(Build.SourceVersion) --parents --max-count=1
-        
-        echo "git rev-list (HEAD)"
-        git rev-list HEAD
+    - template: azure-pipelines-steps.yml
 
-        echo "git log"
-        git log -n 5
-      displayName: 'Show commit files'
+- job: linux
+  pool:
+    vmImage: ubuntu-16.04
+  steps:
+    - template: azure-pipelines-steps.yml
+
+- job: macOS
+  pool:
+    vmImage: macos-10.13
+  steps:
+    - template: azure-pipelines-steps.yml
