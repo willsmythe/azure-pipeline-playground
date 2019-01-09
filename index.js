@@ -22,16 +22,16 @@ const result = spawnSync(cmd.split(/\s/)[0], args, spawnOptions);
 
 console.log(JSON.stringify(result, null, 2));
 
-  // For compat with cross-spawn
-  result.status = result.code;
+// For compat with cross-spawn
+result.status = result.code;
 
-  if (result.status !== 0) {
-    const message = `
-      ORIGINAL CMD: ${cmd}
-      STDOUT: ${result.stdout}
-      STDERR: ${result.stderr}
-      STATUS: ${result.status}
-      ERROR: ${result.error}
-    `;
-    throw new Error(message);
-  }
+if (result.status !== 0) {
+  const message = `
+    ORIGINAL CMD: ${cmd}
+    STDOUT: ${result.stdout}
+    STDERR: ${result.stderr}
+    STATUS: ${result.status}
+    ERROR: ${result.error}
+  `;
+  throw new Error(message);
+}
