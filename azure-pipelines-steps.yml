@@ -1,2 +1,4 @@
 steps:
-- script: hg --version
+- script: |
+    echo $(PATH)
+    hg --version
