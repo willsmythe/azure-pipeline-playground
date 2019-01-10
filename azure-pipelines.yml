@@ -3,6 +3,9 @@ jobs:
   pool:
     vmImage: vs2017-win2016
   steps:
+    - script: |
+        dir "c:\Program Files"
+        where hg
     - template: azure-pipelines-steps.yml
 
 - job: linux
