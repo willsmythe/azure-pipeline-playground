@@ -18,4 +18,5 @@ jobs:
   pool:
     vmImage: macos-10.13
   steps:
+    - script: brew install mercurial
     - template: azure-pipelines-steps.yml
