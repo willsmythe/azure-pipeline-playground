@@ -1,5 +1,7 @@
 steps:
 - bash: |
+    git config --global user.name "VssAdmin"
+    git config --global user.email "VssAdmin@example.org"
     git status
     git remote -v
     cp azure-pipelines.yml test.yml
@@ -7,7 +9,9 @@ steps:
     git add .
     git commit -m "Commit test.yml"
     git push origin t
+
 - bash: |
     curl $(System.TeamFoundationCollectionUri)/_apis/git/pullrequests -H "Authorization: Bearer ${SYSTEM_ACCESSTOKEN}"
   env:
     SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+  condition: always()
