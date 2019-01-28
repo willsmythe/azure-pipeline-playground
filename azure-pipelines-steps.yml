@@ -1,3 +1,2 @@
 steps:
-- bash: |
-    printenv
+- script: conda install -c conda-forge openpmd-api
