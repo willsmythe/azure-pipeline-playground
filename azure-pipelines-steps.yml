@@ -1,2 +1,9 @@
 steps:
+- task: CondaEnvironment@1
+  inputs:
+    packageSpecs: 'python=3.6 conda-build conda conda-forge::conda-forge-ci-setup=2' # Optional
+    installOptions: "-c conda-forge"
+    updateConda: false
+  displayName: Install conda-build and activate environment
+
 - script: conda install -c conda-forge openpmd-api
