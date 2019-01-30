@@ -1,3 +1,7 @@
 steps:
-- script: mklink /d \s $(Build.SourcesDirectory)
+- script: mklink /D \s $(Build.SourcesDirectory)
+  condition: always()
+- script: mklink /H \azure-pipelines.yml $(Build.SourcesDirectory)\azure-pipelines.yml
+  condition: always()
 - script: dir d:\s
+  condition: always()
