@@ -3,7 +3,8 @@ jobs:
   pool:
     vmImage: vs2017-win2016
   steps:
-    - template: azure-pipelines-steps.yml
+    - script: run.bat
+    #- template: azure-pipelines-steps.yml
 
 #- job: linux
 #  pool:
