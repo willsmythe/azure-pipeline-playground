@@ -18,5 +18,9 @@ jobs:
 
         echo ===MSBuild===
         dir "C:\Program Files (x86)\MSBuild" /a:d /s /b > t4.txt
-        type t4.txt
+        type t4.txt    
       displayName: 'Show registry'
+
+    - bash: |
+        printenv
+      displayName: 'Show env vars'
