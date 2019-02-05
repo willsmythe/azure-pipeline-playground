@@ -5,10 +5,14 @@ jobs:
   steps:
     - script: |
         reg query /s "HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\VisualStudio\14.0" /s > t.txt
-        echo Wow6432Node
+        echo ===Wow6432Node===
         type t.txt
-        
-        echo VisualStudio\14.0
+
+        echo ===VisualStudio\14.0===
         reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\14.0" /s > t2.txt
         type t2.txt
+
+        echo ====VisualStudio\14.0===
+        reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\4.0" /s > t3.txt
+        type t3.txt
       displayName: 'Show registry'
