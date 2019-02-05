@@ -9,10 +9,10 @@ jobs:
         type t.txt
 
         echo ===VisualStudio\14.0===
-        reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\14.0" /s > t2.txt
+        reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio" /s > t2.txt
         type t2.txt
 
-        echo ====VisualStudio\14.0===
-        reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\4.0" /s > t3.txt
-        type t3.txt
+        echo ====SBuild\ToolsVersions\4.0===
+        reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild" /s > t3.txt
+        type t3.txt 
       displayName: 'Show registry'
