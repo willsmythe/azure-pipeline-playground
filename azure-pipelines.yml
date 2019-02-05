@@ -15,4 +15,8 @@ jobs:
         echo ====SBuild\ToolsVersions\4.0===
         reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild" /s > t3.txt
         type t3.txt 
+
+        echo ===MSBuild===
+        dir "C:\Program Files (x86)\MSBuild" /a:d /s /b > t4.txt
+        type t4.txt
       displayName: 'Show registry'
