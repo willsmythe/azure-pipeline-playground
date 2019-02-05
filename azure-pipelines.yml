@@ -4,8 +4,11 @@ jobs:
     vmImage: vs2017-win2016
   steps:
     - script: |
-        reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\VisualStudio\14.0" > t.txt
+        reg query /s "HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\VisualStudio\14.0" /s > t.txt
+        echo Wow6432Node
         type t.txt
-        reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\14.0" > t2.txt
+        
+        echo VisualStudio\14.0
+        reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\14.0" /s > t2.txt
         type t2.txt
       displayName: 'Show registry'
