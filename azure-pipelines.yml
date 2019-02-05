@@ -3,7 +3,7 @@ jobs:
   pool:
     vmImage: vs2017-win2016
   steps:
-    - script:
+    - script: |
         reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\VisualStudio\14.0" > t.txt
         type t.txt
         reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\14.0" > t2.txt
