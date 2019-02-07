@@ -1,8 +1,14 @@
 jobs:
+- job: windows_2019
+  steps:
+    - bash: which msbuild
+    - template: azure-pipelines-steps.yml
+
 - job: windows
   pool:
     vmImage: vs2017-win2016
   steps:
+    - bash: which msbuild
     - template: azure-pipelines-steps.yml
 
 - job: linux
