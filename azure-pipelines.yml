@@ -2,7 +2,9 @@ jobs:
 - job: windows_2019
   pool: 'Hosted Windows 2019 with VS2019'
   steps:
-    - bash: which msbuild
+    - script: |
+        REG QUERY HKLM\Software\Microsoft\MSBuild /s > t.txt
+        type t.txt        
     - template: azure-pipelines-steps.yml
 
 - job: windows
