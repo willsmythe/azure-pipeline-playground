@@ -1,5 +1,6 @@
 jobs:
 - job: windows_2019
+  pool: 'Hosted Windows 2019 with VS2019'
   steps:
     - bash: which msbuild
     - template: azure-pipelines-steps.yml
