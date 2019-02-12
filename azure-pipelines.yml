@@ -3,5 +3,7 @@ jobs:
   pool:
     vmImage: vs2017-win2016
   steps:
-    - script: choco --version
+    - bash: echo "$(ls -la /c/)"
+    - bash: echo "$(ls -la "/c/Program Files (x86)")"    
+    - bash: pacman
 
