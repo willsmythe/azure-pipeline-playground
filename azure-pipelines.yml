@@ -15,5 +15,5 @@ jobs:
   pool:
     vmImage: macos-10.13
   steps:
-    - script: brew info --installed
+    - script: brew info --json --installed
     - template: azure-pipelines-steps.yml
