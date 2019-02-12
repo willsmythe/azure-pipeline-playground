@@ -1,8 +1,13 @@
 steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: 8.10
+  displayName: 'Install Node.js'    
+
 - bash: npm --version
 - bash: |
     which npm
-    npm install -g npm
+    npm i -g npm
     npm --version
     which npm
 - bash: |
