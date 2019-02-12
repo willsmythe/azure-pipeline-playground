@@ -5,6 +5,7 @@ steps:
   displayName: 'Install Node.js'    
 
 - bash: npm --version
+- bash: printenv    
 - bash: |
     which npm
     npm i -g npm
