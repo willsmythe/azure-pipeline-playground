@@ -19,4 +19,5 @@ jobs:
     - script: |
         sudo npm i -g npm
         npm --version
+    - script: npm --version
     - template: azure-pipelines-steps.yml
