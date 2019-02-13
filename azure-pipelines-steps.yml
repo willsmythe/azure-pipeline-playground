@@ -1,4 +1,4 @@
 steps:
-- bash: sudo chmod +x ./showmemory
-- bash: ./showmemory
-
+- bash: |
+    sudo chmod +x ./showmemory
+    sudo ./showmemory
