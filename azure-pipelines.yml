@@ -14,3 +14,8 @@ jobs:
     - script: systeminfo
       condition: always()
       displayName: systeminfo
+
+    - powershell: |
+        Get-WmiObject Win32_Process | Select-Object CommandLine > d:\processes.txt
+        type d:\processes.txt
+        Write-Host "##vso[task.uploadfile]d:\processes.txt
