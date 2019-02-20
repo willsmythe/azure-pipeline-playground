@@ -16,6 +16,6 @@ jobs:
       displayName: systeminfo
 
     - powershell: |
-        Get-WmiObject Win32_Process | Select-Object CommandLine > "c:\processes.txt"
-        type c:\processes.txt
-        Write-Host "##vso[task.uploadfile]c:\processes.txt"
+        Get-WmiObject Win32_Process | Select-Object ProcessId,ProcessName,Handles,ExecutablePath,PeakPageFileUsage,CommandLine,ThreadCount | ConvertTo-Csv -NoTypeInformation > c:\process-details.csv
+        Write-Host "##vso[task.uploadfile]c:\process-details.csv"
+      displayName: Save process details
