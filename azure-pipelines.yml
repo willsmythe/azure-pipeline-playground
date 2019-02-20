@@ -4,10 +4,13 @@ jobs:
     vmImage: vs2017-win2016
   steps:
     - script: |
-        tasklist /fo csv > %CD%\process.txt
-        echo ##vso[task.uploadfile]%CD%\process.txt
+        tasklist /fo csv > %CD%\process.csv
+        echo ##vso[task.uploadfile]%CD%\process.csv
       displayName: Upload currents processes to text file
 
-    - script: type %CD%\process.txt
+    - script: type %CD%\process.csv
       condition: always()
 
+    - script: systeminfo
+      condition: always()
+      displayName: systeminfo
