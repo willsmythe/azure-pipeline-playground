@@ -4,21 +4,26 @@ jobs:
     vmImage: vs2017-win2016
   steps:
     - script: |
-        tasklist /fo csv > %CD%\tasklist.csv
-        echo ##vso[task.uploadfile]%CD%\tasklist.csv
-        type %CD%\process.csv
+        set output=%CD%\tasklist.csv
+        tasklist /fo csv > %output%
+        echo ##vso[task.uploadfile]%output%
+        type %output%
       displayName: Show and save tasklist
+      continueOnError: true
 
     - script: systeminfo
       condition: always()
       displayName: Show systeminfo
+      continueOnError: true
 
     - powershell: |
         Get-WmiObject Win32_Process | Select-Object ProcessId,ProcessName,Handles,ExecutablePath,PeakPageFileUsage,CommandLine,ThreadCount | ConvertTo-Csv -NoTypeInformation > c:\process-details.csv
         Write-Host "##vso[task.uploadfile]c:\process-details.csv"
       displayName: Save process details
-      condition: always()
+      continueOnError: true
 
     - powershell: Get-ProcessTree.ps1 | select Id, Level, IndentedName, ParentId | Format-Table -AutoSize
       displayName: Show process tree
+      continueOnError: true
+    
   
