@@ -22,7 +22,8 @@ jobs:
       displayName: Save process details
       continueOnError: true
 
-    - powershell: Get-ProcessTree.ps1 | select Id, Level, IndentedName, ParentId | Format-Table -AutoSize
+    - powershell: |
+        .\Get-ProcessTree.ps1 | select Id, Level, IndentedName, ParentId | Format-Table -AutoSize
       displayName: Show process tree
       continueOnError: true
     
