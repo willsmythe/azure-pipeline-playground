@@ -13,7 +13,9 @@ jobs:
     pool:
       vmImage: $(VM_IMAGE)
     steps:
-    - script: echo Use Node $(NODE_VERSION)
-      displayName: $(NODE_VERSION)
+    - script: echo Switch to ... $(NODE_VERSION)
+      displayName: 'Use Node $(NODE_VERSION)'
+
     - ${{ config.steps }}
-    - script: echo Common post script
+
+    - script: echo Common steps
