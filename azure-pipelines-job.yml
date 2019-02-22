@@ -14,5 +14,5 @@ jobs:
       vmImage: $(VM_IMAGE)
     steps:
     - script: echo Use Node $(NODE_VERSIONM)
-    - ${{ job.steps }}
+    - ${{ config.steps }}
     - script: echo Common post script
