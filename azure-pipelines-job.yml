@@ -1,0 +1,18 @@
+parameters:
+  matrix: {}
+  configs: []
+
+jobs:
+- ${{ each config in parameters.configs }}:
+  - ${{ each pair in config }}:
+      ${{ if ne(pair.key, 'steps') }}:
+        ${{ pair.key }}: ${{ pair.value }}
+    strategy:
+      matrix:
+        ${{ insert }}: ${{ parameters.matrix }}
+    pool:
+      vmImage: $(VM_IMAGE)
+    steps:
+    - script: echo Use Node $(NODE_VERSIONM)
+    - ${{ job.steps }}
+    - script: echo Common post script

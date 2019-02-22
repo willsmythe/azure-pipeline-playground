@@ -1,0 +1,7 @@
+
+  pool:
+    vmImage: ${{ parameters.jobName }}
+  strategy:
+    matrix:
+      ${{ insert }}: ${{ parameters.matrix }}
+

@@ -1,18 +1,31 @@
 jobs:
-- job: windows
-  pool:
-    vmImage: vs2017-win2016
-  steps:
-    - template: azure-pipelines-steps.yml
+- template: azure-pipelines-job.yml
+  parameters:
+    matrix:
+      LinuxNode8:
+        NODE_VERSION: 8.x
+        VM_IMAGE: 'ubuntu-16.04'
+      LinuxNode10:
+        NODE_VERSION: 10.x
+        VM_IMAGE: 'ubuntu-16.04'
+      MacNode8:
+        NODE_VERSION: 8.x
+        VM_IMAGE: 'macOS-10.13'
+      MacNode10:
+        NODE_VERSION: 10.x
+        VM_IMAGE: 'macOS-10.13'
+      WindowsNode8:
+        NODE_VERSION: 8.x
+        VM_IMAGE: 'vs2017-win2016'
+      WindowsNode10:
+        NODE_VERSION: 10.x
+        VM_IMAGE: 'vs2017-win2016'
+    
+    configs:
+    - job: simple
+      steps:
+      - bash: tasks/e2e-simple.sh
 
-- job: linux
-  pool:
-    vmImage: ubuntu-16.04
-  steps:
-    - template: azure-pipelines-steps.yml
-
-- job: macOS
-  pool:
-    vmImage: macos-10.13
-  steps:
-    - template: azure-pipelines-steps.yml
+    - job: KitchenSink
+      steps:
+      - bash: tasks/e2e-kitchensink.sh
