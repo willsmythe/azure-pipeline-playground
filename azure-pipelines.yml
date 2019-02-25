@@ -3,6 +3,8 @@ variables:
     LinuxNode8:
       NODE_VERSION: 8.x
       VM_IMAGE: 'ubuntu-16.04'
+
+      
     LinuxNode10:
       NODE_VERSION: 10.x
       VM_IMAGE: 'ubuntu-16.04'
