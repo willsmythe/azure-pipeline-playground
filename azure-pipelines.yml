@@ -3,7 +3,7 @@ variables:
   server: 'sql1'
   dbname: 'testdb'
   uid: 'sa'
-  pwd: 'Password456!'
+  pwda: 'Password456!'
 
 jobs:
 - job: linux
