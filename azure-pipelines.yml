@@ -16,5 +16,8 @@ jobs:
       docker ps -a
       docker port $(server) 
       which sqlcmd
-      sqlcmd -S localhost -U SA -P Password456! -Q 'select @@Version'
+      echo Attempt 1
+      echo $(sqlcmd -S localhost -U SA -P Password456! -Q 'select @@Version')
+      echo Attempt 2
+      echo $(sqlcmd -S 0.0.0.0,1433 -U SA -P Password456! -Q 'select @@Version')
   displayName: 'Run SQL Server for Linux'
