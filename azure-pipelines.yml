@@ -3,7 +3,7 @@ variables:
   server: 'sql1'
   dbname: 'testdb'
   uid: 'sa'
-  pass: 'Password456!'
+  pwd: 'Password456!'
 
 jobs:
 - job: linux
@@ -14,12 +14,7 @@ jobs:
       docker pull mcr.microsoft.com/mssql/server:2017-latest
       docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Password456!' -p 1433:1433 -h $(server) --name=$(server) -d mcr.microsoft.com/mssql/server:2017-latest
       docker ps -a
-      docker port $(server) 
-      which sqlcmd
-      echo Attempt 1
-      echo $(sqlcmd -S localhost -U SA -P Password456! -Q 'select @@Version')
-      echo Attempt 2
-      echo $(sqlcmd -S 0.0.0.0,1433 -U SA -P Password456! -Q 'select @@Version')
+      sqlcmd -S 0.0.0.0,1433 -U SA -P Password456! -Q 'select @@Version'
     displayName: 'Run SQL Server for Linux'
 
   - checkout: self
