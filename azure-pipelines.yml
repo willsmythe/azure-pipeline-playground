@@ -20,4 +20,8 @@ jobs:
       echo $(sqlcmd -S localhost -U SA -P Password456! -Q 'select @@Version')
       echo Attempt 2
       echo $(sqlcmd -S 0.0.0.0,1433 -U SA -P Password456! -Q 'select @@Version')
-  displayName: 'Run SQL Server for Linux'
+    displayName: 'Run SQL Server for Linux'
+
+  - checkout: self
+    clean: true
+    fetchDepth: 1
