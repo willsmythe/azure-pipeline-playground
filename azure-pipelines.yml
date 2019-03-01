@@ -1,3 +1,6 @@
+variables:
+  IMAGE: 'x86_64-gnu'
+
 jobs:
 - job: windows
   pool:
