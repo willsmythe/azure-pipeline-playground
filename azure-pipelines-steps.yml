@@ -3,9 +3,18 @@ steps:
     export RUN_SCRIPT="$BUILD_SOURCESDIRECTORY/src/ci/init_repo.sh . $HOME/rustsrc && src/ci/docker/run.sh $IMAGE"
     echo "##vso[task.setvariable variable=IMAGE]$IMAGE"
     echo "##vso[task.setvariable variable=RUN_SCRIPT]$RUN_SCRIPT"
-  displayName: Prepare run script
+  displayName: Prepare run script (1)
 
 - bash: |
     printenv | grep RUN_SCRIPT
-  displayName: Show variables
+  displayName: Show variables (1)
 
+- bash: |
+    export RUN_SCRIPT="$BUILD_SOURCESDIRECTORY/src/ci/init_repo.sh . $HOME/rustsrc && src/ci/run.sh && sccache --show-stats"
+    echo "$RUN_SCRIPT"
+    echo "##vso[task.setvariable variable=RUN_SCRIPT]$RUN_SCRIPT"
+  displayName: Prepare run script (2)
+
+- bash: |
+    printenv | grep RUN_SCRIPT
+  displayName: Show variables (2)

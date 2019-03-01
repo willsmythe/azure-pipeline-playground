@@ -19,3 +19,5 @@ jobs:
     vmImage: macos-10.13
   steps:
     - template: azure-pipelines-steps.yml
+    - bash:
+      
