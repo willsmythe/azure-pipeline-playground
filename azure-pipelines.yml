@@ -22,8 +22,7 @@ jobs:
     vmImage: vs2017-win2016
   steps:
   - script: |
-      docker pull mcr.microsoft.com/mssql/server:2017-latest
-      docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Password456!' -p 1433:1433 -h $(server) --name=$(server) -d mcr.microsoft.com/mssql/server:2017-latest
-      docker ps -a
-      sqlcmd -S localhost,1433 -U SA -P Password456! -Q 'select @@Version'
+      where sqlcmd
+      cd C:\Program Files\Microsoft SQL Server\ 
+      dir *.exe /s
     displayName: 'Run SQL Server Linux on Windows'
