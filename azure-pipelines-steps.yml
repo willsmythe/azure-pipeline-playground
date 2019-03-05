@@ -1,5 +1,5 @@
 steps:
-- bash:
+- bash: |
     echo $MOCHA_EXTRA_OPTS
     npm install
     npm test
