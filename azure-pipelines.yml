@@ -27,4 +27,5 @@ jobs:
       c:
       cd C:\Program Files\Microsoft SQL Server\
       dir *.exe /s
+      powershell  "Get-Service -Name "*sql*""
     displayName: 'Run SQL Server Linux on Windows'
