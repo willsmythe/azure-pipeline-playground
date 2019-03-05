@@ -2,7 +2,8 @@ steps:
 - bash: |
     echo $MOCHA_EXTRA_OPTS
     npm install
-    npm install -g mocha
+    npm install mocha
+    npm install mocha-junit-reporter
     npm test
   env:
     MOCHA_EXTRA_OPTS: --reporter mocha-junit-reporter
