@@ -6,5 +6,5 @@ steps:
     npm install mocha-junit-reporter
     npm test
   env:
-    MOCHA_EXTRA_OPTS: --reporter mocha-junit-reporter
+    MOCHA_EXTRA_OPTS: --reporter mocha-junit-reporter-FOO
 
