@@ -9,7 +9,7 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "cross-var node index.js $MOCHA_EXTRA_OPTS"
+    "test": "cross-var mocha index.js $MOCHA_EXTRA_OPTS"
   },
   "repository": {
     "type": "git",
