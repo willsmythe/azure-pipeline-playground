@@ -6,6 +6,6 @@ steps:
     printenv | sort
 
 - bash: |
-    printenv --null | sort
+    printenv -O | sort
 
 
