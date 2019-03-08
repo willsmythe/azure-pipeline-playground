@@ -1,3 +1,7 @@
 steps:
 - bash: |
     printenv
+
+- bash: |
+    printenv | sort
+
