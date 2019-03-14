@@ -1,0 +1,26 @@
+{
+  "name": "azure-pipeline-playground",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "execa": "^1.0.0",
+    "mkdirp": "^0.5.1",
+    "weak": "^1.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node index.js *",
+    "test2": "node index.js '*'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/willsmythe/azure-pipeline-playground.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/willsmythe/azure-pipeline-playground/issues"
+  },
+  "homepage": "https://github.com/willsmythe/azure-pipeline-playground#readme"
+}
