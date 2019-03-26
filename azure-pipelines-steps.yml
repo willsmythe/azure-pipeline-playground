@@ -9,6 +9,8 @@ steps:
     npm install -g create-react-app@2.1.8
     create-react-app test-rc --typescript
     cd test-rc
+    git init
+    git add .    
     echo yes | npm run eject
     yarn build
     yarn test --watch=no
@@ -18,6 +20,8 @@ steps:
     cd $(TEMP)
     create-react-app test-rc2 --typescript
     cd test-rc2
+    git init
+    git add .
     echo yes | npm run eject
     yarn build
     yarn test --watch=no

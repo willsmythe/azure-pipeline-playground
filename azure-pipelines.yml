@@ -1,7 +1,7 @@
 variables:
   VSTS_OVERWRITE_TEMP: True
   CI: true
-  
+
 jobs:
 - job: windows
   pool:
