@@ -5,17 +5,19 @@ steps:
   displayName: 'Install Node.js'
 
 - bash: |
+    set -x
     npm install -g create-react-app@2.1.8
     create-react-app test-rc --typescript
     cd test-rc
-    npm run eject
+    echo yes | npm run eject
     yarn build
     yarn test --watch=no
 
 - bash: |
+    set -x
     cd $(TEMP)
     create-react-app test-rc2 --typescript
     cd test-rc2
-    npm run eject
+    echo yes | npm run eject
     yarn build
     yarn test --watch=no
