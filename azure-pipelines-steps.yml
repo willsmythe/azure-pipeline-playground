@@ -7,11 +7,13 @@ steps:
 - script: |
     npm install -g create-react-app@2.1.8
     create-react-app test-rc --typescript
+    cd test-rc
     yarn eject
     yarn start
 
 - script: |
     cd $(TEMP)
     create-react-app test-rc2 --typescript
+    cd test-rc2
     yarn eject
     yarn start
