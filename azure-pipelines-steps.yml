@@ -10,7 +10,9 @@ steps:
     create-react-app test-rc --typescript
     cd test-rc
     git init
-    git add .    
+    git add . 
+    git commit -m "Test"
+    git status
     echo yes | npm run eject
     yarn build
     yarn test --watch=no
@@ -21,7 +23,9 @@ steps:
     create-react-app test-rc2 --typescript
     cd test-rc2
     git init
-    git add .
+    git add . 
+    git commit -m "Test"
+    git status
     echo yes | npm run eject
     yarn build
     yarn test --watch=no
