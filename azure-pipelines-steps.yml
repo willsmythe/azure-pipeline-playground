@@ -17,8 +17,10 @@ steps:
     git add . 
     git commit -m "Test"
     git status
-    echo yes | yarn run eject
+    echo yes | npm run eject
     echo "$(cat package.json)"
+    rm -rf node_modules
+    rm -rf yarn.lock
     yarn install --force
     yarn build
     yarn test --watch=no
