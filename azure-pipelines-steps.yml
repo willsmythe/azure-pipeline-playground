@@ -19,9 +19,11 @@ steps:
     git status
     echo yes | npm run eject
     echo "$(cat package.json)"
+    yarn list --pattern babel
     rm -rf node_modules
     rm -rf yarn.lock
-    yarn install --force
+    yarn install
+    yarn list --pattern babel
     yarn build
     yarn test --watch=no
 
