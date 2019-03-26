@@ -5,6 +5,10 @@ steps:
   displayName: 'Install Node.js'
 
 - bash: |
+    git config --global user.name "Create React App"
+    git config --global user.email "cra@email.com"  
+
+- bash: |
     set -x
     npm install -g create-react-app@2.1.8
     create-react-app test-rc --typescript
