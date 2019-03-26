@@ -17,7 +17,8 @@ steps:
     git add . 
     git commit -m "Test"
     git status
-    echo yes | npm run eject
+    echo yes | yarn run eject
+    yarn --force
     yarn build
     yarn test --watch=no
 
@@ -30,6 +31,6 @@ steps:
     git add . 
     git commit -m "Test"
     git status
-    echo yes | npm run eject
+    echo yes | yarn run eject
     yarn build
     yarn test --watch=no
