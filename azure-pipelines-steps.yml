@@ -18,7 +18,8 @@ steps:
     git commit -m "Test"
     git status
     echo yes | yarn run eject
-    yarn --force
+    echo "$(cat package.json)"
+    yarn install --force
     yarn build
     yarn test --watch=no
 
