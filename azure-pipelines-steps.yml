@@ -7,9 +7,9 @@ steps:
     #unzip -q ${y}/../../yarn-cache.zip -d ${y}/..
     #echo $(yarn cache list)
     #ls -la ${y}/npm-opn-5.5.0-fc7164fab56d235904c51c3b27da6758ca3b9bfc/node_modules/opn
-
-    curl https://createreactapp.blob.core.windows.net/cache/yarn-cache-tar-gz --output ${y}/../../yarn-cache.tar.gz
-    tar -xzf ${y}/../../yarn-cache.tar.gz --overwrite -C ${y}/..
+    
+    curl https://createreactapp.blob.core.windows.net/cache/yarn-cache-tar-gz | tar -xz -C ${y}/..
+    
     echo $(yarn cache list)
     ls -la ${y}/npm-opn-5.5.0-fc7164fab56d235904c51c3b27da6758ca3b9bfc/node_modules/opn
   displayName: 'Seed yarn cache'
