@@ -1,3 +1,4 @@
 steps:
 - bash: |
-    printenv
+    source ./verdaccio.sh
+    startVerdaccio ./tasks/verdaccio.yaml
