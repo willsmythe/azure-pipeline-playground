@@ -1,11 +1,22 @@
 steps:
 - bash: |
-    export y=$(yarn cache dir)
-    echo "Yarn cache: ${y}"
-    mkdir -p $y
-    cd ${y}/..
-    curl https://createreactapp.blob.core.windows.net/cache/yarn-cache-tar-gz | tar -xz
-    echo $(yarn cache list | wc --lines)
-  displayName: 'Seed yarn cache'
+    echo $(yarn cache dir)
+    echo $(yarn cache list)
+    echo $(npm config get cache)
+  displayName: Show yarn cache details
+
+# - bash: |
+#     export y=$(yarn cache dir)
+#     echo "Yarn cache: ${y}"
+#     mkdir -p $y
+#     cd ${y}/..
+#     curl https://createreactapp.blob.core.windows.net/cache/yarn-cache-tar-gz | tar -xz
+#     echo $(yarn cache list | wc --lines)
+#   displayName: 'Seed yarn cache'
 
 - bash: ./run.sh
+
+- bash: |
+    echo $(yarn cache dir)
+    echo $(yarn cache list)
+  displayName: Show yarn cache details
