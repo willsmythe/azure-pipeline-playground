@@ -1,4 +1,10 @@
 steps:
+
+- task: NodeTool@0
+  inputs:
+    versionSpec: $(NODE_VERSION)
+  displayName: 'Install Node.js'
+
 - bash: |
     set -x
     export y=$(yarn cache dir)
@@ -11,14 +17,19 @@ steps:
     #echo $(pwd)
     #cd ${y}/..
     #curl https://createreactapp.blob.core.windows.net/cache/yarn-cache-tar-gz | tar -xz
+
+
     
     #echo $(yarn cache list | wc --lines)
     #ls -la ${y}/npm-opn-5.5.0-fc7164fab56d235904c51c3b27da6758ca3b9bfc/node_modules/opn
-    echo "Current NPM cache: $(npm config get cache --global)"      
+
+    echo "$(npm config list)"
+
+    echo "Current NPM cache: $(npm config get cache)"
     export n="$(Build.SourcesDirectory)/../npm-cache"
     mkdir -p $n      
-    npm config set cache "$n" --global
-    echo "New NPM cache: $(npm config get cache --global)"
+    npm config set cache $n
+    echo "New NPM config: $(npm config list)"
 
   displayName: 'Seed yarn cache'
 

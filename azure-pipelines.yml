@@ -3,7 +3,8 @@ variables:
   CI: true
   VSTS_OVERWRITE_TEMP: True
   YARN_CACHE_FOLDER: $(Build.SourcesDirectory)/../yarn-cache
-  
+  NODE_VERSION: 10.x
+
 jobs:
 - job: windows
   pool:
