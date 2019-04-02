@@ -8,7 +8,7 @@ function startVerdaccio {
   # Start local registry
   tmp_registry_log=`mktemp`
   tmp_registry_dir=`mktemp -d`
-  (cd $tmp_registry_dir && nohup npx https://createreactapp.blob.core.windows.net/lib/verdaccio-4.0.0-alpha.8.tgz -c $1 &>$tmp_registry_log &)
+  (cd $tmp_registry_dir && yarn install https://createreactapp.blob.core.windows.net/lib/verdaccio-4.0.0-alpha.8.tgz -c $1 && npx verdaccio &>$tmp_registry_log &)
   # Wait for `verdaccio` to boot
   grep -q 'http address' <(tail -f $tmp_registry_log)
 
