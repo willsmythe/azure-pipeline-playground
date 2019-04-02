@@ -8,7 +8,8 @@ function startVerdaccio {
   # Start local registry
   tmp_registry_log=`mktemp`
   tmp_registry_dir=`mktemp -d`
-  (cd $tmp_registry_dir && yarn install https://createreactapp.blob.core.windows.net/lib/verdaccio-4.0.0-alpha.8.tgz -c $1 && npx verdaccio &>$tmp_registry_log &)
+  (cd $tmp_registry_dir && yarn add https://createreactapp.blob.core.windows.net/lib/verdaccio-4.0.0-alpha.8.tgz npm-auth-to-token@1.0.0 --no-lockfile --prod)
+  (cd $tmp_registry_dir && nohup npx verdaccio -c $1 &>$tmp_registry_log &)
   # Wait for `verdaccio` to boot
   grep -q 'http address' <(tail -f $tmp_registry_log)
 
@@ -17,7 +18,7 @@ function startVerdaccio {
   yarn config set registry "$custom_registry_url"
 
   # Login so we can publish packages
-  (cd $tmp_registry_dir && npx npm-auth-to-token@1.0.0 -u user -p password -e user@example.com -r "$custom_registry_url")
+  (cd $tmp_registry_dir && npx npm-auth-to-token -u user -p password -e user@example.com -r "$custom_registry_url")
 }
 
 function restoreRegistryUrls {

@@ -1,4 +1,2 @@
 steps:
-- bash: |
-    source ./verdaccio.sh
-    startVerdaccio ./tasks/verdaccio.yaml
+- bash: ./run.sh
