@@ -1,3 +1,5 @@
+#!/bin/bash
+
 set -x
 source ./verdaccio.sh
 root_path=$PWD
