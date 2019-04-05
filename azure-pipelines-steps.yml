@@ -1,6 +1,9 @@
 steps:
 - bash: |
-    echo "$(find $(Agent.ToolsDirectory) -type d)"
+    pushd $(Agent.ToolsDirectory)
+    echo "$(find ./Ruby -type d)"
+  continueOnError: true
+  displayName: Show Ruby folders in Agent.ToolsDirectory
 
 - task: UseRubyVersion@0
   inputs:
