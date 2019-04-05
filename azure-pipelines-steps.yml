@@ -1,3 +1,10 @@
 steps:
 - bash: |
-    printenv
+    echo "$(find $(Agent.ToolsDirectory) -type d)"
+
+- task: UseRubyVersion@0
+  inputs:
+    versionSpec: '>= 2.4'
+  displayName: Install Ruby
+
+- bash: ruby --version
