@@ -1,3 +1,22 @@
-steps:
+steps:  
 - bash: |
-    printenv
+    # Install RVM
+    curl -sSL https://get.rvm.io | bash -s
+    source ~/.rvm/scripts/rvm
+
+    rvm install ${RUBY_VERSION}
+
+    # Propagate variables set by RVM (so they are available in later build steps). Needed since shell is launched with --no-profile/--no-rc
+    echo "##vso[task.setvariable variable=PATH]$PATH"
+    echo "##vso[task.setvariable variable=GEM_PATH]$GEM_PATH"
+    echo "##vso[task.setvariable variable=GEM_HOME]$GEM_HOME"
+
+- bash: gem install bundler -v "${BUNDLER_VERSION:-2.0.1}"
+  continueOnError: true
+  displayName: Install bundler gem
+
+- bash: |
+    ruby --version
+    bundle --version
+    gem --version
+  displayName: Show Ruby version
