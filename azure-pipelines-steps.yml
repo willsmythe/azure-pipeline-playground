@@ -1,8 +1,11 @@
 steps:
 - bash: |
     printenv | sort
+  displayName: 'asdfa $(System.JobIdentifier)'
 
 - bash: |
+    echo "job id: $(System.JobIdentifier)"
+    
     # Install RVM
     curl -sSL https://get.rvm.io | bash
     source ~/.rvm/scripts/rvm
