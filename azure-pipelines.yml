@@ -34,5 +34,6 @@ jobs:
         RUBY_VERSION: ruby-head
         USE_RVM: true
   container: $[ variables.RUBY_IMAGE ]
-  pool:
-    vmImage: ubuntu-16.04
+  steps:
+    - template: azure-pipelines-steps.yml
+    
