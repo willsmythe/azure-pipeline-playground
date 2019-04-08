@@ -49,7 +49,6 @@ jobs:
       ruby_head:
         RUBY_VERSION: ruby-head
         USE_RVM: true
-  ${{ if ne(variables.RUBY_IMAGE, '') }}:
-    container: $[ variables.RUBY_IMAGE ]
+  container: $[ variables.RUBY_IMAGE ]
   steps:
   - template: azure-pipelines-steps.yml

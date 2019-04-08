@@ -1,4 +1,7 @@
-steps:  
+steps:
+- bash: |
+    printenv | sort
+
 - bash: |
     # Install RVM
     curl -sSL https://get.rvm.io | bash
