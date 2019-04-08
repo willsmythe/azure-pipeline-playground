@@ -1,7 +1,7 @@
 steps:  
 - bash: |
     # Install RVM
-    curl -sSL https://get.rvm.io | bash -s
+    curl -sSL https://get.rvm.io | bash -s -- --path ~/.rvm
     source ~/.rvm/scripts/rvm
 
     rvm install ${RUBY_VERSION}

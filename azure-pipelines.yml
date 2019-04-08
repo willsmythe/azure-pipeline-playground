@@ -21,5 +21,16 @@ jobs:
       ruby_21:
         RUBY_VERSION: 2.1.10
         BUNDLER_VERSION: 1.17.3
+      ruby_head:
+        RUBY_VERSION: ruby-head
   steps:
     - template: azure-pipelines-steps.yml
+
+- job: Linux
+  strategy:
+    matrix:
+      ruby_head:
+        RUBY_IMAGE: ruby:latest
+        RUBY_VERSION: ruby-head
+        USE_RVM: true
+  container: $[ variables.RUBY_IMAGE ]
