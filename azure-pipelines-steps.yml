@@ -1,7 +1,7 @@
 steps:  
 - bash: |
     # Install RVM
-    curl -sSL https://get.rvm.io | bash -s -- --path ~/.rvm
+    curl -sSL https://get.rvm.io | bash
     source ~/.rvm/scripts/rvm
 
     rvm install ${RUBY_VERSION}
@@ -14,6 +14,7 @@ steps:
 - bash: gem install bundler -v "${BUNDLER_VERSION:-2.0.1}"
   continueOnError: true
   displayName: Install bundler gem
+  condition: variables.USE_RVM
 
 - bash: |
     ruby --version

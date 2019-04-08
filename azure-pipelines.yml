@@ -18,24 +18,39 @@ jobs:
     matrix:
       ruby_24:
         RUBY_VERSION: 2.4.6      
+        USE_RVM: true
       ruby_21:
         RUBY_VERSION: 2.1.10
         BUNDLER_VERSION: 1.17.3
+        USE_RVM: true
       ruby_head:
         RUBY_VERSION: ruby-head
+        USE_RVM: true
   steps:
     - template: azure-pipelines-steps.yml
 
 - job: Linux
+  pool:
+    vmImage: ubuntu-16.04
   strategy:
     matrix:
+      ruby_26:
+        RUBY_IMAGE: ruby:2.6.2
+      ruby_25:
+        RUBY_IMAGE: ruby:2.5.5
+      ruby_24:
+        RUBY_IMAGE: ruby:2.4.6
+      ruby_22:
+        RUBY_IMAGE: ruby:2.2.10
+        BUNDLER_VERSION: 1.17.3
+      ruby_21:
+        RUBY_IMAGE: ruby:2.1.10
+        BUNDLER_VERSION: 1.17.3
       ruby_head:
         RUBY_IMAGE: ruby:latest
         RUBY_VERSION: ruby-head
         USE_RVM: true
-  container: $[ variables.RUBY_IMAGE ]
-  pool:
-    vmImage: ubuntu-16.04  
+  ${{ if neq(variables.RUBY_IMAGE, '') }}:
+    container: $[ variables.RUBY_IMAGE ]
   steps:
-    - template: azure-pipelines-steps.yml
-    
+  - template: azure-pipelines-steps.yml
