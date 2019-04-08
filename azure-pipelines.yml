@@ -47,10 +47,9 @@ jobs:
         RUBY_IMAGE: ruby:2.1.10
         BUNDLER_VERSION: 1.17.3
       ruby_head:
-        RUBY_IMAGE: ruby:latest
         RUBY_VERSION: ruby-head
         USE_RVM: true
-  ${{ if variables.RUBY_IMAGE }}:
+  ${{ if ne(variables.RUBY_IMAGE, '') }}:
     container: $[ variables.RUBY_IMAGE ]
   steps:
   - template: azure-pipelines-steps.yml
