@@ -1,18 +1,58 @@
+variables:
+    System.Debug: true
+
 jobs:
 - job: windows
   pool:
     vmImage: vs2017-win2016
   steps:
-    - template: azure-pipelines-steps.yml
+    - script: |
+        set output=%CD%\tasklist.csv
+        tasklist /fo csv > %output%
+        echo ##vso[task.uploadfile]%output%
+        type %output%
+      displayName: Show and save tasklist
+      continueOnError: true
 
-- job: linux
-  pool:
-    vmImage: ubuntu-16.04
-  steps:
-    - template: azure-pipelines-steps.yml
+    - script: |
+        systeminfo
+      condition: always()
+      displayName: Show systeminfo
+      continueOnError: true
 
-- job: macOS
-  pool:
-    vmImage: macos-10.13
-  steps:
-    - template: azure-pipelines-steps.yml
+    - powershell: |
+        Get-WmiObject Win32_Process | Select-Object ProcessId,ProcessName,Handles,ExecutablePath,PeakPageFileUsage,CommandLine,ThreadCount | ConvertTo-Csv -NoTypeInformation > c:\process-details.csv
+        Write-Host "##vso[task.uploadfile]c:\process-details.csv"
+        type c:\process-details.csv
+      displayName: Save process details
+      continueOnError: true
+
+    - powershell: |
+        .\Get-ProcessTree.ps1 | select Id, Level, IndentedName, ParentId | Format-Table -AutoSize
+      displayName: Show process tree
+      continueOnError: true
+
+    - script: |
+        taskkill /F /FI "IMAGENAME eq powershell*"
+        taskkill /F /FI "IMAGENAME eq dotnet*"
+      displayName: Kill tasks
+      continueOnError: true
+
+    - script: systeminfo
+      condition: always()
+      displayName: Show systeminfo (2)
+      continueOnError: true
+
+    - script: |
+        set output=%CD%\tasklist2.csv
+        tasklist /fo csv > %output%
+        echo ##vso[task.uploadfile]%output%
+        type %output%
+      displayName: Show and save tasklist (2)
+      continueOnError: true      
+    
+
+
+
+    
+  
