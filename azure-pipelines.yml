@@ -9,4 +9,4 @@ jobs:
       echo D:
       fsutil volume diskfree d:
     displayName: Show free disk space (Windows only)
-    condition: eq(variables.AGENT_OS, 'Windows_NT')
+    condition: eq(variables['Agent.OS'], 'Windows_NT')
