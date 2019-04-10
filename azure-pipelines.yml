@@ -30,5 +30,28 @@ jobs:
         .\Get-ProcessTree.ps1 | select Id, Level, IndentedName, ParentId | Format-Table -AutoSize
       displayName: Show process tree
       continueOnError: true
+
+    - script: |
+        taskkill /f /im dotnet.exe
+        taskkill /f /im powershell.exe
+        timeout 5 /NOBREAK
+      displayName: Kill tasks
+
+    - script: systeminfo
+      condition: always()
+      displayName: Show systeminfo (2)
+      continueOnError: true
+
+    - script: |
+        set output=%CD%\tasklist2.csv
+        tasklist /fo csv > %output%
+        echo ##vso[task.uploadfile]%output%
+        type %output%
+      displayName: Show and save tasklist (2)
+      continueOnError: true      
+    
+
+
+
     
   
