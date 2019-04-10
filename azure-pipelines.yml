@@ -14,7 +14,8 @@ jobs:
       displayName: Show and save tasklist
       continueOnError: true
 
-    - script: systeminfo
+    - script: |
+        systeminfo
       condition: always()
       displayName: Show systeminfo
       continueOnError: true
@@ -32,10 +33,10 @@ jobs:
       continueOnError: true
 
     - script: |
-        taskkill /f /im dotnet.exe
-        taskkill /f /im powershell.exe
-        timeout 5 /NOBREAK
+        taskkill /F /FI "IMAGENAME eq powershell*"
+        taskkill /F /FI "IMAGENAME eq dotnet*"
       displayName: Kill tasks
+      continueOnError: true
 
     - script: systeminfo
       condition: always()
