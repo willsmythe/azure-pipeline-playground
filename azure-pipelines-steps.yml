@@ -1,3 +1,8 @@
 steps:
 - bash: |
-    printenv
+    echo "$(printenv)"
+    echo "test file" > ~/verdaccio.log
+    echo "$(ls -la ~)"
+    echo "##vso[task.uploadfile]~/verdaccio.log"
+    echo "##vso[task.uploadfile]$HOME/verdaccio.log"
+  continueOnError: true
