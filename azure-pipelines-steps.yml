@@ -5,9 +5,20 @@ steps:
   continueOnError: true
   displayName: Show Ruby folders in Agent.ToolsDirectory
 
+- script: ruby --version
+  continueOnError: true
+  displayName: Show current ruby version
+
 - task: UseRubyVersion@0
   inputs:
-    versionSpec: '>= 2.4'
-  displayName: Install Ruby
+    versionSpec: '>= 2.45'
+  displayName: Install Ruby > 2.45
+
+- bash: ruby --version
+
+- task: UseRubyVersion@0
+  inputs:
+    versionSpec: '2.6.x'
+  displayName: Install Ruby 2.6
 
 - bash: ruby --version
