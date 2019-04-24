@@ -11,12 +11,13 @@ steps:
 
 - task: UseRubyVersion@0
   inputs:
-    versionSpec: '>= 2.4'
-  displayName: Install Ruby > 2.45
+    versionSpec: '2.4.x'
+  displayName: Install Ruby 2.4.x
   continueOnError: true
 
 - bash: ruby --version
   continueOnError: true
+   displayName: Show Ruby version (should be 2.4)
 
 - task: UseRubyVersion@0
   inputs:
@@ -26,3 +27,4 @@ steps:
 
 - bash: ruby --version
   continueOnError: true
+   displayName: Show Ruby version (should be 2.6)
