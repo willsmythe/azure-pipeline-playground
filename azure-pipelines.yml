@@ -30,9 +30,14 @@ jobs:
 
   - bash: echo "$(ruby --version)"
 
-  - bash: brew update --debug
-    env:
-      RUBYOPT: --verbose
+  - bash: nohup brew update --debug > brew.out 2> brew.err
+    continueOnError: true
+
+  - bash: |
+      echo "$(cat brew.out)"
+      echo "$(cat brew.err)"
+    displayName: 'Show brew output'
+    condition: always()
 
   - script: script/setup-dependencies.sh
     displayName: Setup dependencies
