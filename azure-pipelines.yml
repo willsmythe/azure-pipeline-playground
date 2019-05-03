@@ -32,7 +32,7 @@ jobs:
 
   - bash: |
       brew services list
-      brew cleanup
+      brew cleanup --debug --verbose
       brew config
       brew doctor
     displayName: More debug
