@@ -30,14 +30,17 @@ jobs:
 
   - bash: echo "$(ruby --version)"
 
-  # - bash: |
-  #     brew config    
-  #     brew services list
-  #     brew cleanup --debug --verbose    
-  #     brew doctor
-  #   displayName: More debug
-  #   env:
-  #     HOMEBREW_DEVELOPER: 1
+  - bash: |
+      brew --cache
+      rm "$(brew --cache)/linkage.db"
+      rm -fr ~/Library/Caches/Homebrew/
+      brew config    
+      brew services list
+      brew cleanup --debug --verbose    
+      brew doctor
+    displayName: More debug
+    env:
+      HOMEBREW_DEVELOPER: 1
 
   - bash: (nohup brew update --debug > brew.out 2> brew.err &)
     continueOnError: true
