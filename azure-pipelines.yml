@@ -22,5 +22,5 @@ jobs:
   - script: printenv
     displayName: Dump environment variables
 
-  - script: scriupt/setup-dependencies.sh
+  - script: script/setup-dependencies.sh
     displayName: Setup dependencies
