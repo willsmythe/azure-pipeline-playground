@@ -16,6 +16,7 @@ jobs:
     vmImage: macos-10.13
   steps:
   - bash: echo "$(ruby --version)"
+
   - script: |
       echo "127.0.0.1 $(sudo scutil --get LocalHostName).local" | sudo tee -a /etc/hosts
     displayName: Fix hostname
@@ -23,13 +24,15 @@ jobs:
   - script: printenv
     displayName: Dump environment variables
 
-  - task: UseRubyVersion@0
-    inputs:
-      versionSpec: 2.3.x
+  # - task: UseRubyVersion@0
+  #   inputs:
+  #     versionSpec: 2.3.x
 
   - bash: echo "$(ruby --version)"
 
   - bash: brew update --debug
+    env:
+      RUBYOPT: --verbose
 
   - script: script/setup-dependencies.sh
     displayName: Setup dependencies
