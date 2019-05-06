@@ -10,9 +10,10 @@ jobs:
     vmImage: ${{ parameters.vmImage }}
   strategy:
     matrix:
-      '${{ each matrix in parameters.matrix }}':
-        ${{ matrix.key }}: ${{ matrix.value }}
-        IMAGE: ${{ matrix.key }}
+      ${{ each matrix in parameters.matrix }}:
+        ${{ each pair in matrix }}:
+          ${{ pair.key }}: ${{ pair.value }}
+          IMAGE: ${{ matrix.key }}
   steps:
   - script: |
       echo "Common"
