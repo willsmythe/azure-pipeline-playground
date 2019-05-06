@@ -1,0 +1,21 @@
+parameters:
+  name: ''
+  vmImage: ''
+  steps: []
+  matrix: {}
+
+jobs:
+- job: ${{ parameters.name }}
+  pool: 
+    vmImage: ${{ parameters.vmImage }}
+  strategy:
+    matrix:
+      ${{ each matrix in parameters.matrix }}:
+        ${{ matrix.key }}: ${{ matrix.value }}
+        IMAGE: ${{ matrix.key }}
+  steps:
+  - script: |
+      echo "Common"
+    displayName: 'Common pre-step'
+
+  - ${{ parameters.steps }}

@@ -1,16 +1,35 @@
 jobs:
-- template: azure-pipelines-job.yml
+- template: job.yml
   parameters:
-    IMAGE: foo
-
-- job: linux
-  pool:
+    name: Linux
     vmImage: ubuntu-16.04
-  steps:
-    - template: azure-pipelines-steps.yml
+    steps:
+    - template: steps/linux.yml
+    matrix:
+      x86_64-gnu-llvm-6.0:
+        RUST_BACKTRACE: 1
 
-- job: macOS
-  pool:
-    vmImage: macos-10.13
-  steps:
-    - template: azure-pipelines-steps.yml
+      dist-x86_64-linux:
+        DEPLOY: 1
+
+      # "alternate" deployments, these are "nightlies" but have LLVM assertions
+      # turned on, they're deployed to a different location primarily for
+      # additional testing.
+      dist-x86_64-linux-alt:
+        DEPLOY_ALT: 1
+
+- template: job.yml
+  parameters:
+    name: Windows
+    vmImage: vs2017-win2016
+    steps:
+    - template: steps/windows.yml
+    matrix:
+      # 32/64 bit MSVC tests
+      x86_64-msvc-1:
+        MSYS_BITS: 64
+        RUST_CONFIGURE_ARGS: --build=x86_64-pc-windows-msvc --enable-profiler
+        SCRIPT: make ci-subset-1
+        # FIXME(#59637)
+        NO_DEBUG_ASSERTIONS: 1
+        NO_LLVM_ASSERTIONS: 1
