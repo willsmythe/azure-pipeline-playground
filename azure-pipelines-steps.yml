@@ -1,5 +1,5 @@
 steps:
-- bash: cp text.txt $(Build.ArtifactStagingDirectory)
+- bash: cp test.txt $(Build.ArtifactStagingDirectory)
 
 - task: PublishPipelineArtifact@0
   inputs:
