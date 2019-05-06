@@ -6,16 +6,16 @@ jobs:
     steps:
     - template: steps/linux.yml
     matrix:
-      x86_64-gnu-llvm-6.0:
+      'x86_64-gnu-llvm-6.0':
         RUST_BACKTRACE: 1
 
-      dist-x86_64-linux:
+      'dist-x86_64-linux':
         DEPLOY: 1
 
       # "alternate" deployments, these are "nightlies" but have LLVM assertions
       # turned on, they're deployed to a different location primarily for
       # additional testing.
-      dist-x86_64-linux-alt:
+      'dist-x86_64-linux-alt':
         DEPLOY_ALT: 1
 
 - template: job.yml
