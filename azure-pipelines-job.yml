@@ -1,14 +1,16 @@
-variables:
+parameters:
   IMAGE: ''
 
-pool:
-  vmImage: vs2017-win2016
-strategy:
-  matrix:
-    node_8:
-      node_version: 8
-    node_10:
-      node_version: 10
+jobs:
+- job: build
+  pool:
+    vmImage: vs2017-win2016
+  strategy:
+    matrix:
+      node_8:
+        node_version: 8
+      node_10:
+        node_version: 10
 
-steps:
-- bash: printenv
+  steps:
+  - bash: printenv
