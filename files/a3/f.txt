@@ -1,0 +1,10 @@
+ Volume in drive C is Local Disk
+ Volume Serial Number is 16DE-2F50
+
+ Directory of C:\work\willsmythe\azure-pipeline-playground\a3
+
+05/07/2019  04:09 PM    <DIR>          .
+05/07/2019  04:09 PM    <DIR>          ..
+05/07/2019  04:09 PM                 0 f.txt
+               1 File(s)              0 bytes
+               2 Dir(s)  24,190,332,928 bytes free

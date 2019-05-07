@@ -1,0 +1,27 @@
+parameters:
+  id: ''
+  description: ''
+  artifact: ''
+  patterns: ''
+
+jobs:
+- job: ${{ parameters.id }}
+  dependsOn: publish
+  variables:
+    TEST_DESCRIPTION: ${{ parameters.description }}
+  steps:
+  - task: DownloadPipelineArtifact@1
+    inputs:
+      downloadPath: '$(Build.SourcesDirectory)/results'
+      artifactName: ${{ parameters.artifact }}
+      itemPattern: ${{ parameters.patterns }}
+  
+  - bash: |
+      echo "======================================================="
+      echo "All artifacts:"
+      cd files && grep -r -l "." | sort
+      echo "======================================================="
+      echo "Downloaded artifacts (${TEST_DESCRIPTION}):"
+      cd ../results && grep -r -l "." | sort
+      echo "======================================================="
+    displayName: ${{ parameters.description }}

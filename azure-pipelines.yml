@@ -1,18 +1,131 @@
 jobs:
-- job: windows
-  pool:
-    vmImage: vs2017-win2016
-  steps:
-    - template: azure-pipelines-steps.yml
-
-- job: linux
+############################
+# Publish job
+############################
+- job: publish
+  displayName: 'Pipeline artifacts (publish)'
   pool:
     vmImage: ubuntu-16.04
   steps:
-    - template: azure-pipelines-steps.yml
+  - task: PublishPipelineArtifact@0
+    inputs:
+      artifactName: a1
+      targetPath: files/a1
+    displayName: Publish pipeline artifact (a1)
 
-- job: macOS
-  pool:
-    vmImage: macos-10.13
+  - task: PublishPipelineArtifact@0
+    inputs:
+      artifactName: a2
+      targetPath: files/a2
+    displayName: Publish pipeline artifact (a2)
+
+  - task: PublishPipelineArtifact@0
+    inputs:
+      artifactName: a3
+      targetPath: files/a3
+    displayName: Publish pipeline artifact (a3)
+
+############################
+# Download jobs
+############################
+- template: download-job.yml
+  parameters:
+    id: test1
+    description: 'Test 1 (artifact=a1,pattern=)'
+    artifact: a1
+
+- template: download-job.yml
+  parameters:
+    id: test2
+    description: 'Test 2 (artifact=,pattern=)'    
+
+- template: download-job.yml
+  parameters:
+    id: test3
+    description: 'Test 3 (artifact=,pattern=**/*.dll)'    
+    patterns: '**/*.dll'
+
+- template: download-job.yml
+  parameters:
+    id: test4
+    description: 'Test 4 (artifact=,pattern=*/*.dll)'    
+    patterns: '*/*.dll'
+
+- template: download-job.yml
+  parameters:
+    id: test5
+    description: 'Test 5 (artifact=,pattern=a1/*.dll)'
+    patterns: 'a1/*.dll'
+
+- template: download-job.yml
+  parameters:
+    id: test6
+    description: 'Test 6 (artifact=,pattern=a1/**,a2/**)'
+    patterns: |
+      a1/**
+      a2/**
+
+############################
+# Build artifact job
+############################
+- job: buildartifact
+  displayName: 'Build artifacts'
   steps:
-    - template: azure-pipelines-steps.yml
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathtoPublish: '$(Build.SourcesDirectory)/files/a1'
+        ArtifactName: a1-legacy
+
+    - task: DownloadBuildArtifacts@0
+      inputs:
+        artifactName: a1-legacy
+        downloadPath: results       
+
+    - bash: cd results && grep -r -l "." | sort
+      displayName: 'Downloaded artifacts in target path'
+
+#################################################
+# Pipeline artifact download path tests
+#################################################
+- job: downloadpath
+  displayName: 'Pipeline artifacts (download path tests)'
+  dependsOn: publish
+  strategy:
+    matrix:
+      linux:
+        VM_IMAGE: 'ubuntu-16.04'
+      windows:
+        VM_IMAGE: 'vs2017-win2016'
+  pool:
+    vmImage: $(VM_IMAGE)
+  steps:
+    - checkout: none
+    - bash: printenv
+
+    - task: DownloadPipelineArtifact@1
+      inputs:
+        artifactName: 'a1'
+      displayName: 'Download (path not specified)'
+
+    - task: DownloadPipelineArtifact@1
+      inputs:
+        downloadPath: 'results1'
+        artifactName: 'a1'
+        itemPattern: '**'
+      displayName: 'Download to simple named directory (results1)'
+
+    - task: DownloadPipelineArtifact@1
+      inputs:
+        downloadPath: './results2'
+        artifactName: 'a1'
+        itemPattern: '**'
+      displayName: 'Download to relative path (results2)'
+
+    - task: DownloadPipelineArtifact@1
+      inputs:
+        downloadPath: '..'
+        artifactName: a1
+      displayName: 'Download to ..'
+    
+    - bash: cd .. && grep -r -l "." | grep -v ".git" | sort
+      displayName: 'Results'
