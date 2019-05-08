@@ -127,5 +127,14 @@ jobs:
         artifactName: a1
       displayName: 'Download to ..'
     
-    - bash: cd .. && grep -r -l "." | grep -v ".git" | sort
-      displayName: 'Results'
+    - bash: |
+        echo "===================================="
+        cd ..
+        echo "PWD: $(pwd)"
+        grep -r -l "." | grep -v ".git" | sort
+        echo "===================================="
+        cd ..
+        echo "PWD: $(pwd)"
+        grep -r -l "." | grep -v ".git" -v "node_modules" -v "_tasks" | sort
+        echo "===================================="
+      displayName: 'Results'  
