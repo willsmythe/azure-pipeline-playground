@@ -135,6 +135,6 @@ jobs:
         echo "===================================="
         cd ..
         echo "PWD: $(pwd)"
-        grep -r -l "." | grep -v ".git" -v "node_modules" -v "_tasks" | sort
+        grep -r -l "." | grep -v ".git"  | grep -v "node_modules" | grep -v "_tasks" | sort
         echo "===================================="
       displayName: 'Results'  
