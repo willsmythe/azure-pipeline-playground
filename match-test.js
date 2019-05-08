@@ -21,9 +21,8 @@ filelist.sort();
 let testNumber = 1;
 
 const show = (filters) => {
-    console.log(`*** Test ${testNumber} ***`);
-    console.log(`filters: [${filters.join(',')}]`);
-
+    console.log(`Test ${testNumber} ::: [${filters.join(',')}]`);
+    console.log(`-----------------------------------`);
     const files = new Set();
     filters.forEach(filter => {
         const t = filelist.filter(mm.filter(filter, null, filelist));
