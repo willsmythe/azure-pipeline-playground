@@ -105,19 +105,19 @@ jobs:
     - task: DownloadPipelineArtifact@1
       inputs:
         artifactName: 'a1'
-      displayName: 'Download (path not specified)'
+      displayName: 'Download a1 (path not specified)'
 
     - task: DownloadPipelineArtifact@1
       inputs:
         downloadPath: 'results1'
-        artifactName: 'a1'
+        artifactName: 'a2'
         itemPattern: '**'
-      displayName: 'Download to simple named directory (results1)'
+      displayName: 'Download a2 to simple named directory (results1)'
 
     - task: DownloadPipelineArtifact@1
       inputs:
         downloadPath: './results2'
-        artifactName: 'a1'
+        artifactName: 'a3'
         itemPattern: '**'
       displayName: 'Download to relative path (results2)'
 
