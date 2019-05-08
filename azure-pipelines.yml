@@ -79,10 +79,31 @@ jobs:
     - task: DownloadBuildArtifacts@0
       inputs:
         artifactName: a1-legacy
-        downloadPath: results       
+        downloadPath: results1
+      displayName: 'Download a1-legacy to results1'
 
-    - bash: cd results && grep -r -l "." | sort
-      displayName: 'Downloaded artifacts in target path'
+    - task: DownloadBuildArtifacts@0
+      inputs:
+        artifactName: a1-legacy
+        itemPattern: 'a2/**'
+        downloadPath: results2
+      displayName: 'Download a1-legacy,a2/** to results2'
+
+    - task: DownloadBuildArtifacts@0
+      inputs:
+        artifactName: a1-legacy
+      displayName: 'Download a1-legacy (no path specified)'
+
+    - task: DownloadBuildArtifacts@0
+      inputs:
+        artifactName: a1-legacy
+        downloadPath: '..'
+      displayName: 'Download a1-legacy (.. path)'
+
+    - bash: |
+        cd ..
+        grep -r -l "." | grep -v ".git"  | grep -v "node_modules" | grep -v "_tasks" | sort
+      displayName: 'Show downloaded artifacts'
 
 #################################################
 # Pipeline artifact download path tests
