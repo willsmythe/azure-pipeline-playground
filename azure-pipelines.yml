@@ -61,9 +61,9 @@ jobs:
   parameters:
     id: test6
     description: 'Test 6 (artifact=,pattern=a1/**,a2/**)'
-    patterns: |
-      a1/**
-      a2/**
+    pattern: |
+       a1/**
+       a2/**
 
 ############################
 # Build artifact job
@@ -71,17 +71,28 @@ jobs:
 - job: buildartifact
   displayName: 'Build artifacts'
   steps:
+    # **PUBLISH**
     - task: PublishBuildArtifacts@1
       inputs:
         pathtoPublish: '$(Build.SourcesDirectory)/files/a1'
         ArtifactName: a1-legacy
 
+    # **DOWNLOAD**
+
+    # Downloads to $(BUILD_ARTIFACTSTAGINGDIRECTORY)/{artifactName}/*
+    - task: DownloadBuildArtifacts@0
+      inputs:
+        artifactName: a1-legacy
+      displayName: 'Download a1-legacy (no path specified)'
+
+    # Downloads to $(System.DefaultWorkingDirectory)/results1/{artifactName}/*
     - task: DownloadBuildArtifacts@0
       inputs:
         artifactName: a1-legacy
         downloadPath: results1
-      displayName: 'Download a1-legacy to results1'
+      displayName: 'Download a1-legacy to results1'      
 
+    # No-op due to pattern not including artifact name
     - task: DownloadBuildArtifacts@0
       inputs:
         artifactName: a1-legacy
@@ -89,16 +100,19 @@ jobs:
         downloadPath: results2
       displayName: 'Download a1-legacy,a2/** to results2'
 
-    - task: DownloadBuildArtifacts@0
-      inputs:
-        artifactName: a1-legacy
-      displayName: 'Download a1-legacy (no path specified)'
-
+    # Downloads to $(System.DefaultWorkingDirectory)/../{artifactName}/*
     - task: DownloadBuildArtifacts@0
       inputs:
         artifactName: a1-legacy
         downloadPath: '..'
       displayName: 'Download a1-legacy (.. path)'
+
+    # Downloads to $(System.DefaultWorkingDirectory)/../{artifactName}/*
+    - task: DownloadBuildArtifacts@0
+      inputs:
+        artifactName: a1-legacy
+        downloadPath: '$(Build.SourcesDirectory)/results3'
+      displayName: 'Download a1-legacy to results3 under Sources'
 
     - bash: |
         cd ..
@@ -123,31 +137,46 @@ jobs:
     - checkout: none
     - bash: printenv
 
+    # Downloads to $(SYSTEM_ARTIFACTSDIRECTORY)/**   <-- PROBLEM, should be $(PIPELINE_WORKSPACE)/{artifactName}
     - task: DownloadPipelineArtifact@1
       inputs:
         artifactName: 'a1'
       displayName: 'Download a1 (path not specified)'
 
+    # Downloads to $(Agent.WorkFolder)/results1/**  <-- PROBLEM, should be $(PIPELINE_WORKSPACE))/results1
     - task: DownloadPipelineArtifact@1
       inputs:
-        downloadPath: 'results1'
         artifactName: 'a2'
         itemPattern: '**'
+        downloadPath: 'results1'
       displayName: 'Download a2 to simple named directory (results1)'
 
+      # Downloads to $(Agent.WorkFolder)/results2/**  <-- PROBLEM, should be  $(PIPELINE_WORKSPACE)/results2
     - task: DownloadPipelineArtifact@1
       inputs:
-        downloadPath: './results2'
         artifactName: 'a3'
         itemPattern: '**'
+        downloadPath: './results2'
       displayName: 'Download to relative path (results2)'
 
+      # Downloads to $(Agent.WorkFolder)/../**        <-- PROBLEM, error (can't go above PIPELINE_WORKSPACE)
     - task: DownloadPipelineArtifact@1
       inputs:
-        downloadPath: '..'
         artifactName: a1
+        downloadPath: '..'
       displayName: 'Download to ..'
-    
+
+      # $(PIPELINE_WORKSPACE)/{artifactName}
+    - task: DownloadPipelineArtifact@1
+      displayName: 'Download to ..'
+
+      # $(PIPELINE_WORKSPACE)/foo/{artifactName}
+    - task: DownloadPipelineArtifact@1
+      inputs:
+        downloadPath: 'foo'
+      displayName: 'Download to ..'
+
+
     - bash: |
         echo "===================================="
         cd ..
