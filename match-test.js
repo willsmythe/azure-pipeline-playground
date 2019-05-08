@@ -56,3 +56,5 @@ show(['a1/*']);
 show(['a1/**', 'a2/**']);
 // Only files at the root of a1 and a2
 show(['a1/*', 'a2/*']);
+
+const justa1 = filelist.filter(f => { return f.startsWith('a1/')});

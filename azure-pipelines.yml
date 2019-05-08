@@ -137,45 +137,51 @@ jobs:
     - checkout: none
     - bash: printenv
 
-    # Downloads to $(SYSTEM_ARTIFACTSDIRECTORY)/**   <-- PROBLEM, should be $(PIPELINE_WORKSPACE)/{artifactName}
+
+    # Current : ???
+    # Expected: $(PIPELINE_WORKSPACE)/{artifact1...x}/**
+    - task: DownloadPipelineArtifact@1
+      displayName: 'Download all (path not specified)'
+
+    # Current : ???
+    # Expected: $(PIPELINE_WORKSPACE)/results1/{artifact1...x}/**
+    - task: DownloadPipelineArtifact@1
+      inputs:
+        downloadPath: 'results1'
+      displayName: 'Download all (relative path)'      
+
+    # Current : $(SYSTEM_ARTIFACTSDIRECTORY)/**
+    # Expected: $(PIPELINE_WORKSPACE)/a1/**
     - task: DownloadPipelineArtifact@1
       inputs:
         artifactName: 'a1'
       displayName: 'Download a1 (path not specified)'
 
-    # Downloads to $(Agent.WorkFolder)/results1/**  <-- PROBLEM, should be $(PIPELINE_WORKSPACE))/results1
+    # Current : $(Agent.WorkFolder)/results2/**
+    # Expected: $(PIPELINE_WORKSPACE)/results2/**
     - task: DownloadPipelineArtifact@1
       inputs:
         artifactName: 'a2'
         itemPattern: '**'
-        downloadPath: 'results1'
-      displayName: 'Download a2 to simple named directory (results1)'
+        downloadPath: 'results2'
+      displayName: 'Download a2 to simple named directory (results2)'
 
-      # Downloads to $(Agent.WorkFolder)/results2/**  <-- PROBLEM, should be  $(PIPELINE_WORKSPACE)/results2
+    # Current : $(Agent.WorkFolder)/results3/**
+    # Expected: $(PIPELINE_WORKSPACE)/results3/**
     - task: DownloadPipelineArtifact@1
       inputs:
         artifactName: 'a3'
         itemPattern: '**'
-        downloadPath: './results2'
-      displayName: 'Download to relative path (results2)'
+        downloadPath: './results3'
+      displayName: 'Download to relative path (results3)'
 
-      # Downloads to $(Agent.WorkFolder)/../**        <-- PROBLEM, error (can't go above PIPELINE_WORKSPACE)
+    # Current : $(Agent.WorkFolder)/../**
+    # Expected: ERROR ... task shouldn't allow files to be placed above PIPELINE_WORKSPACE
     - task: DownloadPipelineArtifact@1
       inputs:
         artifactName: a1
         downloadPath: '..'
       displayName: 'Download to ..'
-
-      # $(PIPELINE_WORKSPACE)/{artifactName}
-    - task: DownloadPipelineArtifact@1
-      displayName: 'Download to ..'
-
-      # $(PIPELINE_WORKSPACE)/foo/{artifactName}
-    - task: DownloadPipelineArtifact@1
-      inputs:
-        downloadPath: 'foo'
-      displayName: 'Download to ..'
-
 
     - bash: |
         echo "===================================="
@@ -187,4 +193,4 @@ jobs:
         echo "PWD: $(pwd)"
         grep -r -l "." | grep -v ".git"  | grep -v "node_modules" | grep -v "_tasks" | sort
         echo "===================================="
-      displayName: 'Results'  
+      displayName: 'Results'
