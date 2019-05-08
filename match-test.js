@@ -18,8 +18,11 @@ const walkSync = (dir) => {
 walkSync(baseDir);
 filelist.sort();
 
+let testNumber = 1;
+
 const show = (filters) => {
-    console.log(`Filters: [${filters.join(',')}]`);
+    console.log(`*** Test ${testNumber} ***`);
+    console.log(`filters: [${filters.join(',')}]`);
 
     const files = new Set();
     filters.forEach(filter => {
@@ -33,6 +36,8 @@ const show = (filters) => {
     
     console.log([...files].join('\n'));
     console.log();
+
+    testNumber++;
 };
 
 // All files
