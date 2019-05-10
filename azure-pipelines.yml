@@ -137,23 +137,23 @@ jobs:
     - checkout: none
     - bash: printenv
 
-    # Current : ???
+    # Current : AGENT_WORK/results1/{artifact}
     # Expected: $(PIPELINE_WORKSPACE)/results1/{artifact1...x}/**
     - task: DownloadPipelineArtifact@1
       inputs:
-        targetPath: 'results1'
-      displayName: 'Download all (relative path)'      
+        targetPath: '/home/vsts/foo'
+      displayName: 'Download all (absolute path)' 
 
     - bash: |
         echo "===================================="
-        cd ..
+        cd /home/vsts/foo
         echo "PWD: $(pwd)"
         grep -r -l "." | grep -v ".git" | sort
         echo "===================================="
-        cd ..
-        echo "PWD: $(pwd)"
-        grep -r -l "." | grep -v ".git"  | grep -v "node_modules" | grep -v "_tasks" | sort
-        echo "===================================="
+        #cd ..
+        #echo "PWD: $(pwd)"
+        #grep -r -l "." | grep -v ".git"  | grep -v "node_modules" | grep -v "_tasks" | sort
+        #echo "===================================="
       displayName: 'Results'
 
     # Current : $(SYSTEM_ARTIFACTSDIRECTORY)/{artifact}/**
@@ -193,4 +193,12 @@ jobs:
         artifactName: a1
         targetPath: '..'
       displayName: 'Download to ..'
+
+    # Current : AGENT_WORK/results1/{artifact}
+    # Expected: $(PIPELINE_WORKSPACE)/results1/{artifact1...x}/**
+    - task: DownloadPipelineArtifact@1
+      inputs:
+        targetPath: 'results1'
+      displayName: 'Download all (relative path)' 
+
 
