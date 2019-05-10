@@ -1,6 +1,6 @@
 steps:
 - script: |
-   echo "Here is the start"
-   echo "##vso[telemetry.publish area=WillSmytheTest;feature=Test2]\"{}\""
+   echo "Here is the start"   
+   echo "##vso[telemetry.publish area=WillSmytheTest;feature=Test2]{}"
    echo "Here is the end"
   displayName: 'Log telemetry'
