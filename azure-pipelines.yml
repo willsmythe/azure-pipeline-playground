@@ -89,7 +89,7 @@ jobs:
     - task: DownloadBuildArtifacts@0
       inputs:
         artifactName: a1-legacy
-        downloadPath: results1
+        targetPath: results1
       displayName: 'Download a1-legacy to results1'      
 
     # No-op due to pattern not including artifact name
@@ -97,21 +97,21 @@ jobs:
       inputs:
         artifactName: a1-legacy
         itemPattern: 'a2/**'
-        downloadPath: results2
+        targetPath: results2
       displayName: 'Download a1-legacy,a2/** to results2'
 
     # Downloads to $(System.DefaultWorkingDirectory)/../{artifactName}/*
     - task: DownloadBuildArtifacts@0
       inputs:
         artifactName: a1-legacy
-        downloadPath: '..'
+        targetPath: '..'
       displayName: 'Download a1-legacy (.. path)'
 
     # Downloads to $(System.DefaultWorkingDirectory)/../{artifactName}/*
     - task: DownloadBuildArtifacts@0
       inputs:
         artifactName: a1-legacy
-        downloadPath: '$(Build.SourcesDirectory)/results3'
+        targetPath: '$(Build.SourcesDirectory)/results3'
       displayName: 'Download a1-legacy to results3 under Sources'
 
     - bash: |
@@ -122,7 +122,7 @@ jobs:
 #################################################
 # Pipeline artifact download path tests
 #################################################
-- job: downloadpath
+- job: targetPath
   displayName: 'Pipeline artifacts (download path tests)'
   dependsOn: publish
   strategy:
@@ -140,47 +140,48 @@ jobs:
 
     # Current : ???
     # Expected: $(PIPELINE_WORKSPACE)/{artifact1...x}/**
-    - task: DownloadPipelineArtifact@1
+    - task: DownloadPipelineArtifact@0
       displayName: 'Download all (path not specified)'
 
     # Current : ???
     # Expected: $(PIPELINE_WORKSPACE)/results1/{artifact1...x}/**
-    - task: DownloadPipelineArtifact@1
+    - task: DownloadPipelineArtifact@0
       inputs:
-        downloadPath: 'results1'
+        targetPath: 'results1'
       displayName: 'Download all (relative path)'      
+
 
     # Current : $(SYSTEM_ARTIFACTSDIRECTORY)/**
     # Expected: $(PIPELINE_WORKSPACE)/a1/**
-    - task: DownloadPipelineArtifact@1
+    - task: DownloadPipelineArtifact@0
       inputs:
         artifactName: 'a1'
       displayName: 'Download a1 (path not specified)'
 
     # Current : $(Agent.WorkFolder)/results2/**
     # Expected: $(PIPELINE_WORKSPACE)/results2/**
-    - task: DownloadPipelineArtifact@1
+    - task: DownloadPipelineArtifact@0
       inputs:
         artifactName: 'a2'
         itemPattern: '**'
-        downloadPath: 'results2'
+        targetPath: 'results2'
       displayName: 'Download a2 to simple named directory (results2)'
 
     # Current : $(Agent.WorkFolder)/results3/**
     # Expected: $(PIPELINE_WORKSPACE)/results3/**
-    - task: DownloadPipelineArtifact@1
+    - task: DownloadPipelineArtifact@0
       inputs:
         artifactName: 'a3'
         itemPattern: '**'
-        downloadPath: './results3'
+        targetPath: './results3'
       displayName: 'Download to relative path (results3)'
 
     # Current : $(Agent.WorkFolder)/../**
     # Expected: ERROR ... task shouldn't allow files to be placed above PIPELINE_WORKSPACE
-    - task: DownloadPipelineArtifact@1
+    - task: DownloadPipelineArtifact@0
       inputs:
         artifactName: a1
-        downloadPath: '..'
+        targetPath: '..'
       displayName: 'Download to ..'
 
     - bash: |
