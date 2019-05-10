@@ -25,6 +25,9 @@ jobs:
       targetPath: files/a3
     displayName: Publish pipeline artifact (a3)
 
+  - download: current
+    artifact: a3
+
 ############################
 # Download jobs
 ############################
