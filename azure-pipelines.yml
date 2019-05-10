@@ -138,9 +138,11 @@ jobs:
     - bash: printenv
 
     # Current : ???
-    # Expected: $(PIPELINE_WORKSPACE)/{artifact1...x}/**
+    # Expected: $(PIPELINE_WORKSPACE)/results1/{artifact1...x}/**
     - task: DownloadPipelineArtifact@1
-      displayName: 'Download all (path not specified)'
+      inputs:
+        targetPath: 'results1'
+      displayName: 'Download all (relative path)'      
 
     - bash: |
         echo "===================================="
@@ -154,13 +156,10 @@ jobs:
         echo "===================================="
       displayName: 'Results'
 
-    # Current : ???
-    # Expected: $(PIPELINE_WORKSPACE)/results1/{artifact1...x}/**
+    # Current : $(SYSTEM_ARTIFACTSDIRECTORY)/{artifact}/**
+    # Expected: $(PIPELINE_WORKSPACE)/{artifact1...x}/**
     - task: DownloadPipelineArtifact@1
-      inputs:
-        targetPath: 'results1'
-      displayName: 'Download all (relative path)'      
-
+      displayName: 'Download all (path not specified)'
 
     # Current : $(SYSTEM_ARTIFACTSDIRECTORY)/**
     # Expected: $(PIPELINE_WORKSPACE)/a1/**
