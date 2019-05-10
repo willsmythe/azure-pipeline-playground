@@ -142,7 +142,17 @@ jobs:
     - task: DownloadPipelineArtifact@1
       displayName: 'Download all (path not specified)'
 
-    - bash: failmenow
+    - bash: |
+        echo "===================================="
+        cd ..
+        echo "PWD: $(pwd)"
+        grep -r -l "." | grep -v ".git" | sort
+        echo "===================================="
+        cd ..
+        echo "PWD: $(pwd)"
+        grep -r -l "." | grep -v ".git"  | grep -v "node_modules" | grep -v "_tasks" | sort
+        echo "===================================="
+      displayName: 'Results'
 
     # Current : ???
     # Expected: $(PIPELINE_WORKSPACE)/results1/{artifact1...x}/**
@@ -185,14 +195,3 @@ jobs:
         targetPath: '..'
       displayName: 'Download to ..'
 
-    - bash: |
-        echo "===================================="
-        cd ..
-        echo "PWD: $(pwd)"
-        grep -r -l "." | grep -v ".git" | sort
-        echo "===================================="
-        cd ..
-        echo "PWD: $(pwd)"
-        grep -r -l "." | grep -v ".git"  | grep -v "node_modules" | grep -v "_tasks" | sort
-        echo "===================================="
-      displayName: 'Results'
