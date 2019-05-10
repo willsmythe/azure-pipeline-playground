@@ -139,14 +139,14 @@ jobs:
 
     # Current : ???
     # Expected: $(PIPELINE_WORKSPACE)/{artifact1...x}/**
-    - task: DownloadPipelineArtifact@0
+    - task: DownloadPipelineArtifact@1
       displayName: 'Download all (path not specified)'
 
     - bash: failmenow
 
     # Current : ???
     # Expected: $(PIPELINE_WORKSPACE)/results1/{artifact1...x}/**
-    - task: DownloadPipelineArtifact@0
+    - task: DownloadPipelineArtifact@1
       inputs:
         targetPath: 'results1'
       displayName: 'Download all (relative path)'      
@@ -154,14 +154,14 @@ jobs:
 
     # Current : $(SYSTEM_ARTIFACTSDIRECTORY)/**
     # Expected: $(PIPELINE_WORKSPACE)/a1/**
-    - task: DownloadPipelineArtifact@0
+    - task: DownloadPipelineArtifact@1
       inputs:
         artifactName: 'a1'
       displayName: 'Download a1 (path not specified)'
 
     # Current : $(Agent.WorkFolder)/results2/**
     # Expected: $(PIPELINE_WORKSPACE)/results2/**
-    - task: DownloadPipelineArtifact@0
+    - task: DownloadPipelineArtifact@1
       inputs:
         artifactName: 'a2'
         itemPattern: '**'
@@ -170,7 +170,7 @@ jobs:
 
     # Current : $(Agent.WorkFolder)/results3/**
     # Expected: $(PIPELINE_WORKSPACE)/results3/**
-    - task: DownloadPipelineArtifact@0
+    - task: DownloadPipelineArtifact@1
       inputs:
         artifactName: 'a3'
         itemPattern: '**'
@@ -179,7 +179,7 @@ jobs:
 
     # Current : $(Agent.WorkFolder)/../**
     # Expected: ERROR ... task shouldn't allow files to be placed above PIPELINE_WORKSPACE
-    - task: DownloadPipelineArtifact@0
+    - task: DownloadPipelineArtifact@1
       inputs:
         artifactName: a1
         targetPath: '..'
