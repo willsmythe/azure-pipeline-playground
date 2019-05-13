@@ -89,7 +89,7 @@ jobs:
     - task: DownloadBuildArtifacts@0
       inputs:
         artifactName: a1-legacy
-        targetPath: results1
+        downloadPath: results1
       displayName: 'Download a1-legacy to results1'      
 
     # No-op due to pattern not including artifact name
@@ -97,25 +97,25 @@ jobs:
       inputs:
         artifactName: a1-legacy
         itemPattern: 'a2/**'
-        targetPath: results2
+        downloadPath: results2
       displayName: 'Download a1-legacy,a2/** to results2'
 
     # Downloads to $(System.DefaultWorkingDirectory)/../{artifactName}/*
     - task: DownloadBuildArtifacts@0
       inputs:
         artifactName: a1-legacy
-        targetPath: '..'
+        downloadPath: '..'
       displayName: 'Download a1-legacy (.. path)'
 
     # Downloads to $(System.DefaultWorkingDirectory)/../{artifactName}/*
     - task: DownloadBuildArtifacts@0
       inputs:
         artifactName: a1-legacy
-        targetPath: '$(Build.SourcesDirectory)/results3'
+        downloadPath: '$(Build.SourcesDirectory)/results3'
       displayName: 'Download a1-legacy to results3 under Sources'
 
     - bash: |
-        cd ..
+        cd ../..
         grep -r -l "." | grep -v ".git"  | grep -v "node_modules" | grep -v "_tasks" | sort
       displayName: 'Show downloaded artifacts'
 
