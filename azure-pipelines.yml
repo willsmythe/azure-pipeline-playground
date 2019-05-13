@@ -26,10 +26,9 @@ jobs:
     displayName: Publish pipeline artifact (a3)
 
   - download: current 
-    path: /etc/var/pipelines
 
   - bash: |
-      cd /etc/var/pipelines
+      cd ..
       grep -r -l "." | grep -v ".git"  | grep -v "node_modules" | grep -v "_tasks" | sort
     displayName: 'Show downloaded artifacts'
 
