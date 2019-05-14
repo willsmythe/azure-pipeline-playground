@@ -84,44 +84,44 @@ stages:
       - task: PublishBuildArtifacts@1
         inputs:
           pathtoPublish: '$(Build.SourcesDirectory)/files/a1'
-          ArtifactName: a1-legacy
+          ArtifactName: a1legacy
 
       # **DOWNLOAD**
 
       # Downloads to $(BUILD_ARTIFACTSTAGINGDIRECTORY)/{artifactName}/*
       - task: DownloadBuildArtifacts@0
         inputs:
-          artifactName: a1-legacy
-        displayName: 'Download a1-legacy (no path specified)'
+          artifactName: a1legacy
+        displayName: 'Download a1legacy (no path specified)'
 
       # Downloads to $(System.DefaultWorkingDirectory)/results1/{artifactName}/*
       - task: DownloadBuildArtifacts@0
         inputs:
-          artifactName: a1-legacy
+          artifactName: a1legacy
           downloadPath: results1
-        displayName: 'Download a1-legacy to results1'      
+        displayName: 'Download a1legacy to results1'      
 
       # No-op due to pattern not including artifact name
       - task: DownloadBuildArtifacts@0
         inputs:
-          artifactName: a1-legacy
+          artifactName: a1legacy
           itemPattern: 'a2/**'
           downloadPath: results2
-        displayName: 'Download a1-legacy,a2/** to results2'
+        displayName: 'Download a1legacy,a2/** to results2'
 
       # Downloads to $(System.DefaultWorkingDirectory)/../{artifactName}/*
       - task: DownloadBuildArtifacts@0
         inputs:
-          artifactName: a1-legacy
+          artifactName: a1legacy
           downloadPath: '..'
-        displayName: 'Download a1-legacy (.. path)'
+        displayName: 'Download a1legacy (.. path)'
 
       # Downloads to $(System.DefaultWorkingDirectory)/../{artifactName}/*
       - task: DownloadBuildArtifacts@0
         inputs:
-          artifactName: a1-legacy
+          artifactName: a1legacy
           downloadPath: '$(Build.SourcesDirectory)/results3'
-        displayName: 'Download a1-legacy to results3 under Sources'
+        displayName: 'Download a1legacy to results3 under Sources'
 
       - bash: |
           cd ../..
@@ -243,12 +243,12 @@ stages:
 # - task: DownloadBuildArtifacts@0
 #   displayName: 'Download Build Artifacts (default)'
 #   inputs:
-#     artifactName: 'a1-legacy'
+#     artifactName: 'a1legacy'
 
 # - task: DownloadBuildArtifacts@0
 #   displayName: 'Download Build Artifacts (absolute)'
 #   inputs:
-#     artifactName: 'a1-legacy'
+#     artifactName: 'a1legacy'
 #     downloadPath: '$(System.ArtifactsDirectory)/dba-1'
 #   continueOnError: true
 
@@ -256,7 +256,7 @@ stages:
 # - task: DownloadBuildArtifacts@0
 #   displayName: 'Download Build Artifacts (relative)'
 #   inputs:
-#     artifactName: 'a1-legacy'
+#     artifactName: 'a1legacy'
 #     downloadPath: 'dba-2'
 
 #- powershell: |
