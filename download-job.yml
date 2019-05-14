@@ -6,7 +6,6 @@ parameters:
 
 jobs:
 - job: ${{ parameters.id }}
-  dependsOn: publish
   variables:
     TEST_DESCRIPTION: ${{ parameters.description }}
   steps:

@@ -33,7 +33,7 @@ stages:
         ArtifactName: a1legacy
 
 - stage: download
-  dependsOn: 'publish'
+  dependsOn: publish
   jobs:
   ############################
   # Download jobs
@@ -201,8 +201,9 @@ stages:
         inputs:
           targetPath: 'results1'
         displayName: 'Download all (relative path)' 
+
 - stage: deploy
-  dependsOn: 'publish'
+  dependsOn: publish
   jobs:
   - deployment: deployartifacts
     environment: staging
