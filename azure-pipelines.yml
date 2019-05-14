@@ -77,7 +77,6 @@ jobs:
 ############################
 - job: buildartifact
   displayName: 'Build artifacts'
-  condition: never()
   steps:
     # **PUBLISH**
     - task: PublishBuildArtifacts@1
