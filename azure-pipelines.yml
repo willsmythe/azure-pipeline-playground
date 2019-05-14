@@ -213,7 +213,6 @@ stages:
   jobs:
   - deployment: deployartifacts
     environment: staging
-    dependsOn: [ 'publish', 'buildartifact' ]
     strategy:
       runOnce:
         deploy:
