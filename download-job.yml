@@ -3,7 +3,6 @@ parameters:
   description: ''
   artifact: ''
   patterns: ''
-  test: 213
 
 jobs:
 - job: ${{ parameters.id }}

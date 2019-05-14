@@ -208,4 +208,57 @@ jobs:
         targetPath: 'results1'
       displayName: 'Download all (relative path)' 
 
+- deployment: DeployJob
+  displayName: Deploy
+  environment: staging
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+        - powershell: |
+            gci env:* | Sort-Object -Property Name
+            cd ../..
+            Get-ChildItem -Recurse -Directory | Select-Object FullName | Format-Table
+          displayName: 'Show files'
 
+
+# - task: DownloadPipelineArtifact@1
+#   displayName: 'Download Pipeline Artifact (default location)'
+
+
+# - task: DownloadPipelineArtifact@1
+#   displayName: 'Download Pipeline Artifact (absolute)'
+#   inputs:
+#     targetPath: '$(System.ArtifactsDirectory)/dpa-1'
+#   continueOnError: true
+
+# - task: DownloadPipelineArtifact@1
+#   displayName: 'Download Pipeline Artifact (relative)'
+#   inputs:
+#     targetPath: 'dpa-2'
+
+
+# - task: DownloadBuildArtifacts@0
+#   displayName: 'Download Build Artifacts (default)'
+#   inputs:
+#     artifactName: 'a1-legacy'
+
+# - task: DownloadBuildArtifacts@0
+#   displayName: 'Download Build Artifacts (absolute)'
+#   inputs:
+#     artifactName: 'a1-legacy'
+#     downloadPath: '$(System.ArtifactsDirectory)/dba-1'
+#   continueOnError: true
+
+# steps:
+# - task: DownloadBuildArtifacts@0
+#   displayName: 'Download Build Artifacts (relative)'
+#   inputs:
+#     artifactName: 'a1-legacy'
+#     downloadPath: 'dba-2'
+
+- powershell: |
+   gci env:* | Sort-Object -Property Name
+   cd ../..
+   Get-ChildItem -Recurse -Directory | Select-Object FullName | Format-Table
+  displayName: 'Show files'
