@@ -211,7 +211,7 @@ jobs:
 - deployment: DeployJob
   displayName: Deploy
   environment: staging
-  dependsOn: [ 'publish', 'buildartifact ']
+  dependsOn: [ 'publish', 'buildartifact' ]
   strategy:
     runOnce:
       deploy:
