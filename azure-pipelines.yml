@@ -1,226 +1,228 @@
-jobs:
-############################
-# Publish job
-############################
-- job: publish
-  displayName: 'Pipeline artifacts (publish)'
-  pool:
-    vmImage: ubuntu-16.04
-  steps:
-  - task: PublishPipelineArtifact@0
-    inputs:
-      artifactName: a1
-      targetPath: files/a1
-    displayName: Publish pipeline artifact (a1)
-
-  - task: PublishPipelineArtifact@0
-    inputs:
-      artifactName: a2
-      targetPath: files/a2
-    displayName: Publish pipeline artifact (a2)
-
-  - task: PublishPipelineArtifact@0
-    inputs:
-      artifactName: a3
-      targetPath: files/a3
-    displayName: Publish pipeline artifact (a3)
-
-  - download: current 
-
-  - bash: |
-      cd ..
-      grep -r -l "." | grep -v ".git"  | grep -v "node_modules" | grep -v "_tasks" | sort
-    displayName: 'Show downloaded artifacts'
-
-############################
-# Download jobs
-############################
-- template: download-job.yml
-  parameters:
-    id: test1
-    description: 'Test 1 (artifact=a1,pattern=)'
-    artifact: a1
-
-- template: download-job.yml
-  parameters:
-    id: test2
-    description: 'Test 2 (artifact=,pattern=)'    
-
-- template: download-job.yml
-  parameters:
-    id: test3
-    description: 'Test 3 (artifact=,pattern=**/*.dll)'
-    patterns: '**/*.dll'
-
-- template: download-job.yml
-  parameters:
-    id: test4
-    description: 'Test 4 (artifact=,pattern=*/*.dll)'    
-    patterns: '*/*.dll'
-
-- template: download-job.yml
-  parameters:
-    id: test5
-    description: 'Test 5 (artifact=,pattern=a1/*.dll)'
-    patterns: 'a1/*.dll'
-
-- template: download-job.yml
-  parameters:
-    id: test6
-    description: 'Test 6 (artifact=,pattern=a1/**,a2/**)'
-    pattern: |
-       a1/**
-       a2/**
-
-############################
-# Build artifact job
-############################
-- job: buildartifact
-  displayName: 'Build artifacts'
-  steps:
-    # **PUBLISH**
-    - task: PublishBuildArtifacts@1
+stages:
+- stage: build
+  jobs:
+  ############################
+  # Publish job
+  ############################
+  - job: publish
+    displayName: 'Pipeline artifacts (publish)'
+    pool:
+      vmImage: ubuntu-16.04
+    steps:
+    - task: PublishPipelineArtifact@0
       inputs:
-        pathtoPublish: '$(Build.SourcesDirectory)/files/a1'
-        ArtifactName: a1-legacy
+        artifactName: a1
+        targetPath: files/a1
+      displayName: Publish pipeline artifact (a1)
 
-    # **DOWNLOAD**
-
-    # Downloads to $(BUILD_ARTIFACTSTAGINGDIRECTORY)/{artifactName}/*
-    - task: DownloadBuildArtifacts@0
+    - task: PublishPipelineArtifact@0
       inputs:
-        artifactName: a1-legacy
-      displayName: 'Download a1-legacy (no path specified)'
+        artifactName: a2
+        targetPath: files/a2
+      displayName: Publish pipeline artifact (a2)
 
-    # Downloads to $(System.DefaultWorkingDirectory)/results1/{artifactName}/*
-    - task: DownloadBuildArtifacts@0
+    - task: PublishPipelineArtifact@0
       inputs:
-        artifactName: a1-legacy
-        downloadPath: results1
-      displayName: 'Download a1-legacy to results1'      
+        artifactName: a3
+        targetPath: files/a3
+      displayName: Publish pipeline artifact (a3)
 
-    # No-op due to pattern not including artifact name
-    - task: DownloadBuildArtifacts@0
-      inputs:
-        artifactName: a1-legacy
-        itemPattern: 'a2/**'
-        downloadPath: results2
-      displayName: 'Download a1-legacy,a2/** to results2'
-
-    # Downloads to $(System.DefaultWorkingDirectory)/../{artifactName}/*
-    - task: DownloadBuildArtifacts@0
-      inputs:
-        artifactName: a1-legacy
-        downloadPath: '..'
-      displayName: 'Download a1-legacy (.. path)'
-
-    # Downloads to $(System.DefaultWorkingDirectory)/../{artifactName}/*
-    - task: DownloadBuildArtifacts@0
-      inputs:
-        artifactName: a1-legacy
-        downloadPath: '$(Build.SourcesDirectory)/results3'
-      displayName: 'Download a1-legacy to results3 under Sources'
+    - download: current 
 
     - bash: |
-        cd ../..
+        cd ..
         grep -r -l "." | grep -v ".git"  | grep -v "node_modules" | grep -v "_tasks" | sort
       displayName: 'Show downloaded artifacts'
 
-#################################################
-# Pipeline artifact download path tests
-#################################################
-- job: targetPath
-  displayName: 'Pipeline artifacts (download path tests)'
-  dependsOn: publish
-  strategy:
-    matrix:
-      linux:
-        VM_IMAGE: 'ubuntu-16.04'
-      windows:
-        VM_IMAGE: 'vs2017-win2016'
-  pool:
-    vmImage: $(VM_IMAGE)
-  steps:
-    - checkout: none
-    - bash: printenv
+  ############################
+  # Download jobs
+  ############################
+  - template: download-job.yml
+    parameters:
+      id: test1
+      description: 'Test 1 (artifact=a1,pattern=)'
+      artifact: a1
 
-    # Current : AGENT_WORK/results1/{artifact}
-    # Expected: $(PIPELINE_WORKSPACE)/results1/{artifact1...x}/**
-    - task: DownloadPipelineArtifact@1
-      inputs:
-        targetPath: '/home/vsts/foo'
-      displayName: 'Download all (absolute path)' 
+  - template: download-job.yml
+    parameters:
+      id: test2
+      description: 'Test 2 (artifact=,pattern=)'    
 
-    - bash: |
-        echo "===================================="
-        cd /home/vsts/foo
-        echo "PWD: $(pwd)"
-        grep -r -l "." | grep -v ".git" | sort
-        echo "===================================="
-        #cd ..
-        #echo "PWD: $(pwd)"
-        #grep -r -l "." | grep -v ".git"  | grep -v "node_modules" | grep -v "_tasks" | sort
-        #echo "===================================="
-      displayName: 'Results'
+  - template: download-job.yml
+    parameters:
+      id: test3
+      description: 'Test 3 (artifact=,pattern=**/*.dll)'
+      patterns: '**/*.dll'
 
-    # Current : $(SYSTEM_ARTIFACTSDIRECTORY)/{artifact}/**
-    # Expected: $(PIPELINE_WORKSPACE)/{artifact1...x}/**
-    - task: DownloadPipelineArtifact@1
-      displayName: 'Download all (path not specified)'
+  - template: download-job.yml
+    parameters:
+      id: test4
+      description: 'Test 4 (artifact=,pattern=*/*.dll)'    
+      patterns: '*/*.dll'
 
-    # Current : $(SYSTEM_ARTIFACTSDIRECTORY)/**
-    # Expected: $(PIPELINE_WORKSPACE)/a1/**
-    - task: DownloadPipelineArtifact@1
-      inputs:
-        artifactName: 'a1'
-      displayName: 'Download a1 (path not specified)'
+  - template: download-job.yml
+    parameters:
+      id: test5
+      description: 'Test 5 (artifact=,pattern=a1/*.dll)'
+      patterns: 'a1/*.dll'
 
-    # Current : $(Agent.WorkFolder)/results2/**
-    # Expected: $(PIPELINE_WORKSPACE)/results2/**
-    - task: DownloadPipelineArtifact@1
-      inputs:
-        artifactName: 'a2'
-        itemPattern: '**'
-        targetPath: 'results2'
-      displayName: 'Download a2 to simple named directory (results2)'
+  - template: download-job.yml
+    parameters:
+      id: test6
+      description: 'Test 6 (artifact=,pattern=a1/**,a2/**)'
+      pattern: |
+        a1/**
+        a2/**
 
-    # Current : $(Agent.WorkFolder)/results3/**
-    # Expected: $(PIPELINE_WORKSPACE)/results3/**
-    - task: DownloadPipelineArtifact@1
-      inputs:
-        artifactName: 'a3'
-        itemPattern: '**'
-        targetPath: './results3'
-      displayName: 'Download to relative path (results3)'
+  ############################
+  # Build artifact job
+  ############################
+  - job: buildartifact
+    displayName: 'Build artifacts'
+    steps:
+      # **PUBLISH**
+      - task: PublishBuildArtifacts@1
+        inputs:
+          pathtoPublish: '$(Build.SourcesDirectory)/files/a1'
+          ArtifactName: a1-legacy
 
-    # Current : $(Agent.WorkFolder)/../**
-    # Expected: ERROR ... task shouldn't allow files to be placed above PIPELINE_WORKSPACE
-    - task: DownloadPipelineArtifact@1
-      inputs:
-        artifactName: a1
-        targetPath: '..'
-      displayName: 'Download to ..'
+      # **DOWNLOAD**
 
-    # Current : AGENT_WORK/results1/{artifact}
-    # Expected: $(PIPELINE_WORKSPACE)/results1/{artifact1...x}/**
-    - task: DownloadPipelineArtifact@1
-      inputs:
-        targetPath: 'results1'
-      displayName: 'Download all (relative path)' 
+      # Downloads to $(BUILD_ARTIFACTSTAGINGDIRECTORY)/{artifactName}/*
+      - task: DownloadBuildArtifacts@0
+        inputs:
+          artifactName: a1-legacy
+        displayName: 'Download a1-legacy (no path specified)'
 
-- deployment: DeployJob
-  displayName: Deploy
-  environment: staging
-  dependsOn: [ 'publish', 'buildartifact' ]
-  strategy:
-    runOnce:
-      deploy:
-        steps:
-        - powershell: |
-            gci env:* | Sort-Object -Property Name
-            cd ../..
-            Get-ChildItem -Recurse -Directory | Select-Object FullName | Format-Table    
-          displayName: 'Show files'
+      # Downloads to $(System.DefaultWorkingDirectory)/results1/{artifactName}/*
+      - task: DownloadBuildArtifacts@0
+        inputs:
+          artifactName: a1-legacy
+          downloadPath: results1
+        displayName: 'Download a1-legacy to results1'      
+
+      # No-op due to pattern not including artifact name
+      - task: DownloadBuildArtifacts@0
+        inputs:
+          artifactName: a1-legacy
+          itemPattern: 'a2/**'
+          downloadPath: results2
+        displayName: 'Download a1-legacy,a2/** to results2'
+
+      # Downloads to $(System.DefaultWorkingDirectory)/../{artifactName}/*
+      - task: DownloadBuildArtifacts@0
+        inputs:
+          artifactName: a1-legacy
+          downloadPath: '..'
+        displayName: 'Download a1-legacy (.. path)'
+
+      # Downloads to $(System.DefaultWorkingDirectory)/../{artifactName}/*
+      - task: DownloadBuildArtifacts@0
+        inputs:
+          artifactName: a1-legacy
+          downloadPath: '$(Build.SourcesDirectory)/results3'
+        displayName: 'Download a1-legacy to results3 under Sources'
+
+      - bash: |
+          cd ../..
+          grep -r -l "." | grep -v ".git"  | grep -v "node_modules" | grep -v "_tasks" | sort
+        displayName: 'Show downloaded artifacts'
+
+  #################################################
+  # Pipeline artifact download path tests
+  #################################################
+  - job: targetPath
+    displayName: 'Pipeline artifacts (download path tests)'
+    dependsOn: publish
+    strategy:
+      matrix:
+        linux:
+          VM_IMAGE: 'ubuntu-16.04'
+        windows:
+          VM_IMAGE: 'vs2017-win2016'
+    pool:
+      vmImage: $(VM_IMAGE)
+    steps:
+      - checkout: none
+      - bash: printenv
+
+      # Current : AGENT_WORK/results1/{artifact}
+      # Expected: $(PIPELINE_WORKSPACE)/results1/{artifact1...x}/**
+      - task: DownloadPipelineArtifact@1
+        inputs:
+          targetPath: '/home/vsts/foo'
+        displayName: 'Download all (absolute path)' 
+
+      - bash: |
+          echo "===================================="
+          cd /home/vsts/foo
+          echo "PWD: $(pwd)"
+          grep -r -l "." | grep -v ".git" | sort
+          echo "===================================="
+          #cd ..
+          #echo "PWD: $(pwd)"
+          #grep -r -l "." | grep -v ".git"  | grep -v "node_modules" | grep -v "_tasks" | sort
+          #echo "===================================="
+        displayName: 'Results'
+
+      # Current : $(SYSTEM_ARTIFACTSDIRECTORY)/{artifact}/**
+      # Expected: $(PIPELINE_WORKSPACE)/{artifact1...x}/**
+      - task: DownloadPipelineArtifact@1
+        displayName: 'Download all (path not specified)'
+
+      # Current : $(SYSTEM_ARTIFACTSDIRECTORY)/**
+      # Expected: $(PIPELINE_WORKSPACE)/a1/**
+      - task: DownloadPipelineArtifact@1
+        inputs:
+          artifactName: 'a1'
+        displayName: 'Download a1 (path not specified)'
+
+      # Current : $(Agent.WorkFolder)/results2/**
+      # Expected: $(PIPELINE_WORKSPACE)/results2/**
+      - task: DownloadPipelineArtifact@1
+        inputs:
+          artifactName: 'a2'
+          itemPattern: '**'
+          targetPath: 'results2'
+        displayName: 'Download a2 to simple named directory (results2)'
+
+      # Current : $(Agent.WorkFolder)/results3/**
+      # Expected: $(PIPELINE_WORKSPACE)/results3/**
+      - task: DownloadPipelineArtifact@1
+        inputs:
+          artifactName: 'a3'
+          itemPattern: '**'
+          targetPath: './results3'
+        displayName: 'Download to relative path (results3)'
+
+      # Current : $(Agent.WorkFolder)/../**
+      # Expected: ERROR ... task shouldn't allow files to be placed above PIPELINE_WORKSPACE
+      - task: DownloadPipelineArtifact@1
+        inputs:
+          artifactName: a1
+          targetPath: '..'
+        displayName: 'Download to ..'
+
+      # Current : AGENT_WORK/results1/{artifact}
+      # Expected: $(PIPELINE_WORKSPACE)/results1/{artifact1...x}/**
+      - task: DownloadPipelineArtifact@1
+        inputs:
+          targetPath: 'results1'
+        displayName: 'Download all (relative path)' 
+- stage: deploy
+  jobs:
+  - deployment: deployartifacts
+    environment: staging
+    dependsOn: [ 'publish', 'buildartifact' ]
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - powershell: |
+              gci env:* | Sort-Object -Property Name
+              cd ../..
+              Get-ChildItem -Recurse -Directory | Select-Object FullName | Format-Table    
+            displayName: 'Show files'
 
 
 # - task: DownloadPipelineArtifact@1
