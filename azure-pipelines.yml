@@ -1,11 +1,11 @@
 stages:
-- stage: build
+- stage: publish
   jobs:
   ############################
   # Publish job
   ############################
   - job: publish
-    displayName: 'Pipeline artifacts (publish)'
+    displayName: 'Publish artifacts'
     pool:
       vmImage: ubuntu-16.04
     steps:
@@ -27,13 +27,14 @@ stages:
         targetPath: files/a3
       displayName: Publish pipeline artifact (a3)
 
-    - download: current 
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathtoPublish: '$(Build.SourcesDirectory)/files/a1'
+        ArtifactName: a1legacy
 
-    - bash: |
-        cd ..
-        grep -r -l "." | grep -v ".git"  | grep -v "node_modules" | grep -v "_tasks" | sort
-      displayName: 'Show downloaded artifacts'
-
+- stage: download
+  dependsOn: 'publish'
+  jobs:
   ############################
   # Download jobs
   ############################
@@ -77,17 +78,9 @@ stages:
   ############################
   # Build artifact job
   ############################
-  - job: buildartifact
-    displayName: 'Build artifacts'
+  - job: dbapathtests
+    displayName: 'DBA (path tests)'
     steps:
-      # **PUBLISH**
-      - task: PublishBuildArtifacts@1
-        inputs:
-          pathtoPublish: '$(Build.SourcesDirectory)/files/a1'
-          ArtifactName: a1legacy
-
-      # **DOWNLOAD**
-
       # Downloads to $(BUILD_ARTIFACTSTAGINGDIRECTORY)/{artifactName}/*
       - task: DownloadBuildArtifacts@0
         inputs:
@@ -131,9 +124,8 @@ stages:
   #################################################
   # Pipeline artifact download path tests
   #################################################
-  - job: targetPath
-    displayName: 'Pipeline artifacts (download path tests)'
-    dependsOn: publish
+  - job: dpapathtests
+    displayName: 'DPA (path tests)'
     strategy:
       matrix:
         linux:
@@ -210,6 +202,7 @@ stages:
           targetPath: 'results1'
         displayName: 'Download all (relative path)' 
 - stage: deploy
+  dependsOn: 'publish'
   jobs:
   - deployment: deployartifacts
     environment: staging
@@ -217,15 +210,13 @@ stages:
       runOnce:
         deploy:
           steps:
+          - task: DownloadPipelineArtifact@1
+            displayName: 'Download Pipeline Artifact (default location)'
           - powershell: |
               gci env:* | Sort-Object -Property Name
               cd ../..
               Get-ChildItem -Recurse -Directory | Select-Object FullName | Format-Table    
             displayName: 'Show files'
-
-
-# - task: DownloadPipelineArtifact@1
-#   displayName: 'Download Pipeline Artifact (default location)'
 
 
 # - task: DownloadPipelineArtifact@1
