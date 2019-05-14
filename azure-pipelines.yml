@@ -211,6 +211,7 @@ jobs:
 - deployment: DeployJob
   displayName: Deploy
   environment: staging
+  dependsOn: [ 'publish', 'buildartifact ']
   strategy:
     runOnce:
       deploy:
@@ -218,7 +219,7 @@ jobs:
         - powershell: |
             gci env:* | Sort-Object -Property Name
             cd ../..
-            Get-ChildItem -Recurse -Directory | Select-Object FullName | Format-Table
+            Get-ChildItem -Recurse -Directory | Select-Object FullName | Format-Table    
           displayName: 'Show files'
 
 
@@ -257,8 +258,8 @@ jobs:
 #     artifactName: 'a1-legacy'
 #     downloadPath: 'dba-2'
 
-- powershell: |
-   gci env:* | Sort-Object -Property Name
-   cd ../..
-   Get-ChildItem -Recurse -Directory | Select-Object FullName | Format-Table
-  displayName: 'Show files'
+#- powershell: |
+#   gci env:* | Sort-Object -Property Name
+#   cd ../..
+#   Get-ChildItem -Recurse -Directory | Select-Object FullName | Format-Table
+#  displayName: 'Show files'
