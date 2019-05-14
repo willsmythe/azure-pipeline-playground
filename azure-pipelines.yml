@@ -132,7 +132,6 @@ jobs:
 - job: targetPath
   displayName: 'Pipeline artifacts (download path tests)'
   dependsOn: publish
-  condition: never()
   strategy:
     matrix:
       linux:

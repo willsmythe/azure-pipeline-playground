@@ -7,7 +7,6 @@ parameters:
 jobs:
 - job: ${{ parameters.id }}
   dependsOn: publish
-  condition: never()
   variables:
     TEST_DESCRIPTION: ${{ parameters.description }}
   steps:
