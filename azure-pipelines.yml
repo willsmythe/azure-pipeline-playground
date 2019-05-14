@@ -32,6 +32,11 @@ stages:
         pathtoPublish: '$(Build.SourcesDirectory)/files/a1'
         ArtifactName: a1legacy
 
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathtoPublish: '$(Build.SourcesDirectory)/files/a2'
+        ArtifactName: a2legacy   
+
 - stage: download
   dependsOn: publish
   jobs:
