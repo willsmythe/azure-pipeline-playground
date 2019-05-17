@@ -1,18 +1,15 @@
 jobs:
-- job: windows
+- job: yarncache
   pool:
-    vmImage: vs2017-win2016
+    name: Default
+  variables:  
+    YARN_CACHE_FOLDER: $(Pipeline.Workspace)/yarn-cache
   steps:
-    - template: azure-pipelines-steps.yml
+  - restoreCache: package.json
+    path: $(YARN_CACHE_FOLDER)
 
-- job: linux
-  pool:
-    vmImage: ubuntu-16.04
-  steps:
-    - template: azure-pipelines-steps.yml
+  - script: yarn --frozen-lockfile
+    displayName: 'Run yarn'
 
-- job: macOS
-  pool:
-    vmImage: macos-10.13
-  steps:
-    - template: azure-pipelines-steps.yml
+  - saveCache: package.json
+    path: $(YARN_CACHE_FOLDER)
