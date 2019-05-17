@@ -5,6 +5,11 @@ jobs:
   variables:  
     YARN_CACHE_FOLDER: $(Pipeline.Workspace)/yarn-cache
   steps:
+  #- script: |
+      #md $(YARN_CACHE_FOLDER)
+      #yarn cache dir
+      #yarn cache list
+
   - restoreCache: $(Build.SourcesDirectory)/yarn.lock
     path: $(YARN_CACHE_FOLDER)
 
