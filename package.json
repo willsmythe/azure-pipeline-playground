@@ -1,5 +1,8 @@
 {
   "private": true,
+  "scripts": {
+    "test": "echo Running tests..."
+  },
   "devDependencies": {
     "eslint": "5.16.0",
     "execa": "1.0.0",
