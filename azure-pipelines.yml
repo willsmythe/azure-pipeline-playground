@@ -5,11 +5,11 @@ jobs:
   variables:  
     YARN_CACHE_FOLDER: $(Pipeline.Workspace)/yarn-cache
   steps:
-  - restoreCache: yarn.lock
+  - restoreCache: $(Build.SourcesDirectory)/yarn.lock
     path: $(YARN_CACHE_FOLDER)
 
   - script: yarn --frozen-lockfile
     displayName: 'Run yarn'
 
-  - saveCache: yarn.lock
+  - saveCache: $(Build.SourcesDirectory)/yarn.lock
     path: $(YARN_CACHE_FOLDER)
