@@ -2,8 +2,4 @@ language: node_js
 
 node_js: '10'
 
-before_cache:
-- yarn cache dir
-- yarn cache list
-
 cache: yarn
