@@ -6,4 +6,4 @@ jobs:
   steps:
   - checkout: self
   - bash: ls -la
-  - script: printenv  
+  - bash: printenv  
