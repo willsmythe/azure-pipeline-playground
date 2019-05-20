@@ -1,26 +1,5 @@
 jobs:
-- job: yarncache
-  pool:
-    name: Default
-  variables:  
-    YARN_CACHE_FOLDER: $(Pipeline.Workspace)/yarn-cache
-  steps:
-  #- script: |
-      #md $(YARN_CACHE_FOLDER)
-      #yarn cache dir
-      #yarn cache list
-
-  - restoreCache: $(Build.SourcesDirectory)/yarn.lock
-    path: $(YARN_CACHE_FOLDER)
-
-  - script: yarn --frozen-lockfile
-    displayName: 'Run yarn'
-
-  - saveCache: $(Build.SourcesDirectory)/yarn.lock
-    path: $(YARN_CACHE_FOLDER)
-
-
-- job: yarncache2
+- job: test1
   container: ubuntu:16.04
   pool:
     vmImage: 'ubuntu-16.04'
