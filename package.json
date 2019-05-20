@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "test": "echo Running tests... 2"
+    "test": "echo Running tests... 3"
   },
   "dependencies": {
     "@babel/code-frame": "7.0.0",
