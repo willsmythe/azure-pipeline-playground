@@ -6,7 +6,7 @@ steps:
     echo "test" > $HOME/foo/a.txt
   displayName: 'write text file'
 
-# - task: PublishPipelineArtifact@1
-#   inputs:
-#     artifactName: $(ARTIFACT_NAME)
-#     targetPath: '$(HOME)/foo'
+- task: PublishPipelineArtifact@1
+  inputs:
+    artifactName: $(ARTIFACT_NAME)
+    #targetPath: '$(HOME)/foo'
