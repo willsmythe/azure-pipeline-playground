@@ -3,10 +3,33 @@ steps:
 
 - bash: |
     mkdir -p $HOME/foo
+    mkdir -p $PIPELINE_WORKSPACE/foo
     echo "test" > $HOME/foo/a.txt
+    echo "test" > $PIPELINE_WORKSPACE/foo/a.txt
   displayName: 'write text file'
 
 - task: PublishPipelineArtifact@0
   inputs:
-    artifactName: $(ARTIFACT_NAME)
+    artifactName: 'home$(ARTIFACT_NAME)'
     targetPath: '$(HOME)/foo'
+  continueOnError: true
+
+- task: PublishPipelineArtifact@0
+  inputs:
+    artifactName: 'workspace$(ARTIFACT_NAME)'
+    targetPath: '$(Pipeline.Workspace)/foo'
+  continueOnError: true
+
+- task: PublishPipelineArtifact@0
+  inputs:
+    artifactName: 'workspace2$(ARTIFACT_NAME)'
+    targetPath: '$(Pipeline.Workspace)/./foo'
+  continueOnError: true
+  displayName: 'Path with unnecessary . segment'
+
+- task: PublishPipelineArtifact@0
+  inputs:
+    artifactName: 'workspace3$(ARTIFACT_NAME)'
+    targetPath: '../foo'
+  continueOnError: true
+  displayName: '.. path'
