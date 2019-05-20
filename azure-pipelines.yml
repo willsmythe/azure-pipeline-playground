@@ -1,9 +1,17 @@
 jobs:
-- job: test1
+- job: container
+  variables:
+    ARTIFACT_NAME: 'a1'
   container: ubuntu:16.04
   pool:
     vmImage: 'ubuntu-16.04'
   steps:
-  - checkout: self
-  - bash: ls -la
-  - bash: printenv  
+  - template: container-test-steps.yml
+
+- job: regular
+  variables:
+    ARTIFACT_NAME: 'a2'
+  pool:
+    vmImage: 'ubuntu-16.04'
+  steps:
+  - template: container-test-steps.yml
