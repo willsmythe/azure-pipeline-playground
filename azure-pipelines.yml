@@ -5,7 +5,7 @@ jobs:
   steps:
   - script: |
       md a1
-      cp *.yml a1
+      copy *.yml a1
     displayName: Copy files
 
   - task: PublishPipelineArtifact@0
