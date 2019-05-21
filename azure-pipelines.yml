@@ -20,6 +20,7 @@ stages:
   - deployment: deploy
     pool:
       name: Default
+    environment: staging
     strategy:
       runOnce:
         deploy:
