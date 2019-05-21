@@ -20,7 +20,10 @@ jobs:
   pool:
     name: Default
   steps:
-  - download: current
+  - task: DownloadPipelineArtifact@1
+    inputs:
+      artifactName: a1
+    displayName: 'Download a1 please'
 
 # - stage: deploy
 #   jobs:
