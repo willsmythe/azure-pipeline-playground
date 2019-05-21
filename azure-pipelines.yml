@@ -24,5 +24,5 @@ stages:
     strategy:
       runOnce:
         deploy:
-        steps:
-        - script: echo 'Hello'
+          steps:
+          - script: echo Hello
