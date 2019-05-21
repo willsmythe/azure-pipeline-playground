@@ -1,21 +1,27 @@
-jobs:
-- job: publish
-  pool:
-    name: Default
-  steps:
-  - script: |
-      md a1
-      copy *.yml a1
-    displayName: Copy files
+stages:
+- stage: build
+  jobs:
+  - job: publish
+    pool:
+      name: Default
+    steps:
+    - script: |
+        md a1
+        copy *.yml a1
+      displayName: Copy files2
 
-  - task: PublishPipelineArtifact@0
-    inputs:
-      artifactName: a1
-      targetPath: '$(Build.SourcesDirectory)/a1'
+    - task: PublishPipelineArtifact@0
+      inputs:
+        artifactName: a1
+        targetPath: '$(Build.SourcesDirectory)/a1'
 
-- job: download
-  dependsOn: publish
-  pool:
-    name: Default
-  steps:
-  - download: current
+- stage: deploy
+  jobs:
+  - deployment: deploy
+    pool:
+      name: Default
+    strategy:
+      runOnce:
+        deploy:
+        steps:
+        - script: echo 'Hello'
