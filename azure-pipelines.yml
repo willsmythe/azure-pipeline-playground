@@ -2,9 +2,9 @@ variables:
   YARN_CACHE_FOLDER: $(Pipeline.Workspace)/yarn-cache
 
 stages:
-- stage: initcache
+- stage: init
   jobs:
-  - job:
+  - job: initcache
     strategy:
       matrix:
         linux:
@@ -13,9 +13,15 @@ stages:
           VM_IMAGE: vs2017-win2016
         macOS:
           VM_IMAGE: macOS-10.13
+      maxParallel: 3
     pool:
       vmImage: $(VM_IMAGE)
     steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: 10.x
+      displayName: 'Install Node 10.x'
+
     - script: yarn --frozen-lockfile
       displayName: 'Run yarn'
 
@@ -25,9 +31,9 @@ stages:
         artifactName: 'yarn-$(Agent.OS)'
       displayName: Publish yarn cache artifact
 
-- stage: testcache
+- stage: test
   jobs:
-  - job: yarncache
+  - job: testcache
     strategy:
       matrix:
         linux:
@@ -36,6 +42,7 @@ stages:
           VM_IMAGE: vs2017-win2016
         macOS:
           VM_IMAGE: macOS-10.13
+      maxParallel: 3
     pool:
       vmImage: $(VM_IMAGE)
     steps:
@@ -44,5 +51,10 @@ stages:
         artifactName: 'yarn-$(Agent.OS)'
         targetPath: '$(YARN_CACHE_FOLDER)'
     
+    - task: NodeTool@0
+      inputs:
+        versionSpec: 10.x
+      displayName: 'Install Node 10.x'
+
     - script: yarn --frozen-lockfile
       displayName: 'Run yarn'
