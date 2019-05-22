@@ -7,8 +7,8 @@ stages:
   - job: initcache
     strategy:
       matrix:
-        #linux:
-        #  VM_IMAGE: ubuntu-16.04
+        linux:
+          VM_IMAGE: ubuntu-16.04
         windows:  
           VM_IMAGE: vs2017-win2016
         #macOS:
@@ -35,8 +35,8 @@ stages:
   - job: testcache
     strategy:
       matrix:
-        #linux:
-        #  VM_IMAGE: ubuntu-16.04
+        linux:
+          VM_IMAGE: ubuntu-16.04
         windows:  
           VM_IMAGE: vs2017-win2016
         #macOS:
