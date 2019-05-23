@@ -21,9 +21,7 @@ stages:
         versionSpec: 10.x
       displayName: 'Install Node 10.x'
 
-    - script: yarn config set registry https://registry.npmjs.org/
-
-    - script: yarn --frozen-lockfile
+    - script: yarn --frozen-lockfile --registry https://registry.npmjs.org/
       displayName: 'Run yarn'
 
     - task: PublishPipelineArtifact@0
@@ -56,5 +54,5 @@ stages:
         versionSpec: 10.x
       displayName: 'Install Node 10.x'
 
-    - script: yarn --frozen-lockfile
+    - script: yarn --frozen-lockfile --registry https://registry.npmjs.org/
       displayName: 'Run yarn'
