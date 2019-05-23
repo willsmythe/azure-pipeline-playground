@@ -20,7 +20,7 @@ stages:
         versionSpec: 10.x
       displayName: 'Install Node 10.x'
 
-    - bash: echo "${YARN_CACHE_FOLDER}"
+    - bash: yarn config set registry https://registry.npmjs.org/ --global
 
     - script: yarn --frozen-lockfile
       displayName: 'Run yarn'
@@ -57,5 +57,7 @@ stages:
         versionSpec: 10.x
       displayName: 'Install Node 10.x'
 
-    - script: yarn --frozen-lockfile --registry https://registry.npmjs.org/
+    - bash: yarn config set registry https://registry.npmjs.org/ --global
+
+    - script: yarn --frozen-lockfile
       displayName: 'Run yarn'
