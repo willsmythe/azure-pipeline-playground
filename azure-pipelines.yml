@@ -1,11 +1,11 @@
 jobs:
 - job: build
   pool:
-    name: Caching
+    name: Default
   variables:  
-    YARN_CACHE_FOLDER: $(Pipeline.Workspace)/yarn-cache
+    YARN_CACHE_FOLDER: $(Pipeline.Workspace)/yarn-cache-2
   steps:
-  - restoreCache: yarn.lock
+  - restoreCache: $(Build.SourcesDirectory)/yarn.lock
     path: $(YARN_CACHE_FOLDER)
 
   - script: yarn
@@ -14,5 +14,5 @@ jobs:
   - script: yarn build
     displayName: 'Build and test'
 
-  - saveCache: yarn.lock
+  - saveCache: $(Build.SourcesDirectory)/yarn.lock
     path: $(YARN_CACHE_FOLDER)
