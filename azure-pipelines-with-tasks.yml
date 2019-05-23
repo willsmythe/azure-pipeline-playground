@@ -13,8 +13,8 @@ jobs:
   - script: yarn
     displayName: 'Install dependencies'
 
-  - script: yarn build
-    displayName: 'Build and test'
+#  - script: yarn build
+#    displayName: 'Build and test'
 
   - task: SaveCache@0
     inputs:
