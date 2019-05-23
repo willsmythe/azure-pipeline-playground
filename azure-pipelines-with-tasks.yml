@@ -5,8 +5,10 @@ jobs:
   variables:  
     YARN_CACHE_FOLDER: $(Pipeline.Workspace)/yarn-cache
   steps:
-  - restoreCache: yarn.lock
-    path: $(YARN_CACHE_FOLDER)
+  - task: RestoreCache@0
+    inputs:
+      key: '$(Build.SourcesDirectory)/yarn.lock'
+      path: '$(YARN_CACHE_FOLDER)'
 
   - script: yarn
     displayName: 'Install dependencies'
@@ -14,5 +16,7 @@ jobs:
   - script: yarn build
     displayName: 'Build and test'
 
-  - saveCache: yarn.lock
-    path: $(YARN_CACHE_FOLDER)
+  - task: SaveCache@0
+    inputs:
+      key: '$(Build.SourcesDirectory)/yarn.lock'
+      path: '$(YARN_CACHE_FOLDER)'
