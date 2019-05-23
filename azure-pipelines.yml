@@ -11,8 +11,8 @@ jobs:
   - script: yarn
     displayName: 'Install dependencies'
 
-  - script: yarn build
-    displayName: 'Build and test'
+#  - script: yarn build
+#    displayName: 'Build and test'
 
   - saveCache: $(Build.SourcesDirectory)/yarn.lock
     path: $(YARN_CACHE_FOLDER)
