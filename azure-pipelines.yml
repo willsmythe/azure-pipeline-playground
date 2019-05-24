@@ -25,14 +25,14 @@ stages:
     - script: yarn --frozen-lockfile
       displayName: 'Run yarn'
 
+    - script: tar -cf yarn-cache.tar yarn-cache
+    - script: tar -tvf yarn-cache.tar
+
     - task: PublishPipelineArtifact@0
       inputs:
         targetPath: 'yarn-cache.tar'
         artifactName: 'yarn-$(Agent.OS)-tar'
       displayName: Publish yarn cache artifact
-
-    - script: tar -cf yarn-cache.tar yarn-cache
-    - script: tar -tvf yarn-cache.tar
 
     # - task: PublishPipelineArtifact@0
     #   inputs:
