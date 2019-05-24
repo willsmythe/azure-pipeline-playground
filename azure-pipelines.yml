@@ -94,5 +94,5 @@ stages:
         "C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\wpr.exe" -stop trace\trace.etl
     - task: PublishPipelineArtifact@0
       inputs:
-        artifactName: "trace pa $(System.JobDisplayName)"
+        artifactName: "trace"
         targetPath: 'trace'
