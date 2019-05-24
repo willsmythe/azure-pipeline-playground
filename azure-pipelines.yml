@@ -27,9 +27,18 @@ stages:
 
     - task: PublishPipelineArtifact@0
       inputs:
-        targetPath: '$(YARN_CACHE_FOLDER)'
-        artifactName: 'yarn-$(Agent.OS)'
+        targetPath: 'yarn-cache.tar'
+        artifactName: 'yarn-$(Agent.OS)-tar'
       displayName: Publish yarn cache artifact
+
+    - script: tar -cf yarn-cache.tar yarn-cache
+    - script: tar -tvf yarn-cache.tar
+
+    # - task: PublishPipelineArtifact@0
+    #   inputs:
+    #     targetPath: '$(YARN_CACHE_FOLDER)'
+    #     artifactName: 'yarn-$(Agent.OS)'
+    #   displayName: Publish yarn cache artifact
 
 - stage: test
   jobs:
@@ -55,10 +64,20 @@ stages:
         "C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\wpr.exe" -start GeneralProfile -filemode -recordtempto c:\tracetmp
     - script: |
         "C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\wpr.exe" -status
+
+    # - task: DownloadPipelineArtifact@1
+    #   inputs:
+    #     artifactName: 'yarn-$(Agent.OS)'
+    #     targetPath: '$(YARN_CACHE_FOLDER)'
+
     - task: DownloadPipelineArtifact@1
       inputs:
-        artifactName: 'yarn-$(Agent.OS)'
+        artifactName: 'yarn-$(Agent.OS)-tar'
         targetPath: '$(YARN_CACHE_FOLDER)'
+
+    - script: 
+        cd $(YARN_CACHE_FOLDER)
+        tar -xf yarn-cache.tar
     
     - task: NodeTool@0
       inputs:
