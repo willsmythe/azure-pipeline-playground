@@ -4,12 +4,12 @@ stages:
   - job: initcache
     strategy:
       matrix:
-        linux:
-          VM_IMAGE: ubuntu-16.04
+        # linux:
+        #   VM_IMAGE: ubuntu-16.04
         windows:  
           VM_IMAGE: vs2017-win2016
-        macOS:
-          VM_IMAGE: macOS-10.13
+        # macOS:
+        #   VM_IMAGE: macOS-10.13
     pool:
       vmImage: $(VM_IMAGE)
     variables:  
@@ -36,17 +36,25 @@ stages:
   - job: testcache
     strategy:
       matrix:
-        linux:
-          VM_IMAGE: ubuntu-16.04
+        # linux:
+        #   VM_IMAGE: ubuntu-16.04
         windows:  
           VM_IMAGE: vs2017-win2016
-        macOS:
-          VM_IMAGE: macOS-10.13
+        # macOS:
+        #   VM_IMAGE: macOS-10.13
     pool:
       vmImage: $(VM_IMAGE)
     variables:  
       YARN_CACHE_FOLDER: $(Pipeline.Workspace)/yarn-cache
     steps:
+    - powershell: curl http://download.microsoft.com/download/0/1/C/01CC78AA-B53B-4884-B7EA-74F2878AA79F/adk/adksetup.exe -o adksetup.exe
+    - script: start /wait adksetup.exe /quiet /features OptionId.WindowsPerformanceToolkit
+    - script: del /q adksetup.exe
+    - script: mkdir c:\tracetmp
+    - script: |
+        "C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\wpr.exe" -start GeneralProfile -filemode -recordtempto c:\tracetmp
+    - script: |
+        "C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\wpr.exe" -status
     - task: DownloadPipelineArtifact@1
       inputs:
         artifactName: 'yarn-$(Agent.OS)'
@@ -61,3 +69,11 @@ stages:
 
     - script: yarn --frozen-lockfile
       displayName: 'Run yarn'
+
+    - script: mkdir trace
+    - script: |
+        "C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\wpr.exe" -stop trace\trace.etl
+    - task: PublishPipelineArtifact@0
+      inputs:
+        artifactName: "trace pa $(System.JobDisplayName)"
+        targetPath: 'trace'
