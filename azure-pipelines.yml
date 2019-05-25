@@ -42,7 +42,7 @@ stages:
 
 - stage: test
   jobs:
-  - job: testcache-tar
+  - job: testcache_tar
     strategy:
       matrix:
         # linux:
