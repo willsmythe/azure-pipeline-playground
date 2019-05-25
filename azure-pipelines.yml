@@ -77,6 +77,7 @@ stages:
 
     - script: 
         cd $(YARN_CACHE_FOLDER)
+        dir
         tar -xf yarn-cache.tar
     
     - task: NodeTool@0
