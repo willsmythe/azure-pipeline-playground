@@ -177,6 +177,6 @@ stages:
       condition: and(succeeded(), eq(variables['VM_IMAGE'], 'vs2017-win2016'))
     - task: PublishPipelineArtifact@0
       inputs:
-        artifactName: 'trace-tar-$(VM_IMAGE)-rc-$(RESTORE_CACHE)-rct-$(RESTORE_CACHE_TAR)-rnm-$(RESTORE_NODE_MODULES)'
+        artifactName: 'trace-tar-$(VM_IMAGE)-rc-$(RESTORE_CACHE)-rct-$(RESTORE_CACHE_TAR)-rnm-$(RESTORE_NODE_MODULES)-rnmt-$(RESTORE_NODE_MODULES_TAR)-sy-$(SKIP_YARN)'
         targetPath: 'trace'
       condition: and(succeeded(), eq(variables['VM_IMAGE'], 'vs2017-win2016'))
