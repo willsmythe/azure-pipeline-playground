@@ -28,7 +28,7 @@ stages:
     - task: PublishPipelineArtifact@0
       inputs:
         targetPath: '$(YARN_CACHE_FOLDER)'
-        artifactName: 'yarn-$(Agent.OS)'
+        artifactName: 'yarn-$(VM_IMAGE)'
       displayName: Publish yarn cache artifact
 
     - script: tar -cf yarn-cache.tar ../yarn-cache
@@ -37,7 +37,7 @@ stages:
     - task: PublishPipelineArtifact@0
       inputs:
         targetPath: 'yarn-cache.tar'
-        artifactName: 'yarn-$(Agent.OS)-tar'
+        artifactName: 'yarn-$(VM_IMAGE)-tar'
       displayName: Publish yarn cache artifact
 
 - stage: test
@@ -66,7 +66,7 @@ stages:
 
     - task: DownloadPipelineArtifact@1
       inputs:
-        artifactName: 'yarn-$(Agent.OS)-tar'
+        artifactName: 'yarn-$(VM_IMAGE)-tar'
         targetPath: '$(YARN_CACHE_FOLDER)'
 
     - script: 
@@ -119,7 +119,7 @@ stages:
 
     - task: DownloadPipelineArtifact@1
       inputs:
-        artifactName: 'yarn-$(Agent.OS)'
+        artifactName: 'yarn-$(VM_IMAGE)'
         targetPath: '$(YARN_CACHE_FOLDER)'
 
     - task: NodeTool@0
