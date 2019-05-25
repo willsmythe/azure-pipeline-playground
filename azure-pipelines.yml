@@ -63,9 +63,7 @@ stages:
       inputs:
         versionSpec: 10.x
       displayName: 'Install Node 10.x'
-
     - bash: yarn config set registry https://registry.npmjs.org/ --global
-
     - powershell: curl http://download.microsoft.com/download/0/1/C/01CC78AA-B53B-4884-B7EA-74F2878AA79F/adk/adksetup.exe -o adksetup.exe
     - script: |
         start /wait adksetup.exe /quiet /features OptionId.WindowsPerformanceToolkit
@@ -74,22 +72,19 @@ stages:
         "C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\wpr.exe" -start GeneralProfile.light -filemode -recordtempto c:\tracetmp
         "C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\wpr.exe" -status
       displayName: 'begin tracing'
-
     - task: DownloadPipelineArtifact@1
       inputs:
         artifactName: 'yarn-$(VM_IMAGE)-tar'
         targetPath: '$(YARN_CACHE_FOLDER)'
-
     - script: |
         cd $(YARN_CACHE_FOLDER)
         tar -xf yarn-cache.tar
-
     - script: yarn --frozen-lockfile
       displayName: 'Run yarn'
-
     - script: |
         mkdir trace
         "C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\wpr.exe" -stop trace\trace.etl
+      displayName: 'capture tracing'
     - task: PublishPipelineArtifact@0
       inputs:
         artifactName: 'trace-tar-$(VM_IMAGE)'
@@ -113,9 +108,7 @@ stages:
       inputs:
         versionSpec: 10.x
       displayName: 'Install Node 10.x'
-
     - bash: yarn config set registry https://registry.npmjs.org/ --global
-
     - powershell: curl http://download.microsoft.com/download/0/1/C/01CC78AA-B53B-4884-B7EA-74F2878AA79F/adk/adksetup.exe -o adksetup.exe
     - script: |
         start /wait adksetup.exe /quiet /features OptionId.WindowsPerformanceToolkit
@@ -124,18 +117,16 @@ stages:
         "C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\wpr.exe" -start GeneralProfile.light -filemode -recordtempto c:\tracetmp
         "C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\wpr.exe" -status
       displayName: 'begin tracing'
-
     - task: DownloadPipelineArtifact@1
       inputs:
         artifactName: 'yarn-$(VM_IMAGE)'
         targetPath: '$(YARN_CACHE_FOLDER)'
-
     - script: yarn --frozen-lockfile
       displayName: 'Run yarn'
-
     - script: |
         mkdir trace
         "C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\wpr.exe" -stop trace\trace.etl
+      displayName: 'capture tracing'
     - task: PublishPipelineArtifact@0
       inputs:
         artifactName: 'trace-$(VM_IMAGE)'
