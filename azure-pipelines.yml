@@ -14,6 +14,7 @@ stages:
       vmImage: $(VM_IMAGE)
     variables:  
       YARN_CACHE_FOLDER: $(Pipeline.Workspace)/yarn-cache
+      NODE_MODULES_FOLDER: $(System.DefaultWorkingDirectory)/node_modules
     steps:
     - task: NodeTool@0
       inputs:
@@ -42,29 +43,61 @@ stages:
         artifactName: 'yarn-$(VM_IMAGE)-tar'
       displayName: Publish yarn cache artifact
 
+
+    - task: PublishPipelineArtifact@0
+      inputs:
+        targetPath: '$(NODE_MODULES_FOLDER)'
+        artifactName: 'node_modules-$(VM_IMAGE)'
+      displayName: Publish node_modules artifact
+
+    - script: tar -cf node_modules.tar node_modules
+    - script: tar -tvfnode_modules.tar
+    - task: PublishPipelineArtifact@0
+      inputs:
+        targetPath: 'node_modules.tar'
+        artifactName: 'node_modules-$(VM_IMAGE)-tar'
+      displayName: Publish node_modules artifact
+
 - stage: test
   jobs:
   - job: testcache_tar
     strategy:
       matrix:
-        # linux:
-        #   VM_IMAGE: ubuntu-16.04
-        windows:  
+        linux:
+          VM_IMAGE: ubuntu-16.04
+          RESTORE_CACHE: 1
+        linux-tar:
+          VM_IMAGE: ubuntu-16.04
+          RESTORE_CACHE_TAR: 1
+        windows-cache:  
           VM_IMAGE: vs2017-win2016
+          RESTORE_CACHE: 1
+        windows-node_modules:  
+          VM_IMAGE: vs2017-win2016
+          RESTORE_NODE_MODULES: 1
+        windows-cache-node_modules:  
+          VM_IMAGE: vs2017-win2016
+          RESTORE_CACHE: 1
+          RESTORE_NODE_MODULES: 1
+        windows-tar:  
+          VM_IMAGE: vs2017-win2016
+          RESTORE_CACHE_TAR: 1
         # macOS:
         #   VM_IMAGE: macOS-10.13
     pool:
       vmImage: $(VM_IMAGE)
     variables:  
       YARN_CACHE_FOLDER: $(Pipeline.Workspace)/yarn-cache
+      NODE_MODULES_FOLDER: $(System.DefaultWorkingDirectory)/node_modules
     steps:
-
     - task: NodeTool@0
       inputs:
         versionSpec: 10.x
       displayName: 'Install Node 10.x'
     - bash: yarn config set registry https://registry.npmjs.org/ --global
+
     - powershell: curl http://download.microsoft.com/download/0/1/C/01CC78AA-B53B-4884-B7EA-74F2878AA79F/adk/adksetup.exe -o adksetup.exe
+      condition: and(succeeded(), eq(variables['VM_IMAGE'], 'vs2017-win2016'))
     - script: |
         start /wait adksetup.exe /quiet /features OptionId.WindowsPerformanceToolkit
         del /q adksetup.exe
@@ -72,62 +105,40 @@ stages:
         "C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\wpr.exe" -start GeneralProfile.light -filemode -recordtempto c:\tracetmp
         "C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\wpr.exe" -status
       displayName: 'begin tracing'
+      condition: and(succeeded(), eq(variables['VM_IMAGE'], 'vs2017-win2016'))
+      
     - task: DownloadPipelineArtifact@1
       inputs:
         artifactName: 'yarn-$(VM_IMAGE)-tar'
         targetPath: '$(YARN_CACHE_FOLDER)'
+      condition: and(succeeded(), eq(variables['RESTORE_CACHE_TAR'], '1'))
     - script: |
         cd $(YARN_CACHE_FOLDER)
         tar -xf yarn-cache.tar
-    - script: yarn --frozen-lockfile
-      displayName: 'Run yarn'
-    - script: |
-        mkdir trace
-        "C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\wpr.exe" -stop trace\trace.etl
-      displayName: 'capture tracing'
-    - task: PublishPipelineArtifact@0
-      inputs:
-        artifactName: 'trace-tar-$(VM_IMAGE)'
-        targetPath: 'trace'
+      condition: and(succeeded(), eq(variables['RESTORE_CACHE_TAR'], '1'))
 
-  - job: testcache
-    strategy:
-      matrix:
-        # linux:
-        #   VM_IMAGE: ubuntu-16.04
-        windows:  
-          VM_IMAGE: vs2017-win2016
-        # macOS:
-        #   VM_IMAGE: macOS-10.13
-    pool:
-      vmImage: $(VM_IMAGE)
-    variables:  
-      YARN_CACHE_FOLDER: $(Pipeline.Workspace)/yarn-cache
-    steps:
-    - task: NodeTool@0
-      inputs:
-        versionSpec: 10.x
-      displayName: 'Install Node 10.x'
-    - bash: yarn config set registry https://registry.npmjs.org/ --global
-    - powershell: curl http://download.microsoft.com/download/0/1/C/01CC78AA-B53B-4884-B7EA-74F2878AA79F/adk/adksetup.exe -o adksetup.exe
-    - script: |
-        start /wait adksetup.exe /quiet /features OptionId.WindowsPerformanceToolkit
-        del /q adksetup.exe
-        mkdir c:\tracetmp
-        "C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\wpr.exe" -start GeneralProfile.light -filemode -recordtempto c:\tracetmp
-        "C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\wpr.exe" -status
-      displayName: 'begin tracing'
     - task: DownloadPipelineArtifact@1
       inputs:
         artifactName: 'yarn-$(VM_IMAGE)'
         targetPath: '$(YARN_CACHE_FOLDER)'
+      condition: and(succeeded(), eq(variables['RESTORE_CACHE'], '1'))
+
+    - task: DownloadPipelineArtifact@1
+      inputs:
+        artifactName: 'node_modules-$(VM_IMAGE)'
+        targetPath: '$(NODE_MODULES_FOLDER)'
+      condition: and(succeeded(), eq(variables['RESTORE_NODE_MODULES'], '1'))
+
     - script: yarn --frozen-lockfile
       displayName: 'Run yarn'
+
     - script: |
         mkdir trace
         "C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\wpr.exe" -stop trace\trace.etl
       displayName: 'capture tracing'
+      condition: and(succeeded(), eq(variables['VM_IMAGE'], 'vs2017-win2016'))
     - task: PublishPipelineArtifact@0
       inputs:
-        artifactName: 'trace-$(VM_IMAGE)'
+        artifactName: 'trace-tar-$(VM_IMAGE)'
         targetPath: 'trace'
+      condition: and(succeeded(), eq(variables['VM_IMAGE'], 'vs2017-win2016'))
