@@ -76,7 +76,7 @@ stages:
         targetPath: '$(YARN_CACHE_FOLDER)'
 
     - script: 
-        cd $(YARN_CACHE_FOLDER)
+        cd ..\yarn-cache
         dir
         tar -xf yarn-cache.tar
     
