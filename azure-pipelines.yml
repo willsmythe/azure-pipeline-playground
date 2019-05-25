@@ -74,10 +74,15 @@ stages:
         linux-node_modules:
           VM_IMAGE: ubuntu-16.04
           RESTORE_NODE_MODULES: 1
+          SKIP_YARN: 1
         linux-cache-node_modules:
           VM_IMAGE: ubuntu-16.04
           RESTORE_CACHE: 1
           RESTORE_NODE_MODULES: 1
+        linux-node_modulestar:
+          VM_IMAGE: ubuntu-16.04
+          RESTORE_NODE_MODULES_TAR: 1
+          SKIP_YARN: 1
 
         windows-baseline:  
           VM_IMAGE: vs2017-win2016
@@ -87,6 +92,7 @@ stages:
         windows-node_modules:  
           VM_IMAGE: vs2017-win2016
           RESTORE_NODE_MODULES: 1
+          SKIP_YARN: 1
         windows-cache-node_modules:  
           VM_IMAGE: vs2017-win2016
           RESTORE_CACHE: 1
@@ -94,6 +100,10 @@ stages:
         windows-cachetar:  
           VM_IMAGE: vs2017-win2016
           RESTORE_CACHE_TAR: 1
+        windows-node_modulestar:
+          VM_IMAGE: vs2017-win2016
+          RESTORE_NODE_MODULES_TAR: 1
+          SKIP_YARN: 1
         # macOS:
         #   VM_IMAGE: macOS-10.13
     pool:
@@ -141,8 +151,19 @@ stages:
         targetPath: '$(NODE_MODULES_FOLDER)'
       condition: and(succeeded(), eq(variables['RESTORE_NODE_MODULES'], '1'))
 
+    - task: DownloadPipelineArtifact@1
+      inputs:
+        artifactName: 'node_modules-$(VM_IMAGE)-tar'
+        targetPath: '$(NODE_MODULES_FOLDER)'
+      condition: and(succeeded(), eq(variables['RESTORE_NODE_MODULES_TAR'], '1'))
+    - script: |
+        cd $(NODE_MODULES_FOLDER)
+        tar -xf node_modules.tar
+      condition: and(succeeded(), eq(variables['RESTORE_NODE_MODULES_TAR'], '1'))
+
     - script: yarn --frozen-lockfile
       displayName: 'Run yarn'
+      condition: and(succeeded(), ne(variables['SKIP_YARN'], '1'))
 
     - script: |
         mkdir trace
