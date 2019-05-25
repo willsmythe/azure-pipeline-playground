@@ -25,7 +25,7 @@ stages:
     - script: yarn --frozen-lockfile
       displayName: 'Run yarn'
 
-    - script: tar -cf yarn-cache.tar $(YARN_CACHE_FOLDER)
+    - script: tar -cf yarn-cache.tar ../yarn-cache
     - script: tar -tvf yarn-cache.tar
 
     - task: PublishPipelineArtifact@0
