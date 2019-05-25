@@ -60,15 +60,27 @@ stages:
 
 - stage: test
   jobs:
-  - job: testcache_tar
+  - job: testcache
     strategy:
       matrix:
-        linux:
+        linux-baseline:
+          VM_IMAGE: ubuntu-16.04
+        linux-cache:
           VM_IMAGE: ubuntu-16.04
           RESTORE_CACHE: 1
-        linux-tar:
+        linux-cachetar:
           VM_IMAGE: ubuntu-16.04
           RESTORE_CACHE_TAR: 1
+        linux-node_modules:
+          VM_IMAGE: ubuntu-16.04
+          RESTORE_NODE_MODULES: 1
+        linux-cache-node_modules:
+          VM_IMAGE: ubuntu-16.04
+          RESTORE_CACHE: 1
+          RESTORE_NODE_MODULES: 1
+
+        windows-baseline:  
+          VM_IMAGE: vs2017-win2016
         windows-cache:  
           VM_IMAGE: vs2017-win2016
           RESTORE_CACHE: 1
@@ -79,7 +91,7 @@ stages:
           VM_IMAGE: vs2017-win2016
           RESTORE_CACHE: 1
           RESTORE_NODE_MODULES: 1
-        windows-tar:  
+        windows-cachetar:  
           VM_IMAGE: vs2017-win2016
           RESTORE_CACHE_TAR: 1
         # macOS:
@@ -139,6 +151,6 @@ stages:
       condition: and(succeeded(), eq(variables['VM_IMAGE'], 'vs2017-win2016'))
     - task: PublishPipelineArtifact@0
       inputs:
-        artifactName: 'trace-tar-$(VM_IMAGE)'
+        artifactName: 'trace-tar-$(VM_IMAGE)-rc-$(RESTORE_CACHE)-rct-$(RESTORE_CACHE_TAR)-rnm-$(RESTORE_NODE_MODULES)'
         targetPath: 'trace'
       condition: and(succeeded(), eq(variables['VM_IMAGE'], 'vs2017-win2016'))
