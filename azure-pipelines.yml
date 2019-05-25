@@ -25,7 +25,7 @@ stages:
     - script: yarn --version
     - script: yarn --frozen-lockfile
       displayName: 'Run yarn'
-    - script: dir
+    - bash: ls -l
 
     - task: PublishPipelineArtifact@0
       inputs:
