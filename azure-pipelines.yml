@@ -111,6 +111,11 @@ stages:
     variables:  
       YARN_CACHE_FOLDER: $(Pipeline.Workspace)/yarn-cache
       NODE_MODULES_FOLDER: $(System.DefaultWorkingDirectory)/node_modules
+      RESTORE_CACHE: 0
+      RESTORE_CACHE_TAR: 0
+      RESTORE_NODE_MODULES: 0
+      RESTORE_NODE_MODULES_TAR: 0
+      SKIP_YARN: 0
     steps:
     - task: NodeTool@0
       inputs:
