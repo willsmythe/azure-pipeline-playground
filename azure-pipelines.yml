@@ -72,7 +72,7 @@ stages:
         targetPath: '$(NPM_CACHE_DIR)'
       displayName: Download npm cache
 
-    - script: npm ci
+    - script: npm ci --prefer-offline
 
     #- bash: yarn config set registry https://registry.npmjs.org/ --global
 
