@@ -1,7 +1,7 @@
 jobs:
 - job: build
   pool:
-    name: Default
+    name: Caching
   variables:  
     YARN_CACHE_FOLDER: $(Pipeline.Workspace)/yarn-cache-2
   steps:
