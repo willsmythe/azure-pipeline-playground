@@ -20,7 +20,7 @@ stages:
         versionSpec: 10.x
       displayName: 'Install Node 10.x'
 
-    - bash: yarn config set registry https://registry.npmjs.org/ --global
+    ##- bash: yarn config set registry https://registry.npmjs.org/ --global
 
     - script: yarn --frozen-lockfile
       displayName: 'Run yarn'
@@ -57,7 +57,7 @@ stages:
         versionSpec: 10.x
       displayName: 'Install Node 10.x'
 
-    - bash: yarn config set registry https://registry.npmjs.org/ --global
+    #- bash: yarn config set registry https://registry.npmjs.org/ --global
 
-    - script: yarn --frozen-lockfile
+    - script: yarn --frozen-lockfile --prefer-offline
       displayName: 'Run yarn'
