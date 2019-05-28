@@ -32,14 +32,14 @@ stages:
         artifactName: 'npm-$(Agent.OS)'
       displayName: Publish npm cache artifact
 
-    - script: yarn --frozen-lockfile
-      displayName: 'Run yarn'
+    # - script: yarn --frozen-lockfile
+    #   displayName: 'Run yarn'
 
-    - task: PublishPipelineArtifact@0
-      inputs:
-        targetPath: '$(YARN_CACHE_FOLDER)'
-        artifactName: 'yarn-$(Agent.OS)'
-      displayName: Publish yarn cache artifact
+    # - task: PublishPipelineArtifact@0
+    #   inputs:
+    #     targetPath: '$(YARN_CACHE_FOLDER)'
+    #     artifactName: 'yarn-$(Agent.OS)'
+    #   displayName: Publish yarn cache artifact
 
 - stage: test
   jobs:
@@ -57,24 +57,29 @@ stages:
     variables:  
       YARN_CACHE_FOLDER: $(Pipeline.Workspace)/yarn-cache
     steps:
-    - task: DownloadPipelineArtifact@1
-      inputs:
-        artifactName: 'yarn-$(Agent.OS)'
-        targetPath: '$(YARN_CACHE_FOLDER)'
-      displayName: Download yarn cache
-
-    - task: DownloadPipelineArtifact@1
-      inputs:
-        artifactName: 'npm-$(Agent.OS)'
-        targetPath: .
-      displayName: Download npm cache
-
     - task: NodeTool@0
       inputs:
         versionSpec: 10.x
       displayName: 'Install Node 10.x'
 
+    - bash: |
+        export NPM_CACHE_DIR="$(npm config get cache)"
+        echo "##vso[task.setvariable variable=NPM_CACHE_DIR]$NPM_CACHE_DIR"
+
+    - task: DownloadPipelineArtifact@1
+      inputs:
+        artifactName: 'npm-$(Agent.OS)'
+        targetPath: '$(NPM_CACHE_DIR)'
+      displayName: Download npm cache
+
+    - script: npm ci
+
     #- bash: yarn config set registry https://registry.npmjs.org/ --global
 
-    - script: yarn --frozen-lockfile --prefer-offline
-      displayName: 'Run yarn'
+    # - task: DownloadPipelineArtifact@1
+    #   inputs:
+    #     artifactName: 'yarn-$(Agent.OS)'
+    #     targetPath: '$(YARN_CACHE_FOLDER)'
+    #   displayName: Download yarn cache
+    # - script: yarn --frozen-lockfile --prefer-offline
+    #   displayName: 'Run yarn'
