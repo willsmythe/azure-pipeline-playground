@@ -128,6 +128,9 @@ stages:
       displayName: 'Install Node 10.x'
     - bash: yarn config set registry https://registry.npmjs.org/ --global
 
+    - bash: ls -l $(YARN_CACHE_FOLDER) || echo $(YARN_CACHE_FOLDER) not found
+      displayName: display cache folder
+
     - powershell: curl http://download.microsoft.com/download/0/1/C/01CC78AA-B53B-4884-B7EA-74F2878AA79F/adk/adksetup.exe -o adksetup.exe
       condition: and(succeeded(), eq(variables['VM_IMAGE'], 'vs2017-win2016'))
     - script: |
@@ -171,6 +174,9 @@ stages:
         tar -xf node_modules.tar
       condition: and(succeeded(), eq(variables['RESTORE_NODE_MODULES_TAR'], '1'))
 
+    - bash: ls -l $(YARN_CACHE_FOLDER) || echo $(YARN_CACHE_FOLDER) not found
+      displayName: display cache folder
+
     - bash: yarn cache list | wc -l
       displayName: Show count of packages in yarn cache
     - script: yarn --frozen-lockfile
@@ -178,6 +184,8 @@ stages:
       condition: and(succeeded(), ne(variables['SKIP_YARN'], '1'))
     - bash: yarn cache list | wc -l
       displayName: Show count of packages in yarn cache
+    - bash: ls -l $(YARN_CACHE_FOLDER) || echo $(YARN_CACHE_FOLDER) not found
+      displayName: display cache folder
     - script: |
         mkdir trace
         "C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\wpr.exe" -stop trace\trace.etl
