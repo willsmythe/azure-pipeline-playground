@@ -1,7 +1,7 @@
 stages:
 - stage: init
   jobs:
-  - job: initcache
+  - job: yarn
     strategy:
       matrix:
         linux:
@@ -21,17 +21,16 @@ stages:
         versionSpec: 10.x
       displayName: 'Install Node 10.x'
 
-    - bash: yarn config set registry https://registry.npmjs.org/ --global
-
     - script: yarn --version
+
     - bash: yarn cache list | wc -l
       displayName: Show count of packages in yarn cache
+
     - script: yarn --frozen-lockfile
       displayName: 'Run yarn'
 
     - bash: yarn cache list | wc -l
       displayName: Show count of packages in yarn cache
-    - bash: ls -l
 
     - task: PublishPipelineArtifact@0
       inputs:
@@ -46,8 +45,7 @@ stages:
       inputs:
         targetPath: 'yarn-cache.tar'
         artifactName: 'yarn-$(VM_IMAGE)-tar'
-      displayName: Publish yarn cache artifact
-
+      displayName: Publish yarn cache (tar) artifact
 
     - task: PublishPipelineArtifact@0
       inputs:
@@ -61,7 +59,40 @@ stages:
       inputs:
         targetPath: 'node_modules.tar'
         artifactName: 'node_modules-$(VM_IMAGE)-tar'
-      displayName: Publish node_modules artifact
+      displayName: Publish node_modules (tar) artifact
+  
+  - job: npm
+    strategy:
+      matrix:
+        linux:
+          VM_IMAGE: ubuntu-16.04
+        windows:  
+          VM_IMAGE: vs2017-win2016
+        macOS:
+          VM_IMAGE: macOS-10.13
+    pool:
+      vmImage: $(VM_IMAGE)
+    variables:  
+      NPM_CONFIG_CACHE: $(Pipeline.Workspace)/npm-cache
+    steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: 10.x
+      displayName: 'Install Node 10.x'
+
+    - script: npm install
+      displayName: Run npm install
+    
+    - bash: |
+        cd ../npm-cache
+        tar -cf ../npm-cache.tar .
+      displayName: Create npm cache (tar)
+
+    - task: PublishPipelineArtifact@0
+      inputs:
+        targetPath: '$(Pipeline.Workspace)/npm-cache.tar'
+        artifactName: 'npm-$(VM_IMAGE)-tar'
+      displayName: Publish npm cache (tar) artifact
 
 - stage: test
   jobs:
@@ -72,43 +103,54 @@ stages:
           VM_IMAGE: ubuntu-16.04
         linux-cache:
           VM_IMAGE: ubuntu-16.04
-          RESTORE_CACHE: 1
+          RESTORE_YARN_CACHE: 1
         linux-cachetar:
           VM_IMAGE: ubuntu-16.04
-          RESTORE_CACHE_TAR: 1
+          RESTORE_YARN_CACHE_TAR: 1
         linux-node_modules:
           VM_IMAGE: ubuntu-16.04
           RESTORE_NODE_MODULES: 1
           SKIP_YARN: 1
         linux-cache-node_modules:
           VM_IMAGE: ubuntu-16.04
-          RESTORE_CACHE: 1
+          RESTORE_YARN_CACHE: 1
           RESTORE_NODE_MODULES: 1
         linux-node_modulestar:
           VM_IMAGE: ubuntu-16.04
           RESTORE_NODE_MODULES_TAR: 1
           SKIP_YARN: 1
+        linux-npm-cache:
+          VM_IMAGE: ubuntu-16.04
+          RESTORE_NPM_CACHE_TAR: 1
+          SKIP_YARN: 1
+          SKIP_NPM: 0
 
         windows-baseline:  
           VM_IMAGE: vs2017-win2016
         windows-cache:  
           VM_IMAGE: vs2017-win2016
-          RESTORE_CACHE: 1
+          RESTORE_YARN_CACHE: 1
         windows-node_modules:  
           VM_IMAGE: vs2017-win2016
           RESTORE_NODE_MODULES: 1
           SKIP_YARN: 1
         windows-cache-node_modules:  
           VM_IMAGE: vs2017-win2016
-          RESTORE_CACHE: 1
+          RESTORE_YARN_CACHE: 1
           RESTORE_NODE_MODULES: 1
         windows-cachetar:  
           VM_IMAGE: vs2017-win2016
-          RESTORE_CACHE_TAR: 1
+          RESTORE_YARN_CACHE_TAR: 1
         windows-node_modulestar:
           VM_IMAGE: vs2017-win2016
           RESTORE_NODE_MODULES_TAR: 1
           SKIP_YARN: 1
+        windows-npm-cache:
+          VM_IMAGE: vs2017-win2016
+          RESTORE_NPM_CACHE_TAR: 1
+          SKIP_YARN: 1
+          SKIP_NPM: 0
+
         # macOS:
         #   VM_IMAGE: macOS-10.13
     pool:
@@ -116,11 +158,14 @@ stages:
     variables:  
       YARN_CACHE_FOLDER: $(Pipeline.Workspace)/yarn-cache
       NODE_MODULES_FOLDER: $(System.DefaultWorkingDirectory)/node_modules
-      RESTORE_CACHE: 0
-      RESTORE_CACHE_TAR: 0
+      NPM_CONFIG_CACHE: $(Pipeline.Workspace)/npm-cache
+      RESTORE_YARN_CACHE: 0
+      RESTORE_YARN_CACHE_TAR: 0
       RESTORE_NODE_MODULES: 0
       RESTORE_NODE_MODULES_TAR: 0
+      RESTORE_NPM_CACHE_TAR: 0
       SKIP_YARN: 0
+      SKIP_NPM: 1
     steps:
     - task: NodeTool@0
       inputs:
@@ -129,7 +174,7 @@ stages:
     - bash: yarn config set registry https://registry.npmjs.org/ --global
 
     - bash: ls -l $(YARN_CACHE_FOLDER) || echo $(YARN_CACHE_FOLDER) not found
-      displayName: display cache folder
+      displayName: Display yarn cache folder
 
     - powershell: curl http://download.microsoft.com/download/0/1/C/01CC78AA-B53B-4884-B7EA-74F2878AA79F/adk/adksetup.exe -o adksetup.exe
       condition: and(succeeded(), eq(variables['VM_IMAGE'], 'vs2017-win2016'))
@@ -146,20 +191,20 @@ stages:
       inputs:
         artifactName: 'yarn-$(VM_IMAGE)-tar'
         targetPath: '$(YARN_CACHE_FOLDER)'
-      condition: and(succeeded(), eq(variables['RESTORE_CACHE_TAR'], '1'))
+      condition: and(succeeded(), eq(variables['RESTORE_YARN_CACHE_TAR'], '1'))
     - script: |
         cd $(YARN_CACHE_FOLDER)
         mv yarn-cache.tar ..
         cd ..
         mv yarn-cache yarn-cache.old
         tar -xf yarn-cache.tar
-      condition: and(succeeded(), eq(variables['RESTORE_CACHE_TAR'], '1'))
+      condition: and(succeeded(), eq(variables['RESTORE_YARN_CACHE_TAR'], '1'))
 
     - task: DownloadPipelineArtifact@1
       inputs:
         artifactName: 'yarn-$(VM_IMAGE)'
         targetPath: '$(YARN_CACHE_FOLDER)'
-      condition: and(succeeded(), eq(variables['RESTORE_CACHE'], '1'))
+      condition: and(succeeded(), eq(variables['RESTORE_YARN_CACHE'], '1'))
 
     - task: DownloadPipelineArtifact@1
       inputs:
@@ -179,16 +224,34 @@ stages:
 
     - bash: ls -l $(YARN_CACHE_FOLDER) || echo $(YARN_CACHE_FOLDER) not found
       displayName: display cache folder
-
+      condition: and(succeeded(), ne(variables['SKIP_YARN'], '1'))
     - bash: yarn cache list | wc -l
       displayName: Show count of packages in yarn cache
+      condition: and(succeeded(), ne(variables['SKIP_YARN'], '1'))
     - script: yarn --frozen-lockfile
       displayName: 'Run yarn'
       condition: and(succeeded(), ne(variables['SKIP_YARN'], '1'))
     - bash: yarn cache list | wc -l
       displayName: Show count of packages in yarn cache
+      condition: and(succeeded(), ne(variables['SKIP_YARN'], '1'))
     - bash: ls -l $(YARN_CACHE_FOLDER) || echo $(YARN_CACHE_FOLDER) not found
       displayName: display cache folder
+      condition: and(succeeded(), ne(variables['SKIP_YARN'], '1'))
+
+    - task: DownloadPipelineArtifact@1
+      inputs:
+        artifactName: 'npm-$(VM_IMAGE)-tar'
+        targetPath: '$(Pipeline.Workspace)'
+      condition: and(succeeded(), eq(variables['RESTORE_NPM_CACHE_TAR'], '1'))
+    - bash: |
+        mkdir -p $NPM_CONFIG_CACHE
+        cd $NPM_CONFIG_CACHE
+        tar -xf ${PIPELINE_WORKSPACE}/npm-cache.tar      
+      condition: and(succeeded(), eq(variables['RESTORE_NPM_CACHE_TAR'], '1'))
+           
+    - bash: npm install
+      condition: and(succeeded(), ne(variables['SKIP_NPM'], '1'))
+
     - script: |
         mkdir trace
         "C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\wpr.exe" -stop trace\trace.etl
@@ -196,6 +259,6 @@ stages:
       condition: and(succeeded(), eq(variables['VM_IMAGE'], 'vs2017-win2016'))
     - task: PublishPipelineArtifact@0
       inputs:
-        artifactName: 'trace-tar-$(VM_IMAGE)-rc-$(RESTORE_CACHE)-rct-$(RESTORE_CACHE_TAR)-rnm-$(RESTORE_NODE_MODULES)-rnmt-$(RESTORE_NODE_MODULES_TAR)-sy-$(SKIP_YARN)'
+        artifactName: 'trace-tar-$(VM_IMAGE)-rc-$(RESTORE_YARN_CACHE)-rct-$(RESTORE_YARN_CACHE_TAR)-rnm-$(RESTORE_NODE_MODULES)-rnmt-$(RESTORE_NODE_MODULES_TAR)-sy-$(SKIP_YARN)'
         targetPath: 'trace'
       condition: and(succeeded(), eq(variables['VM_IMAGE'], 'vs2017-win2016'))
