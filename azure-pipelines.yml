@@ -56,7 +56,7 @@ stages:
       displayName: Publish node_modules artifact
 
     - script: tar -cf node_modules.tar node_modules
-    - script: tar -tvfnode_modules.tar
+    - script: tar -tvf node_modules.tar
     - task: PublishPipelineArtifact@0
       inputs:
         targetPath: 'node_modules.tar'
@@ -150,6 +150,7 @@ stages:
     - script: |
         cd $(YARN_CACHE_FOLDER)
         tar -xf yarn-cache.tar
+        mv yarn-cache/* .
       condition: and(succeeded(), eq(variables['RESTORE_CACHE_TAR'], '1'))
 
     - task: DownloadPipelineArtifact@1
