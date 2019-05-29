@@ -149,8 +149,10 @@ stages:
       condition: and(succeeded(), eq(variables['RESTORE_CACHE_TAR'], '1'))
     - script: |
         cd $(YARN_CACHE_FOLDER)
+        mv yarn-cache.tar ..
+        cd ..
+        mv yarn-cache yarn-cache.old
         tar -xf yarn-cache.tar
-        mv yarn-cache/* .
       condition: and(succeeded(), eq(variables['RESTORE_CACHE_TAR'], '1'))
 
     - task: DownloadPipelineArtifact@1
