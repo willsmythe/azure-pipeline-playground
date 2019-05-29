@@ -25,35 +25,37 @@ stages:
       displayName: Show yarn version
 
     - bash: yarn cache list | wc -l
-      displayName: Show count of packages in yarn cache
-
+      displayName: Show package count in yarn cache
     - script: yarn --frozen-lockfile
       displayName: Run yarn
-
     - bash: yarn cache list | wc -l
-      displayName: Show count of packages in yarn cache (after yarn)
+      displayName: Show package count in yarn cache
 
+    # artifact: yarn cache
     - task: PublishPipelineArtifact@0
       inputs:
         targetPath: '$(YARN_CACHE_FOLDER)'
         artifactName: 'yarn-$(VM_IMAGE)'
       displayName: Publish yarn cache artifact
 
-    - script: tar -cf $(Pipeline.Workspace)/yarn-cache.tar .
+    # artifact: yarn cache (tar)
+    - bash: tar -cf ../yarn-cache.tar .
       displayName: Create yarn cache tar
       workingDirectory: $(YARN_CACHE_FOLDER)
     - task: PublishPipelineArtifact@0
       inputs:
-        targetPath: '$(Pipeline.Workspace)/yarn-cache.tar'
+        targetPath: '$(YARN_CACHE_FOLDER)/../yarn-cache.tar'
         artifactName: 'yarn-$(VM_IMAGE)-tar'
       displayName: Publish yarn cache (tar) artifact
 
+    # artifact: node_modules
     - task: PublishPipelineArtifact@0
       inputs:
         targetPath: '$(NODE_MODULES_FOLDER)'
         artifactName: 'node_modules-$(VM_IMAGE)'
       displayName: Publish node_modules artifact
 
+    # artifact: node_modules (tar)
     - script: tar -cf node_modules.tar node_modules
     - script: tar -tvf node_modules.tar
     - task: PublishPipelineArtifact@0
@@ -84,13 +86,13 @@ stages:
     - script: npm install
       displayName: Run npm install
  
-    - script: tar -cf $(Pipeline.Workspace)/npm-cache.tar .
+    # artifact: npm cache (tar)
+    - bash: tar -cf ../npm-cache.tar .
       displayName: Create npm cache tar
       workingDirectory: $(NPM_CONFIG_CACHE)
-
     - task: PublishPipelineArtifact@0
       inputs:
-        targetPath: '$(Pipeline.Workspace)/npm-cache.tar'
+        targetPath: '$(NPM_CONFIG_CACHE)/../npm-cache.tar'
         artifactName: 'npm-$(VM_IMAGE)-tar'
       displayName: Publish npm cache (tar) artifact
 
