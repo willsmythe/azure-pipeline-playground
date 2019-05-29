@@ -24,8 +24,13 @@ stages:
     - bash: yarn config set registry https://registry.npmjs.org/ --global
 
     - script: yarn --version
+    - bash: yarn cache list | wc -l
+      displayName: Show count of packages in yarn cache
     - script: yarn --frozen-lockfile
       displayName: 'Run yarn'
+
+    - bash: yarn cache list | wc -l
+      displayName: Show count of packages in yarn cache
     - bash: ls -l
 
     - task: PublishPipelineArtifact@0
