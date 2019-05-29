@@ -166,10 +166,13 @@ stages:
         tar -xf node_modules.tar
       condition: and(succeeded(), eq(variables['RESTORE_NODE_MODULES_TAR'], '1'))
 
+    - bash: yarn cache list | wc -l
+      displayName: Show count of packages in yarn cache
     - script: yarn --frozen-lockfile
       displayName: 'Run yarn'
       condition: and(succeeded(), ne(variables['SKIP_YARN'], '1'))
-
+    - bash: yarn cache list | wc -l
+      displayName: Show count of packages in yarn cache
     - script: |
         mkdir trace
         "C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\wpr.exe" -stop trace\trace.etl
