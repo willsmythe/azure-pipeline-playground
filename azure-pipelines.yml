@@ -39,11 +39,9 @@ stages:
         artifactName: 'yarn-$(VM_IMAGE)'
       displayName: Publish yarn cache artifact
 
-    - script: |
-        cd ../yarn-cache
-        tar -cf ../yarn-cache.tar 
+    - script: tar -cf $(Pipeline.Workspace)/yarn-cache.tar .
       displayName: Create yarn cache tar
-
+      workingDirectory: $(YARN_CACHE_FOLDER)
     - task: PublishPipelineArtifact@0
       inputs:
         targetPath: '$(Pipeline.Workspace)/yarn-cache.tar'
@@ -85,11 +83,10 @@ stages:
 
     - script: npm install
       displayName: Run npm install
-    
-    - script: |
-        cd ../npm-cache
-        tar -cf ../npm-cache.tar .
-      displayName: Create npm cache (tar)
+ 
+    - script: tar -cf $(Pipeline.Workspace)/npm-cache.tar .
+      displayName: Create npm cache tar
+      workingDirectory: $(NPM_CONFIG_CACHE)
 
     - task: PublishPipelineArtifact@0
       inputs:
