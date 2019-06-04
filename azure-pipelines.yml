@@ -89,3 +89,9 @@ stages:
       id: test8
       artifactName: b1
       itemPattern: 'b1/*.dll'
+
+  - template: download-job.yml
+    parameters:
+      id: test9
+      artifactName: b1
+      itemPattern: 'b1/*.txt'      

@@ -21,10 +21,13 @@ jobs:
   - bash: |
       echo "======================================================="
       echo "All artifacts:"
-      cd files && grep -r -l "." | sort
+      cd files
+      grep -r -l "." | sort
+      mv a1 b1
+      grep -r -l "." | sort
       echo "======================================================="
-      echo "Downloaded artifacts (${ARTIFACT} ${PATTERN}):"
-      cd ../results && grep -r -l "." | sort
+      echo "Downloaded artifacts (artifact=${ARTIFACT}, pattern=${PATTERN}):"
+      cd ../results/${ARTIFACT} && grep -r -l "." | sort
       echo "======================================================="
     displayName: 'Results'
     continueOnError: true
