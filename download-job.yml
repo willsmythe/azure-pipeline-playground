@@ -1,7 +1,6 @@
 parameters:
   id: ''
-  #description: ''
-  artifactName: ''
+  downloadType: 'single'
   itermPattern: ''
 
 jobs:
@@ -10,12 +9,14 @@ jobs:
     TEST_DESCRIPTION: ${{ parameters.description }}
     ARTIFACT: ${{ parameters.artifactName }}
     PATTERN: ${{ parameters.itemPattern }}
+    DOWNLOAD_TYPE: ${{ parameters.downloadType }}
   steps:
   - task: DownloadBuildArtifacts@0
     inputs:
       downloadPath: '$(Build.SourcesDirectory)/results'
       artifactName: '$(ARTIFACT)'
       itemPattern: '$(PATTERN)'
+      downloadType: '$(DOWNLOAD_TYPE)'
     continueOnError: true
   
   - bash: |

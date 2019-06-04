@@ -94,4 +94,28 @@ stages:
     parameters:
       id: test9
       artifactName: b1
-      itemPattern: 'b1/*.txt'      
+      itemPattern: 'b1/*.txt'
+
+  - template: download-job.yml
+    parameters:
+      id: test10
+      downloadType: specific
+      itemPattern: '**'
+
+  - template: download-job.yml
+    parameters:
+      id: test11
+      downloadType: specific
+      itemPattern: '**/*.txt' 
+
+  - template: download-job.yml
+    parameters:
+      id: test12
+      downloadType: specific
+      itemPattern: 'b1/*.txt'
+
+  - template: download-job.yml
+    parameters:
+      id: test13
+      downloadType: specific
+      itemPattern: '*.txt' 
