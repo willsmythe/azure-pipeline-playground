@@ -23,11 +23,11 @@ jobs:
         export DBA_DOWNLOAD_TYPE="single"
       fi
 
-      echo "##vso.task[setVariable variable=DPA_ARTIFACT]$DPA_ARTIFACT"
-      echo "##vso.task[setVariable variable=DPA_PATTERN]$DPA_PATTERN"
-      echo "##vso.task[setVariable variable=DBA_ARTIFACT]$DBA_ARTIFACT"
-      echo "##vso.task[setVariable variable=DBA_PATTERN]$DBA_PATTERN"
-      echo "##vso.task[setVariable variable=DBA_DOWNLOAD_TYPE]$DBA_DOWNLOAD_TYPE"
+      echo "##vso[task.setVariable variable=DPA_ARTIFACT]$DPA_ARTIFACT"
+      echo "##vso[task.setVariable variable=DPA_PATTERN]$DPA_PATTERN"
+      echo "##vso[task.setVariable variable=DBA_ARTIFACT]$DBA_ARTIFACT"
+      echo "##vso[task.setVariable variable=DBA_PATTERN]$DBA_PATTERN"
+      echo "##vso[task.setVariable variable=DBA_DOWNLOAD_TYPE]$DBA_DOWNLOAD_TYPE"
 
   - task: DownloadBuildArtifacts@0
     inputs:
