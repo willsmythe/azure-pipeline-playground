@@ -1,6 +1,6 @@
 parameters:
   id: ''
-  downloadType: 'single'
+  artifactName: ''
   itermPattern: ''
 
 jobs:
@@ -9,15 +9,40 @@ jobs:
     TEST_DESCRIPTION: ${{ parameters.description }}
     ARTIFACT: ${{ parameters.artifactName }}
     PATTERN: ${{ parameters.itemPattern }}
-    DOWNLOAD_TYPE: ${{ parameters.downloadType }}
   steps:
+  - bash: |
+      export DPA_ARTIFACT=${ARTIFACT}
+      export DPA_PATTERN=${PATTERN}
+
+      export DBA_ARTIFACT=${ARTIFACT/a/b}
+      export DBA_PATTERN=${PATTERN/a/b}
+
+      if [ -z "$DBA_ARTIFACT" ]; then
+        export DBA_DOWNLOAD_TYPE="specific"
+      else
+        export DBA_DOWNLOAD_TYPE="single"
+      fi
+
+      echo "##vso.task[setVariable variable=DPA_ARTIFACT]$DPA_ARTIFACT"
+      echo "##vso.task[setVariable variable=DPA_PATTERN]$DPA_PATTERN"
+      echo "##vso.task[setVariable variable=DBA_ARTIFACT]$DBA_ARTIFACT"
+      echo "##vso.task[setVariable variable=DBA_PATTERN]$DBA_PATTERN"
+      echo "##vso.task[setVariable variable=DBA_DOWNLOAD_TYPE]$DBA_DOWNLOAD_TYPE"
+
   - task: DownloadBuildArtifacts@0
     inputs:
-      downloadPath: '$(Build.SourcesDirectory)/results'
-      artifactName: '$(ARTIFACT)'
-      itemPattern: '$(PATTERN)'
-      downloadType: '$(DOWNLOAD_TYPE)'
+      downloadPath: '$(Build.SourcesDirectory)/results/dba'
+      artifactName: '$(DBA_ARTIFACT)'
+      itemPattern: '$(DBA_PATTERN)'
+      downloadType: '$(DBA_DOWNLOAD_TYPE)'
     continueOnError: true
+
+  - task: DownloadPipelineArtifact@1
+    inputs:
+      targetPath: '$(Build.SourcesDirectory)/results/dpa'
+      ArtifactName: :'$(DPA_ARTIFACT)'
+      itemPattern: '$(DPA_PATTERN)'
+    continueOnError: true    
   
   - bash: |
       echo "======================================================="
@@ -29,8 +54,10 @@ jobs:
       mv a3 b3
       grep -r -l "." | sort
       echo "======================================================="
-      echo "Downloaded artifacts (artifact=${ARTIFACT}, pattern=${PATTERN}):"
-      cd ../results/${ARTIFACT} && grep -r -l "." | sort
+      echo "DBA (artifact=${DBA_ARTIFACT}, pattern=${DBA_PATTERN}):"
+      cd ../results/dba/${DBA_ARTIFACT} && grep -r -l "." | sort
       echo "======================================================="
+      echo "DPA (artifact=${DPA_ARTIFACT}, pattern=${DPA_PATTERN}):"
+      cd ../results/dpa/${DPA_ARTIFACT} && grep -r -l "." | sort
     displayName: 'Results'
     continueOnError: true
