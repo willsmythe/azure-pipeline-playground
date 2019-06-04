@@ -67,5 +67,19 @@ stages:
   - template: download-job.yml
     parameters:
       id: test4
-      description: 'artifact=, itemPattern=b1/**'
+      description: 'artifact=, itemPattern=b1/** (should fail since artifact is required)'
       itemPattern: 'b1/**'
+
+  - template: download-job.yml
+    parameters:
+      id: test5
+      description: 'artifact=b1, itemPattern=b1/*'
+      artifactName: b1
+      itemPattern: 'b1/*'
+
+  - template: download-job.yml
+    parameters:
+      id: test6
+      description: 'artifact=b1, itemPattern=b1/*.dll'
+      artifactName: b1
+      itemPattern: 'b1/*.dll'

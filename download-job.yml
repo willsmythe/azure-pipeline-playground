@@ -14,6 +14,7 @@ jobs:
       downloadPath: '$(Build.SourcesDirectory)/results'
       artifactName: ${{ parameters.artifactName }}
       itemPattern: ${{ parameters.itemPattern }}
+    continueOnError: true
   
   - bash: |
       echo "======================================================="
@@ -23,4 +24,5 @@ jobs:
       echo "Downloaded artifacts (${TEST_DESCRIPTION}):"
       cd ../results && grep -r -l "." | sort
       echo "======================================================="
-    displayName: ${{ parameters.description }}
+    displayName: '${{ parameters.description }}'
+    continueOnError: true
