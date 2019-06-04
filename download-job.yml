@@ -25,6 +25,8 @@ jobs:
       cd files
       grep -r -l "." | sort
       mv a1 b1
+      mv a2 b2
+      mv a3 b3
       grep -r -l "." | sort
       echo "======================================================="
       echo "Downloaded artifacts (artifact=${ARTIFACT}, pattern=${PATTERN}):"
