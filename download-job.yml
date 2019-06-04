@@ -1,6 +1,6 @@
 parameters:
   id: ''
-  description: ''
+  #description: ''
   artifactName: ''
   itermPattern: ''
 
@@ -8,12 +8,14 @@ jobs:
 - job: ${{ parameters.id }}
   variables:
     TEST_DESCRIPTION: ${{ parameters.description }}
+    ARTIFACT: ${{ parameters.artifactName }}
+    PATTERN: ${{ parameters.itemPattern }}
   steps:
   - task: DownloadBuildArtifacts@0
     inputs:
       downloadPath: '$(Build.SourcesDirectory)/results'
-      artifactName: ${{ parameters.artifactName }}
-      itemPattern: ${{ parameters.itemPattern }}
+      artifactName: '$(ARTIFACT)'
+      itemPattern: '$(PATTERN)'
     continueOnError: true
   
   - bash: |
@@ -21,8 +23,8 @@ jobs:
       echo "All artifacts:"
       cd files && grep -r -l "." | sort
       echo "======================================================="
-      echo "Downloaded artifacts (${TEST_DESCRIPTION}):"
+      echo "Downloaded artifacts (${ARTIFACT} ${PATTERN}):"
       cd ../results && grep -r -l "." | sort
       echo "======================================================="
-    displayName: '${{ parameters.description }}'
+    displayName: 'Results'
     continueOnError: true
