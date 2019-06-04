@@ -40,7 +40,7 @@ jobs:
   - task: DownloadPipelineArtifact@1
     inputs:
       targetPath: '$(Build.SourcesDirectory)/results/dpa'
-      ArtifactName: :'$(DPA_ARTIFACT)'
+      ArtifactName: '$(DPA_ARTIFACT)'
       itemPattern: '$(DPA_PATTERN)'
     continueOnError: true    
   
