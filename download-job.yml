@@ -55,9 +55,9 @@ jobs:
       grep -r -l "." | sort
       echo "======================================================="
       echo "DBA (artifact=${DBA_ARTIFACT}, pattern=${DBA_PATTERN}):"
-      cd ../results/dba/${DBA_ARTIFACT} && grep -r -l "." | sort
+      cd ../results/dba/ && grep -r -l "." | sort
       echo "======================================================="
       echo "DPA (artifact=${DPA_ARTIFACT}, pattern=${DPA_PATTERN}):"
-      cd ../results/dpa/${DPA_ARTIFACT} && grep -r -l "." | sort
+      cd ../results/dpa/ && grep -r -l "." | sort
     displayName: 'Results'
     continueOnError: true
