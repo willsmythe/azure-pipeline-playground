@@ -1,19 +1,19 @@
 parameters:
   id: ''
   description: ''
-  artifact: ''
-  patterns: ''
+  artifactName: ''
+  itermPattern: ''
 
 jobs:
 - job: ${{ parameters.id }}
   variables:
     TEST_DESCRIPTION: ${{ parameters.description }}
   steps:
-  - task: DownloadPipelineArtifact@1
+  - task: DownloadBuildArtifacts@0
     inputs:
       downloadPath: '$(Build.SourcesDirectory)/results'
-      artifactName: ${{ parameters.artifact }}
-      itemPattern: ${{ parameters.patterns }}
+      artifactName: ${{ parameters.artifactName }}
+      itemPattern: ${{ parameters.itemPattern }}
   
   - bash: |
       echo "======================================================="
