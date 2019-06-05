@@ -137,6 +137,11 @@ stages:
       test: 15
       artifactName: 'b1/foo'
 
+  - template: download-job.yml
+    parameters:
+      test: 16
+      itemPattern: 'b1*/**'
+
 # TODO:
   # - multiple patterns;  multiple artifacts 
   # - */*/*.txt
