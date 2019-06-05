@@ -1,33 +1,60 @@
   jobs:
   - job:
+    strategy:
+      matrix:
+        linux:
+          VM_IMAGE: ubuntu-16.04
+        windows: 
+          VM_IMAGE: vs2017-win2016
+        macOS:
+          VM_IMAGE: macOS-10.13
+    pool:
     steps:
     - task: PublishBuildArtifacts@1
       inputs:
         pathtoPublish: '$(Build.SourcesDirectory)/artifact1'
-        ArtifactName: a
-      displayName: Publish pipeline artifact (A)
+        artifactName: 'a?'
+      continueOnError: true
 
     - task: PublishBuildArtifacts@1
       inputs:
-        pathtoPublish: '$(Build.SourcesDirectory)/artifact2'
-        ArtifactName: a/b
-      displayName: Publish pipeline artifact (a/b)
+        pathtoPublish: '$(Build.SourcesDirectory)/artifact1'
+        artifactName: '$a'
+      continueOnError: true
 
-    - task: DownloadBuildArtifacts@0
+    - task: PublishBuildArtifacts@1
       inputs:
-        downloadType: specific
-        itemPattern: 'a/b/c.txt'
-        downloadPath: '$(Build.SourcesDirectory)/results'
+        pathtoPublish: '$(Build.SourcesDirectory)/artifact1'
+        artifactName: 'a:b'
+      continueOnError: true
 
-    - task: DownloadBuildArtifacts@0
+    - task: PublishBuildArtifacts@1
       inputs:
-        downloadType: single
-        artifactName: a
-        downloadPath: '$(Build.SourcesDirectory)/results-a'        
+        pathtoPublish: '$(Build.SourcesDirectory)/artifact1'
+        artifactName: 'a:'
+      continueOnError: true
 
-    - bash: |
-        echo "$(ls -la ./results)"
-        echo "Wildcard results:"
-        echo "$(cat ./results/a/b/c.txt)"
-        echo "artfiact a:"
-        echo "$(cat ./results-a/a/b/c.txt)"
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathtoPublish: '$(Build.SourcesDirectory)/artifact1'
+        artifactName: '>'
+      continueOnError: true
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathtoPublish: '$(Build.SourcesDirectory)/artifact1'
+        artifactName: '<'
+      continueOnError: true
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathtoPublish: '$(Build.SourcesDirectory)/artifact1'
+        artifactName: '..'
+      continueOnError: true
+
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathtoPublish: '$(Build.SourcesDirectory)/artifact1'
+        artifactName: '.'
+      continueOnError: true
