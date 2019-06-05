@@ -9,7 +9,7 @@
         macOS:
           VM_IMAGE: macOS-10.13
     pool:
-      $(VM_IMAGE)
+      vmImage: $(VM_IMAGE)
     steps:
     - task: PublishBuildArtifacts@1
       inputs:
