@@ -19,6 +19,15 @@
         itemPattern: 'a/b/c.txt'
         downloadPath: '$(Build.SourcesDirectory)/results'
 
+    - task: DownloadBuildArtifacts@0
+      inputs:
+        downloadType: single
+        artifactName: a
+        downloadPath: '$(Build.SourcesDirectory)/results-a'        
+
     - bash: |
         echo "$(ls -la ./results)"
+        echo "Wildcard results:"
         echo "$(cat ./results/a/b/c.txt)"
+        echo "artfiact a:"
+        echo "$(cat ./results-a/a/b/c.txt)"
