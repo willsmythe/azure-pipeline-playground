@@ -9,52 +9,53 @@
         macOS:
           VM_IMAGE: macOS-10.13
     pool:
+      $(VM_IMAGE)
     steps:
     - task: PublishBuildArtifacts@1
       inputs:
         pathtoPublish: '$(Build.SourcesDirectory)/artifact1'
-        artifactName: 'a?'
+        artifactName: 'a?$(Agent.OS)'
       continueOnError: true
 
     - task: PublishBuildArtifacts@1
       inputs:
         pathtoPublish: '$(Build.SourcesDirectory)/artifact1'
-        artifactName: '$a'
+        artifactName: '$a$(Agent.OS)'
       continueOnError: true
 
     - task: PublishBuildArtifacts@1
       inputs:
         pathtoPublish: '$(Build.SourcesDirectory)/artifact1'
-        artifactName: 'a:b'
+        artifactName: 'a:b$(Agent.OS)'
       continueOnError: true
 
     - task: PublishBuildArtifacts@1
       inputs:
         pathtoPublish: '$(Build.SourcesDirectory)/artifact1'
-        artifactName: 'a:'
+        artifactName: 'a:$(Agent.OS)'
       continueOnError: true
 
     - task: PublishBuildArtifacts@1
       inputs:
         pathtoPublish: '$(Build.SourcesDirectory)/artifact1'
-        artifactName: '>'
+        artifactName: '>$(Agent.OS)'
       continueOnError: true
 
     - task: PublishBuildArtifacts@1
       inputs:
         pathtoPublish: '$(Build.SourcesDirectory)/artifact1'
-        artifactName: '<'
+        artifactName: '<$(Agent.OS)'
       continueOnError: true
 
     - task: PublishBuildArtifacts@1
       inputs:
         pathtoPublish: '$(Build.SourcesDirectory)/artifact1'
-        artifactName: '..'
+        artifactName: '..$(Agent.OS)'
       continueOnError: true
 
 
     - task: PublishBuildArtifacts@1
       inputs:
         pathtoPublish: '$(Build.SourcesDirectory)/artifact1'
-        artifactName: '.'
+        artifactName: '.$(Agent.OS)'
       continueOnError: true
