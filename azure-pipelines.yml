@@ -145,5 +145,4 @@ stages:
 # TODO:
   # - multiple patterns;  multiple artifacts 
   # - */*/*.txt
-  # = */*.txt
 
