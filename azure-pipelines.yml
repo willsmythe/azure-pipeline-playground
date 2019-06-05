@@ -120,6 +120,13 @@ stages:
     parameters:
       test: 13
       itemPattern: '*1/**'
+
+  - template: download-job.yml
+    parameters:
+      test: 14
+      itemPattern: '*/*.txt'      
 # TODO:
   # - multiple patterns;  multiple artifacts 
+  # - */*/*.txt
+  # = */*.txt
 
