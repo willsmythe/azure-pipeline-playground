@@ -47,9 +47,11 @@ jobs:
   #   continueOnError: true    
 
   - bash: |
-      tree -a ./files
+      cd files
+      tree -a .
       echo ""
-      tree -a ./results/dba
+      cd ../results/dba
+      tree -a .
     displayName: 'Results'
     continueOnError: true
   
