@@ -17,6 +17,7 @@ jobs:
       artifactName: 'a?$(Agent.OS)'
     continueOnError: true
     timeoutInMinutes: 1
+    displayName: 'a?'
 
   - task: PublishBuildArtifacts@1
     inputs:
@@ -24,6 +25,7 @@ jobs:
       artifactName: '$a$(Agent.OS)'
     continueOnError: true
     timeoutInMinutes: 1
+    displayName: '$a'
 
   - task: PublishBuildArtifacts@1
     inputs:
@@ -31,6 +33,7 @@ jobs:
       artifactName: 'a:b$(Agent.OS)'
     continueOnError: true
     timeoutInMinutes: 1
+    displayName: 'a:b'
 
   - task: PublishBuildArtifacts@1
     inputs:
@@ -38,6 +41,7 @@ jobs:
       artifactName: 'a:$(Agent.OS)'
     continueOnError: true
     timeoutInMinutes: 1
+    displayName: 'a:'
 
   - task: PublishBuildArtifacts@1
     inputs:
@@ -45,6 +49,7 @@ jobs:
       artifactName: '>$(Agent.OS)'
     continueOnError: true
     timeoutInMinutes: 1
+    displayName: '>'
 
   - task: PublishBuildArtifacts@1
     inputs:
@@ -52,17 +57,45 @@ jobs:
       artifactName: '<$(Agent.OS)'
     continueOnError: true
     timeoutInMinutes: 1
+    displayName: '<'
 
   - task: PublishBuildArtifacts@1
     inputs:
       pathtoPublish: '$(Build.SourcesDirectory)/artifact1'
-      artifactName: '..$(Agent.OS)'
+      artifactName: 'b..a$(Agent.OS)'
     continueOnError: true
     timeoutInMinutes: 1
+    displayName: 'b..a'
 
   - task: PublishBuildArtifacts@1
     inputs:
       pathtoPublish: '$(Build.SourcesDirectory)/artifact1'
-      artifactName: '.$(Agent.OS)'
+      artifactName: '..b$(Agent.OS)'
     continueOnError: true
     timeoutInMinutes: 1
+    displayName: '..b'
+
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathtoPublish: '$(Build.SourcesDirectory)/artifact1'
+      artifactName: '|a$(Agent.OS)'
+    continueOnError: true
+    timeoutInMinutes: 1
+    displayName: '|a'
+
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathtoPublish: '$(Build.SourcesDirectory)/artifact1'
+      artifactName: '/$(Agent.OS)'
+    continueOnError: true
+    timeoutInMinutes: 1
+    displayName: '/'
+
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathtoPublish: '$(Build.SourcesDirectory)/artifact1'
+      artifactName: '\a$(Agent.OS)'
+    continueOnError: true
+    timeoutInMinutes: 1
+    displayName: '\a'      
+    
