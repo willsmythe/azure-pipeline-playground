@@ -43,6 +43,12 @@ stages:
         ArtifactName: b3
       displayName: Publish build artifacts (b3)
 
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathtoPublish: '$(Build.SourcesDirectory)/files/b2'
+        ArtifactName: b1/foo
+      displayName: Publish build artifacts (b1/foo)    
+
 - stage: download
   dependsOn: publish
   jobs:
@@ -124,7 +130,13 @@ stages:
   - template: download-job.yml
     parameters:
       test: 14
-      itemPattern: '*/*.txt'      
+      itemPattern: '*/*.txt'   
+
+  - template: download-job.yml
+    parameters:
+      test: 15
+      artifactName: 'b1/foo'
+
 # TODO:
   # - multiple patterns;  multiple artifacts 
   # - */*/*.txt
