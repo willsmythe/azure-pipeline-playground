@@ -27,19 +27,19 @@ stages:
 
     - task: PublishBuildArtifacts@1
       inputs:
-        pathtoPublish: '$(Build.SourcesDirectory)/files/a1'
+        pathtoPublish: '$(Build.SourcesDirectory)/files/b1'
         ArtifactName: b1
       displayName: Publish build artifacts (b1)
 
     - task: PublishBuildArtifacts@1
       inputs:
-        pathtoPublish: '$(Build.SourcesDirectory)/files/a2'
+        pathtoPublish: '$(Build.SourcesDirectory)/files/b2'
         ArtifactName: b2
       displayName: Publish build artifacts (b2)
 
     - task: PublishBuildArtifacts@1
       inputs:
-        pathtoPublish: '$(Build.SourcesDirectory)/files/a3'
+        pathtoPublish: '$(Build.SourcesDirectory)/files/b3'
         ArtifactName: b3
       displayName: Publish build artifacts (b3)
 
@@ -51,78 +51,75 @@ stages:
   ############################
   - template: download-job.yml
     parameters:
-      id: test1
-      artifactName: a1
+      test: 1
+      artifactName: b1
       itemPattern: '**'
 
   - template: download-job.yml
     parameters:
-      id: test2
-      artifactName: a1
-      itemPattern: 'a1/**'
+      test: 2
+      artifactName: b1
+      itemPattern: 'b1/**'
 
   - template: download-job.yml
     parameters:
-      id: test3
-      artifactName: a1
-      itemPattern: 'b2/**'
+      test: 3
+      itemPattern: 'b1/**'
 
   - template: download-job.yml
     parameters:
-      id: test4
-      itemPattern: 'a1/**'
+      test: 4
+      artifactName: b1
+      itemPattern: 'b1/*'
 
   - template: download-job.yml
     parameters:
-      id: test5
-      artifactName: a1
-      itemPattern: 'a1/*'
-
-  - template: download-job.yml
-    parameters:
-      id: test6
-      artifactName: a1
+      test: 5
+      artifactName: b1
       itemPattern: '*'
 
   - template: download-job.yml
     parameters:
-      id: test7
-      artifactName: a1
-      itemPattern: '*/*'      
+      test: 6
+      artifactName: b1
+      itemPattern: '*/*'    
 
   - template: download-job.yml
     parameters:
-      id: test8
-      artifactName: a1
-      itemPattern: 'a1/*.dll'
+      test: 7
+      artifactName: b1
+      itemPattern: 'b1/*.dll'
 
   - template: download-job.yml
     parameters:
-      id: test9
-      artifactName: a1
-      itemPattern: 'a1/*.txt'
+      test: 8
+      artifactName: b1
+      itemPattern: 'b1/*.txt'
 
   - template: download-job.yml
     parameters:
-      id: test10
+      test: 9
       itemPattern: '**'
 
   - template: download-job.yml
     parameters:
-      id: test11
+      test: 10
       itemPattern: '**/*.txt'
 
   - template: download-job.yml
     parameters:
-      id: test12
-      itemPattern: 'a1/*.txt'
+      test: 11
+      itemPattern: 'b1/*.txt'
 
   - template: download-job.yml
     parameters:
-      id: test13
+      test: 12
       itemPattern: '*.txt' 
 
   - template: download-job.yml
     parameters:
-      id: test14
+      test: 13
       itemPattern: '*1/**'
+# TODO:
+  # - multiple patterns;  multiple artifacts 
+
