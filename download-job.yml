@@ -4,7 +4,7 @@ parameters:
   itermPattern: ''
 
 jobs:
-- job: ${{ join('test', parameters.test) }}
+- job: test${{ parameters.test }}
   variables:
     TEST_DESCRIPTION: ${{ parameters.description }}
     ARTIFACT: ${{ parameters.artifactName }}
