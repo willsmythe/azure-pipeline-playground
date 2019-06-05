@@ -48,10 +48,10 @@ jobs:
 
   - bash: |
       cd files
-      tree -a .
+      tree -a
       echo ""
       cd ../results/dba
-      tree -a .
+      tree -a
     displayName: 'Results'
     continueOnError: true
   
