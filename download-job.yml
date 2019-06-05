@@ -55,20 +55,3 @@ jobs:
     displayName: 'Results'
     continueOnError: true
   
-  # - bash: |
-  #     echo "======================================================="
-  #     echo "All artifacts:"
-  #     cd files
-  #     grep -r -l "." | sort
-  #     mv a1 b1
-  #     mv a2 b2
-  #     mv a3 b3
-  #     grep -r -l "." | sort
-  #     echo "======================================================="
-  #     echo "DBA (artifact=${DBA_ARTIFACT}, pattern=${DBA_PATTERN}):"
-  #     cd ../results/dba/ && grep -r -l "." | sort
-  #     #echo "======================================================="
-  #     #echo "DPA (artifact=${DPA_ARTIFACT}, pattern=${DPA_PATTERN}):"
-  #     #cd ../results/dpa/ && grep -r -l "." | sort
-  #   displayName: 'Results'
-  #   continueOnError: true

@@ -1,148 +1,25 @@
-stages:
-- stage: publish
   jobs:
-  ############################
-  # Publish job
-  ############################
-  - job: publish
-    displayName: 'Publish artifacts'
+  - job:
     steps:
-    - task: PublishPipelineArtifact@0
+    - task: PublishBuildArtifacts@1
       inputs:
-        artifactName: a1
-        targetPath: files/a1
-      displayName: Publish pipeline artifact (a1)
-
-    - task: PublishPipelineArtifact@0
-      inputs:
-        artifactName: a2
-        targetPath: files/a2
-      displayName: Publish pipeline artifact (a2)
-
-    - task: PublishPipelineArtifact@0
-      inputs:
-        artifactName: a3
-        targetPath: files/a3
-      displayName: Publish pipeline artifact (a3)
+        pathtoPublish: '$(Build.SourcesDirectory)/artifact1'
+        ArtifactName: a
+      displayName: Publish pipeline artifact (A)
 
     - task: PublishBuildArtifacts@1
       inputs:
-        pathtoPublish: '$(Build.SourcesDirectory)/files/b1'
-        ArtifactName: b1
-      displayName: Publish build artifacts (b1)
+        pathtoPublish: '$(Build.SourcesDirectory)/artifact2'
+        ArtifactName: a/b
+      displayName: Publish pipeline artifact (a/b)
 
-    - task: PublishBuildArtifacts@1
+    - task: DownloadBuildArtifacts@0
       inputs:
-        pathtoPublish: '$(Build.SourcesDirectory)/files/b2'
-        ArtifactName: b2
-      displayName: Publish build artifacts (b2)
+        downloadType: specific
+        itemPattern: 'a/b/c.txt'
+        downloadPath: '$(Build.SourcesDirectory)/results'
 
-    - task: PublishBuildArtifacts@1
-      inputs:
-        pathtoPublish: '$(Build.SourcesDirectory)/files/b3'
-        ArtifactName: b3
-      displayName: Publish build artifacts (b3)
+    - bash: cat $(Build.SourcesDirectory)/results/a/b/c.txt
 
-    - task: PublishBuildArtifacts@1
-      inputs:
-        pathtoPublish: '$(Build.SourcesDirectory)/files/b2'
-        ArtifactName: b1/foo
-      displayName: Publish build artifacts (b1/foo)    
-
-- stage: download
-  dependsOn: publish
-  jobs:
-  ############################
-  # Download jobs
-  ############################
-  - template: download-job.yml
-    parameters:
-      test: 1
-      artifactName: b1
-      itemPattern: '**'
-
-  - template: download-job.yml
-    parameters:
-      test: 2
-      artifactName: b1
-      itemPattern: 'b1/**'
-
-  - template: download-job.yml
-    parameters:
-      test: 3
-      itemPattern: 'b1/**'
-
-  - template: download-job.yml
-    parameters:
-      test: 4
-      artifactName: b1
-      itemPattern: 'b1/*'
-
-  - template: download-job.yml
-    parameters:
-      test: 5
-      artifactName: b1
-      itemPattern: '*'
-
-  - template: download-job.yml
-    parameters:
-      test: 6
-      artifactName: b1
-      itemPattern: '*/*'    
-
-  - template: download-job.yml
-    parameters:
-      test: 7
-      artifactName: b1
-      itemPattern: 'b1/*.dll'
-
-  - template: download-job.yml
-    parameters:
-      test: 8
-      artifactName: b1
-      itemPattern: 'b1/*.txt'
-
-  - template: download-job.yml
-    parameters:
-      test: 9
-      itemPattern: '**'
-
-  - template: download-job.yml
-    parameters:
-      test: 10
-      itemPattern: '**/*.txt'
-
-  - template: download-job.yml
-    parameters:
-      test: 11
-      itemPattern: 'b1/*.txt'
-
-  - template: download-job.yml
-    parameters:
-      test: 12
-      itemPattern: '*.txt' 
-
-  - template: download-job.yml
-    parameters:
-      test: 13
-      itemPattern: '*1/**'
-
-  - template: download-job.yml
-    parameters:
-      test: 14
-      itemPattern: '*/*.txt'   
-
-  - template: download-job.yml
-    parameters:
-      test: 15
-      artifactName: 'b1/foo'
-
-  - template: download-job.yml
-    parameters:
-      test: 16
-      itemPattern: 'b1*/**'
-
-# TODO:
-  # - multiple patterns;  multiple artifacts 
-  # - */*/*.txt
+    - bash: echo "$(ls -la $(Build.SourcesDirectory)/results)"
 
