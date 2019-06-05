@@ -19,7 +19,7 @@
         itemPattern: 'a/b/c.txt'
         downloadPath: '$(Build.SourcesDirectory)/results'
 
-    - bash: cat $(Build.SourcesDirectory)/results/a/b/c.txt
+    - bash: cat "$(Build.SourcesDirectory)/results/a/b/c.txt"
 
     - bash: echo "$(ls -la $(Build.SourcesDirectory)/results)"
 
