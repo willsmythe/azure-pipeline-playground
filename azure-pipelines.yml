@@ -1,33 +1,16 @@
-  jobs:
-  - job:
-    steps:
-    - task: PublishBuildArtifacts@1
-      inputs:
-        pathtoPublish: '$(Build.SourcesDirectory)/artifact1'
-        ArtifactName: a
-      displayName: Publish pipeline artifact (A)
+jobs:
+- job:
+  steps:
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathtoPublish: '$(Build.SourcesDirectory)/artifact1'
+      ArtifactName: a
+    displayName: Publish pipeline artifact (A)
+- job:
+  steps:
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathtoPublish: '$(Build.SourcesDirectory)/artifact2'
+      ArtifactName: b
+    displayName: Publish pipeline artifact (b)
 
-    - task: PublishBuildArtifacts@1
-      inputs:
-        pathtoPublish: '$(Build.SourcesDirectory)/artifact2'
-        ArtifactName: a/b
-      displayName: Publish pipeline artifact (a/b)
-
-    - task: DownloadBuildArtifacts@0
-      inputs:
-        downloadType: specific
-        itemPattern: 'a/b/c.txt'
-        downloadPath: '$(Build.SourcesDirectory)/results'
-
-    - task: DownloadBuildArtifacts@0
-      inputs:
-        downloadType: single
-        artifactName: a
-        downloadPath: '$(Build.SourcesDirectory)/results-a'        
-
-    - bash: |
-        echo "$(ls -la ./results)"
-        echo "Wildcard results:"
-        echo "$(cat ./results/a/b/c.txt)"
-        echo "artfiact a:"
-        echo "$(cat ./results-a/a/b/c.txt)"
