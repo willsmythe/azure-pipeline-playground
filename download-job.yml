@@ -44,7 +44,7 @@ jobs:
   #     targetPath: '$(Build.SourcesDirectory)/results/dpa'
   #     ArtifactName: '$(DPA_ARTIFACT)'
   #     itemPattern: '$(DPA_PATTERN)'
-  #   continueOnError: true    
+  #   continueOnError: true
 
   - bash: |
       cd files
