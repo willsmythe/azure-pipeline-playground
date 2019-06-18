@@ -1,18 +1,17 @@
-jobs:
-- job: windows
-  pool:
-    vmImage: vs2017-win2016
-  steps:
-    - template: azure-pipelines-steps.yml
+steps:
+- bash: rm -rf $(Build.SourcesDirectory)/.git
 
-- job: linux
-  pool:
-    vmImage: ubuntu-16.04
-  steps:
-    - template: azure-pipelines-steps.yml
+- task: PublishBuildArtifacts@1
+  inputs:
+    ArtifactName: pba1
+    PathtoPublish: $(Build.SourcesDirectory)
+  
+- task: PublishPipelineArtifact@0
+  inputs:
+    ArtifactName: ppa0
+    targetPath: $(Build.SourcesDirectory)
 
-- job: macOS
-  pool:
-    vmImage: macos-10.13
-  steps:
-    - template: azure-pipelines-steps.yml
+- task: PublishPipelineArtifact@1
+  inputs:
+    artifactName: ppa1
+    path: $(Build.SourcesDirectory)
