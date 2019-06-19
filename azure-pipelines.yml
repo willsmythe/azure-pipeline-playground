@@ -1,5 +1,5 @@
 jobs:
-- job: job1
+- job: singletaskcontinue
   pool:
     vmImage: ubuntu-16.04
   steps:
@@ -7,14 +7,14 @@ jobs:
     continueOnError: true
   - bash: echo foo
 
-- job: job2
+- job: singletaskfail
   pool:
     vmImage: ubuntu-16.04
   steps:
   - task: npmAuthenticate@0
   - bash: echo foo
 
-- job: job3
+- job: multipletasks
   pool:
     vmImage: ubuntu-16.04
   steps:
