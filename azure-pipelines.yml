@@ -36,3 +36,13 @@ jobs:
 
   - task: npmAuthenticate@0
     displayName: auth1
+
+- job: conditionstep
+  pool:
+    vmImage: ubuntu-16.04
+  steps:
+  - task: npmAuthenticate@0
+    displayName: auth1
+    condition: eq('1', '0)
+  
+  - bash: echo foo
