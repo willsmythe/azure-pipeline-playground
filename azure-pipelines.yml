@@ -27,3 +27,12 @@ jobs:
     continueOnError: true
 
   - bash: echo foo
+
+- job: failedstep
+  pool:
+    vmImage: ubuntu-16.04
+  steps:
+  - script: exit 1
+
+  - task: npmAuthenticate@0
+    displayName: auth1
