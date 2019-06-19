@@ -43,6 +43,6 @@ jobs:
   steps:
   - task: npmAuthenticate@0
     displayName: auth1
-    condition: eq('1', '0)
+    condition: eq('1', '0')
   
   - bash: echo foo
