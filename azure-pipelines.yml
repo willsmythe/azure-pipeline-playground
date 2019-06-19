@@ -1,18 +1,29 @@
 jobs:
-- job: windows
-  pool:
-    vmImage: vs2017-win2016
-  steps:
-    - template: azure-pipelines-steps.yml
-
-- job: linux
+- job: job1
   pool:
     vmImage: ubuntu-16.04
   steps:
-    - template: azure-pipelines-steps.yml
+  - task: npmAuthenticate@0
+    continueOnError: true
+  - bash: echo foo
 
-- job: macOS
+- job: job2
   pool:
-    vmImage: macos-10.13
+    vmImage: ubuntu-16.04
   steps:
-    - template: azure-pipelines-steps.yml
+  - task: npmAuthenticate@0
+  - bash: echo foo
+
+- job: job3
+  pool:
+    vmImage: ubuntu-16.04
+  steps:
+  - task: npmAuthenticate@0
+    displayName: auth1
+    continueOnError: true
+
+  - task: npmAuthenticate@0
+    displayName: auth2
+    continueOnError: true
+
+  - bash: echo foo
