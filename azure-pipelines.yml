@@ -5,8 +5,8 @@ jobs:
   steps:
   - task: InstallAppleProvisioningProfile@1
     inputs:
-      provisioningProfileLocation: secureFiles
-      provProfileSecureFile: asdf
+      provisioningProfileLocation: sourceRepository
+      provProfileSourceRepository: asdf
 
 - job: singletaskcontinue
   pool:
