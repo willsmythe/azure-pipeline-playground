@@ -1,4 +1,13 @@
 jobs:
+- job: preposttest
+  pool:
+    vmImage: ubuntu-16.04
+  steps:
+  - task: InstallAppleProvisioningProfile@1
+    inputs:
+      provisioningProfileLocation: secureFiles
+      provProfileSecureFile: asdf
+
 - job: singletaskcontinue
   pool:
     vmImage: ubuntu-16.04
