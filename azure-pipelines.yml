@@ -1,27 +1,14 @@
 jobs:
 - job: build
-  strategy:
-    matrix:
-      linux:
-        VM_IMAGE: ubuntu-16.04
-      windows:  
-        VM_IMAGE: vs2017-win2016
-      macOS:
-        VM_IMAGE: macOS-10.13
   pool:
-    vmImage: $(VM_IMAGE)
+    name: Caching
   variables:  
     YARN_CACHE_FOLDER: $(Pipeline.Workspace)/yarn-cache
   steps:
-  - task: RestoreCache@0
+  - task: Cache@0
     inputs:
       key: '$(Build.SourcesDirectory)/yarn.lock'
       path: '$(YARN_CACHE_FOLDER)'
 
   - script: yarn
     displayName: 'Install dependencies'
-
-  - task: SaveCache@0
-    inputs:
-      key: '$(Build.SourcesDirectory)/yarn.lock'
-      path: '$(YARN_CACHE_FOLDER)'
