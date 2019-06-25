@@ -7,7 +7,9 @@ jobs:
   steps:
   - task: Cache@0
     inputs:
-      key: '$(Build.SourcesDirectory)/yarn.lock'
+      key: |
+        '$(Build.SourcesDirectory)/yarn.lock'
+        test2
       path: '$(YARN_CACHE_FOLDER)'
 
   - script: yarn
