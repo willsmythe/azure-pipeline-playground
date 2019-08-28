@@ -6,6 +6,7 @@ jobs:
     - template: azure-pipelines-steps.yml
     - script: |
         tar --version
+        md $(TEMP)
         tar -cf $(TEMP)/archive.tar -C $(Build.SourcesDirectory) .
       displayName: Show tar (from cmd shell)
 
@@ -16,6 +17,7 @@ jobs:
     - template: azure-pipelines-steps.yml
     - script: |
         tar --version
+        md $(TEMP)
         tar -cf $(TEMP)/archive.tar -C $(Build.SourcesDirectory) .
       displayName: Show tar (from cmd shell)
 
