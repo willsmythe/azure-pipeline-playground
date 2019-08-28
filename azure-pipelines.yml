@@ -1,9 +1,21 @@
 jobs:
-- job: windows
+- job: windows2016
   pool:
     vmImage: vs2017-win2016
   steps:
     - template: azure-pipelines-steps.yml
+    - script: |
+        where tar
+        tar -v
+
+- job: windows2019
+  pool:
+    vmImage: windows-2019
+  steps:
+    - template: azure-pipelines-steps.yml
+    - script: |
+        where tar
+        tar -v
 
 - job: linux
   pool:
