@@ -7,7 +7,7 @@ jobs:
     - script: |
         tar --version
         md $(TEMP)
-        tar -cf $(TEMP)/archive.tar -C $(Build.SourcesDirectory) .
+        tar --force-local -cf $(TEMP)/archive.tar -C $(Build.SourcesDirectory) .
       displayName: Show tar (from cmd shell)
 
 - job: windows2019
@@ -18,7 +18,7 @@ jobs:
     - script: |
         tar --version
         md $(TEMP)
-        tar -cf $(TEMP)/archive.tar -C $(Build.SourcesDirectory) .
+        tar --force-local -cf $(TEMP)/archive.tar -C $(Build.SourcesDirectory) .
       displayName: Show tar (from cmd shell)
 
 - job: linux
