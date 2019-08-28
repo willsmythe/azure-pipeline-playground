@@ -5,8 +5,8 @@ jobs:
   steps:
     - template: azure-pipelines-steps.yml
     - script: |
-        where tar
         tar --version
+        tar -cf $(TEMP)/archive.tar -C $(Build.SourcesDirectory) .
       displayName: Show tar (from cmd shell)
 
 - job: windows2019
@@ -15,8 +15,8 @@ jobs:
   steps:
     - template: azure-pipelines-steps.yml
     - script: |
-        where tar
         tar --version
+        tar -cf $(TEMP)/archive.tar -C $(Build.SourcesDirectory) .
       displayName: Show tar (from cmd shell)
 
 - job: linux
