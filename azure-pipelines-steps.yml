@@ -1,5 +1,6 @@
 steps:
 - bash: |
     which tar
-    tar -v
+    tar --version
+  displayName: Show tar (from bash shell)
 

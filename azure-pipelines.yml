@@ -6,7 +6,8 @@ jobs:
     - template: azure-pipelines-steps.yml
     - script: |
         where tar
-        tar -v
+        tar --version
+      displayName: Show tar (from cmd shell)
 
 - job: windows2019
   pool:
@@ -15,7 +16,8 @@ jobs:
     - template: azure-pipelines-steps.yml
     - script: |
         where tar
-        tar -v
+        tar --version
+      displayName: Show tar (from cmd shell)
 
 - job: linux
   pool:
