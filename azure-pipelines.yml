@@ -4,23 +4,13 @@ jobs:
     vmImage: vs2017-win2016
   steps:
     - template: azure-pipelines-steps.yml
-    - script: |
-        tar --version
-        md $(TEMP)
-        tar --force-local -cf $(TEMP)/archive.tar -C $(Build.SourcesDirectory) .
-      displayName: Show tar (from cmd shell)
 
 - job: windows2019
   pool:
     vmImage: windows-2019
   steps:
     - template: azure-pipelines-steps.yml
-    - script: |
-        tar --version
-        md $(TEMP)
-        tar --force-local -cf $(TEMP)/archive.tar -C $(Build.SourcesDirectory) .
-      displayName: Show tar (from cmd shell)
-
+ 
 - job: linux
   pool:
     vmImage: ubuntu-16.04
