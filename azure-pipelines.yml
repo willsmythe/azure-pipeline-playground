@@ -1,12 +1,17 @@
 stages:
   - stage: publish
     jobs:
-    - job: windows12
+    - job: windows1
       pool:
         vmImage: windows-2019-vs2019
       steps:
-        - publish: $(System.DefaultWorkingDirectory)/
-          artifact: 'mODUle123'
+       ## - publish: $(System.DefaultWorkingDirectory)/
+       ##   artifact: 'mODUle123'
+
+      - task: PublishBuildArtifacts@1
+        inputs:
+          pathtoPublish: '$(System.DefaultWorkingDirectory)' 
+          artifactName: 'mODUle123' 
 
     - job: windows2
       pool:
