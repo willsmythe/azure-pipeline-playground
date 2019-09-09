@@ -6,7 +6,7 @@ stages:
         vmImage: windows-2019-vs2019
       steps:
         - publish: $(System.DefaultWorkingDirectory)/
-          artifact: 'mODule'
+          artifact: 'mODule123'
 
     - job: windows2
       pool:
