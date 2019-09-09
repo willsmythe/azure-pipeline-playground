@@ -1,18 +1,25 @@
-jobs:
-- job: windows
-  pool:
-    vmImage: vs2017-win2016
-  steps:
-    - template: azure-pipelines-steps.yml
+stages:
+  - stage: publish
+    jobs:
+    - job: windows1
+      pool:
+        vmImage: windows-2019-vs2019
+      steps:
+        - publish: $(System.DefaultWorkingDirectory)/
+          artifact: module
 
-- job: linux
-  pool:
-    vmImage: ubuntu-16.04
-  steps:
-    - template: azure-pipelines-steps.yml
+    - job: windows2
+      pool:
+        vmImage: windows-2019-vs2019
+      steps:
+        - publish: $(System.DefaultWorkingDirectory)/
+          artifact: 'module2'
 
-- job: macOS
-  pool:
-    vmImage: macos-10.13
-  steps:
-    - template: azure-pipelines-steps.yml
+    - job: windows3
+      pool:
+        vmImage: windows-2019-vs2019
+      steps:
+        - task: PublishPipelineArtifact@1
+          inputs:
+            path: $(System.DefaultWorkingDirectory)/
+            artifact: 'module3'
